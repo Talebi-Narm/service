@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Plant, Tool, Tag
 
-# Register your models here.
+admin.site.register(Plant)
+admin.site.register(Tool)
+admin.site.register(Tag)
