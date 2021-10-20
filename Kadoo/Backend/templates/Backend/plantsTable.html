@@ -2,17 +2,26 @@
 
 {% block content %}
 
+<a href="{% url 'createPlant' %}">Create a new "Plant" !</a>
+
 <table>
     <tr>
         <th>Name</th>
-        <th>description</th>
-        <th>price</th>
+        <th>Description</th>
+        <th>Price</th>
         <th></th>
         <th></th>
     </tr>
+    {% for plant in plants %}
+    
     <tr>
-
+        <td>{{plant.name}}</td>
+        <td>{{plant.description}}</td>
+        <td>{{plant.price}}</td>
+        <td><a href="{% url 'updatePlant' plant.id %}">Edit</a></td>
+        <td><a href="{% url 'deletePlant' plant.id %}">Delete</a></td>
     </tr>
+    {% endfor %}
 </table>
 
 {% endblock content %}
