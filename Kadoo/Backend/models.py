@@ -26,6 +26,7 @@ class Plant(models.Model):
     environment = models.CharField(max_length = 50, choices = conditions, null = True, blank = True)
     water =  models.CharField(max_length = 50, choices = quantifiers, null = True, blank = True)
     light = models.CharField( max_length = 50, choices = quantifiers, null = True, blank = True)
+    growthRate = models.CharField(max_length = 50, choices = quantifiers, null = True, blank = True )
 
     def __str__(self):
         return self.name
