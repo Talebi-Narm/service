@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import CustomUserCreate
+from .views import CustomMemberCreate, BlacklistUpdate
 
 app_name = 'users'
 
 urlpatterns = [
-    path('register/', CustomUserCreate.as_view(), name='register_new_user')
+    path('register/', CustomMemberCreate.as_view(), name='register_new_user'),
+    path('logout/', BlacklistUpdate.as_view(), name='blacklist')
 ]
