@@ -16,7 +16,7 @@ def createPlant(request):
     form = PlantForm()
 
     if request.method == 'POST':
-        form = PlantForm(request.POST)
+        form = PlantForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('plants')
@@ -29,7 +29,7 @@ def updatePlant(request, pk):
     form = PlantForm(instance=plantObj)
 
     if request.method == 'POST':
-        form = PlantForm(request.POST, instance=plantObj)
+        form = PlantForm(request.POST, request.FILES, instance=plantObj)
         if form.is_valid():
             form.save()
             return redirect('plants')
@@ -58,7 +58,7 @@ def createTool(request):
     form = ToolForm()
 
     if request.method == 'POST':
-        form = ToolForm(request.POST)
+        form = ToolForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('tools')
@@ -71,7 +71,7 @@ def updateTool(request, pk):
     form = ToolForm(instance=toolObj)
 
     if request.method == 'POST':
-        form = ToolForm(request.POST, instance=toolObj)
+        form = ToolForm(request.POST, request.FILES, instance=toolObj)
         if form.is_valid():
             form.save()
             return redirect('tools')
@@ -100,7 +100,7 @@ def createTag(request):
     form = TagForm()
 
     if request.method == 'POST':
-        form = TagForm(request.POST)
+        form = TagForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('tags')
@@ -113,7 +113,7 @@ def updateTag(request, pk):
     form = TagForm(instance=tagObj)
 
     if request.method == 'POST':
-        form = TagForm(request.POST, instance=tagObj)
+        form = TagForm(request.POST, request.FILES, instance=tagObj)
         if form.is_valid():
             form.save()
             return redirect('tags')
