@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Plant, Tool, Tag
-from .forms import PlantForm
+from .forms import PlantForm, TagForm, ToolForm
 
 # Create your views here.
 def mainPage(request):
@@ -27,7 +27,7 @@ def createPlant(request):
 def updatePlant(request, pk):
     plantObj = Plant.objects.get(id=pk)
     form = PlantForm(instance=plantObj)
-
+    print(plantObj.id)
     if request.method == 'POST':
         form = PlantForm(request.POST, request.FILES, instance=plantObj)
         if form.is_valid():
