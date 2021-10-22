@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.db.models.query import EmptyQuerySet, QuerySet
 
 
 class CustomAccountManager(BaseUserManager):
@@ -34,15 +35,13 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError('You must provide an first name')
         if not last_name:
             raise ValueError('You must provide an last name')
-
+        
         email = self.normalize_email(email)
         user = self.model(type= type, email=email, user_name=user_name,
                           first_name=first_name, last_name=last_name, **other_fields)
         user.set_password(password)
         user.save()
         return user
-
-
 
 
 class NewUser(AbstractBaseUser, PermissionsMixin):
@@ -84,14 +83,36 @@ class Member(NewUser):
     class Meta:
         proxy = True
 
+class MemberFieldsManager(models.Manager):
+    EmptyQuerySet = EmptyQuerySet
+    QuerySet = QuerySet
+
+    def get_empty_query_set(self):
+        return self.EmptyQuerySet(self.model, self._db)
+
+    def get_query_set(self):
+        return self.QuerySet(self.model, self._db)
+
+    def get_or_create(self, *args, **kwargs):
+        return self.get_query_set().get_or_create(*args, **kwargs)
+
+    def create(self, *args, **kwargs):
+        return self.get_query_set().create(*args, **kwargs)
+
 class MemberFields(models.Model):
-    user = models.OneToOneField(NewUser, on_delete=models.CASCADE)
-    credit_value = models.IntegerField(default=0)
-    #Card
+    user = models.OneToOneField(NewUser, on_delete=models.CASCADE, related_name='user')
+    credit_value = models.IntegerField('credit', default=0)
+    plants_cart = models.ManyToManyField("Backend.Plant", blank=True)
+    tools_cart = models.ManyToManyField("Backend.Tool", blank=True)
+
+    objects = MemberFieldsManager()
+
+    def __str__(self):
+        return str(self.user)
 
 #--- Specialist Def
 class SpecialistManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
+    def creat(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(type=NewUser.Types.SPECIALIST)
 
 class Specialist(NewUser):
