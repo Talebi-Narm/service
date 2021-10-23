@@ -143,3 +143,17 @@ def deleteTag(request, pk):
     tag = Tag.objects.get(id=pk)
     tag.delete()
     return Response('Item successfully deleted !')
+
+@api_view(['GET'])
+def plantsWithSpecificTag(request, tag):
+    tag = Tag.objects.get(name=tag)
+    plants = tag.plant_set.all()
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def toolsWithSpecificTag(request, tag):
+    tag = Tag.objects.get(name=tag)
+    tools = tag.plant_set.all()
+    serializer = PlantSerializer(tools, many=True)
+    return Response(serializer.data)

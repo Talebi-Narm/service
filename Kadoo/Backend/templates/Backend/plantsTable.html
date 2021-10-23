@@ -17,7 +17,7 @@
         <td>{{plant.name}}</td>
         <td>{{plant.description}}</td>
         <td>{{plant.price}}</td>
-        <td><img src="{{ plant.imageURL}}" alt="photo"></td>
+        <td><img src="{{ plant.image_url}}" alt="photo"></td>
         <td><a href="{% url 'updatePlant' plant.id %}">Edit</a></td>
         <td><a href="{% url 'deletePlant' plant.id %}">Delete</a></td>
     </tr>

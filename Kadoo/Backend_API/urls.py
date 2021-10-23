@@ -25,4 +25,6 @@ urlpatterns=[
     path('updateTag/<str:pk>/', views.updateTag, name='updateTag'),
     path('deleteTag/<str:pk>/', views.deleteTag, name='deleteTag'),
 
+# category API
+    path('withTag/<str:tag>/', views.plantsWithSpecificTag, name='withTag')
 ]
