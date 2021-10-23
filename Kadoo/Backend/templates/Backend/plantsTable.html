@@ -2,15 +2,14 @@
 
 {% block content %}
 
-<a href="{% url 'createPlant' %}">Create a new "Plant" !</a>
+<a class="btn" href="{% url 'createPlant' %}">Create a new "Plant" !</a>
 
 <table>
     <tr>
         <th>Name</th>
         <th>Description</th>
         <th>Price</th>
-        <th></th>
-        <th></th>
+        <th>Photo</th>
     </tr>
     {% for plant in plants %}
     
@@ -18,6 +17,7 @@
         <td>{{plant.name}}</td>
         <td>{{plant.description}}</td>
         <td>{{plant.price}}</td>
+        <td><img src="{{ plant.imageURL}}" alt="photo"></td>
         <td><a href="{% url 'updatePlant' plant.id %}">Edit</a></td>
         <td><a href="{% url 'deletePlant' plant.id %}">Delete</a></td>
     </tr>

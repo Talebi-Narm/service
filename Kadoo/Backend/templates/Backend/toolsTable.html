@@ -2,15 +2,14 @@
 
 {% block content %}
 
-<a href="{% url 'createTool' %}">Create a new "Tool" !</a>
+<a class="btn" href="{% url 'createTool' %}">Create a new "Tool" !</a>
 
 <table>
     <tr>
         <th>Name</th>
         <th>Description</th>
         <th>Price</th>
-        <th></th>
-        <th></th>
+        <th>Photo</th>
     </tr>
     {% for tool in tools %}
     
@@ -18,6 +17,7 @@
         <td>{{tool.name}}</td>
         <td>{{tool.description}}</td>
         <td>{{tool.price}}</td>
+        <td><img src="{{tool.imageURL}}" alt="photo"</td>
         <td><a href="{% url 'updateTool' tool.id %}">Edit</a></td>
         <td><a href="{% url 'deleteTool' tool.id %}">Delete</a></td>
     </tr>

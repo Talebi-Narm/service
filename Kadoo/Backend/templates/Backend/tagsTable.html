@@ -2,13 +2,11 @@
 
 {% block content %}
 
-<a href="{% url 'createTag' %}">Create a new "Tag" !</a>
+<a class="btn" href="{% url 'createTag' %}">Create a new "Tag" !</a>
 
 <table>
     <tr>
         <th>Name</th>
-        <th></th>
-        <th></th>
     </tr>
     {% for tag in tags %}
     
