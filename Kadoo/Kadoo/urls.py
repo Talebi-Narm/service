@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/', include('Backend_API.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/user/', include('Users.urls', namespace='users')),
+    path('api/cart/', include('Cart.urls', namespace='cart')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
