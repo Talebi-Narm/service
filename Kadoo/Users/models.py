@@ -102,8 +102,7 @@ class MemberFieldsManager(models.Manager):
 class MemberFields(models.Model):
     user = models.OneToOneField(NewUser, on_delete=models.CASCADE, related_name='user')
     credit_value = models.IntegerField('credit', default=0)
-    plants_cart = models.ManyToManyField("Backend.Plant", blank=True)
-    tools_cart = models.ManyToManyField("Backend.Tool", blank=True)
+    address = models.TextField('address', max_length=500, blank=True)
 
     objects = MemberFieldsManager()
 

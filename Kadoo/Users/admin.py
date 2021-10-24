@@ -24,5 +24,25 @@ class UserAdminConfig(UserAdmin):
          ),
     )
 
-admin.site.register(NewUser, UserAdminConfig)
-admin.site.register(MemberFields)
+class MemberFieldAdminConfig(admin.ModelAdmin):
+    model = MemberFields
+    search_fields = ('user', 'credit_value', 'address')
+    list_filter = ('user', 'credit_value', 'address')
+    ordering = ('-user',)
+    list_display = ('user', 'credit_value', 'address')
+    fieldsets = (
+        (None, {'fields': ('user', 'credit_value')}),
+        ('Personal', {'fields': ('address',)}),
+    )
+    formfield_overrides = {
+         MemberFields.address: {'widget': Textarea(attrs={'rows': 10, 'cols': 40})},
+    }
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('user', 'credit_value', 'address')}
+         ),
+    )
+
+admin.site.register({NewUser}, UserAdminConfig)
+admin.site.register({MemberFields}, MemberFieldAdminConfig)
