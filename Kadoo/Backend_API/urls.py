@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns=[
-    path('', views.apiOverview, name='api'),
+    path('', views.ProductsAPIOverview, name='api'),
 
 # Plant API
     path('plantList/', views.plantList, name='plantList'),
@@ -25,4 +25,7 @@ urlpatterns=[
     path('updateTag/<str:pk>/', views.updateTag, name='updateTag'),
     path('deleteTag/<str:pk>/', views.deleteTag, name='deleteTag'),
 
+# category API
+    path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag, name='plantsWithTag'),
+    path('toolsWithTag/<str:tag_name>/', views.toolsWithSpecificTag, name='toolsWithTag'),
 ]
