@@ -7,7 +7,7 @@ from .serializers import PlantSerializer, ToolSerializer, TagSerializer
 from Backend.models import Plant, Tool, Tag
 
 @api_view(['GET'])
-def apiOverview(request):
+def ProductsAPIOverview(request):
     api_urls = {
         'plantsList':'/plantList/',
         'plantDetail':'/plantDetail/<str:pk>/',
@@ -26,6 +26,9 @@ def apiOverview(request):
         'createTag':'/createTag/',
         'updateTag':'/updateTag/<str:pk>/',
         'deleteTag':'/deleteTag/<str:pk>/',
+
+        'plantsWithTag':'/plantsWithTag/<str:tag>/',
+        'toolsWithTag':'/toolsWithTag/<str:tag>/',
     }
     return Response(api_urls)
 
@@ -143,3 +146,17 @@ def deleteTag(request, pk):
     tag = Tag.objects.get(id=pk)
     tag.delete()
     return Response('Item successfully deleted !')
+
+@api_view(['GET'])
+def plantsWithSpecificTag(request, tag_name):
+    tag = Tag.objects.get(name=tag_name)
+    plants = tag.plant_set.all()
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def toolsWithSpecificTag(request, tag_name):
+    tag = Tag.objects.get(name=tag_name)
+    tools = tag.tool_set.all()
+    serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
