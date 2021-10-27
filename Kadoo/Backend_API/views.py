@@ -3,8 +3,8 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import PlantSerializer, ToolSerializer, TagSerializer
-from Backend.models import Plant, Tool, Tag
+from .serializers import PlantSerializer, ToolSerializer, TagSerializer, AlbumSerializer
+from Backend.models import Plant, Tool, Tag, Album
 
 @api_view(['GET'])
 def ProductsAPIOverview(request):
@@ -160,3 +160,41 @@ def toolsWithSpecificTag(request, tag_name):
     tools = tag.tool_set.all()
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
+
+# Album
+@api_view(['GET'])
+def albumList(request):
+    albums = Album.objects.all()
+    serializer = AlbumSerializer(albums, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def albumDetail(request, pk):
+    albums = Album.objects.get(id=pk)
+    serializer = AlbumSerializer(albums, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def createAlbum(request):
+    serializer = AlbumSerializer(data = request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def updateAlbum(request, pk):
+    album = Album.objects.get(id=pk)
+    serializer = AlbumSerializer(instance = album, data = request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def deleteAlbum(request, pk):
+    album = Album.objects.get(id=pk)
+    album.delete()
+    return Response('Item successfully deleted !')

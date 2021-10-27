@@ -1,6 +1,24 @@
 from django.db import models
 import uuid
 
+class Album(models.Model):
+    id = models.UUIDField(default = uuid.uuid4, unique = True, primary_key = True, editable = False)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+    
+
+class Image(models.Model):
+    id = models.UUIDField(default = uuid.uuid4, unique = True, primary_key = True, editable = False)
+    name = models.CharField(max_length=50)
+    image = models.ImageField()
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{} (Album : {})".format(self.name, self.album.name)
+    
+
 class Plant(models.Model):
 
     quantifiers = (
@@ -19,6 +37,7 @@ class Plant(models.Model):
     description = models.TextField(null = True, blank = True)
     count = models.IntegerField(default = 0, blank = True)
     image = models.ImageField(null = True, blank = True)
+    album = models.ForeignKey('Album', on_delete=models.SET_NULL, null = True, blank = True)
     price = models.IntegerField(null = True, blank = True)
     created = models.DateTimeField(auto_now_add = True)
     modified = models.DateField(auto_now = True)
@@ -46,6 +65,7 @@ class Tool(models.Model):
     description = models.TextField(null = True, blank = True)
     count = models.IntegerField(default = 0, blank = True)
     image = models.ImageField(null = True, blank = True)
+    album = models.ForeignKey(Album, related_name='tool_images', on_delete=models.SET_NULL, null = True, blank = True)
     price = models.IntegerField(null = True, blank = True)
     tags = models.ManyToManyField("Tag", blank = True)
     created = models.DateTimeField(auto_now_add = True)

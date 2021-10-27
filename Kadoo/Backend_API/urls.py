@@ -25,6 +25,13 @@ urlpatterns=[
     path('updateTag/<str:pk>/', views.updateTag, name='updateTag'),
     path('deleteTag/<str:pk>/', views.deleteTag, name='deleteTag'),
 
+# Album
+    path('albumList/', views.albumList, name='albumList'),
+    path('albumDetail/<str:pk>/', views.albumDetail, name='albumDetail'),
+    path('createAlbum/', views.createAlbum, name='createAlbum'),
+    path('updateAlbum/<str:pk>/', views.updateAlbum, name='updateAlbum'),
+    path('deleteAlbum/<str:pk>/', views.deleteAlbum, name='deleteAlbum'),
+
 # category API
     path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag, name='plantsWithTag'),
     path('toolsWithTag/<str:tag_name>/', views.toolsWithSpecificTag, name='toolsWithTag'),
