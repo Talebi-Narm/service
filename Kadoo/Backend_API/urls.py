@@ -35,4 +35,8 @@ urlpatterns=[
 # category API
     path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag, name='plantsWithTag'),
     path('toolsWithTag/<str:tag_name>/', views.toolsWithSpecificTag, name='toolsWithTag'),
+
+    path('imageList/', views.imageList, name='imageList'),
+    path('albumImages/<str:album>/', views.getAlbumImages, name='albumImages'),
+    path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
 ]

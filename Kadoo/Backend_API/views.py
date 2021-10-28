@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import PlantSerializer, ToolSerializer, TagSerializer, AlbumSerializer
-from Backend.models import Plant, Tool, Tag, Album
+from .serializers import PlantSerializer, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer
+from Backend.models import Plant, Tool, Tag,Image, Album
 
 @api_view(['GET'])
 def ProductsAPIOverview(request):
@@ -198,3 +198,27 @@ def deleteAlbum(request, pk):
     album = Album.objects.get(id=pk)
     album.delete()
     return Response('Item successfully deleted !')
+
+@api_view(['GET'])
+def getAlbumImages(request, album):
+    album = get_object_or_404(Album, name=album)
+    images = album.image_set.all()
+    serializer = ImageSerializer(images, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def imageList(request):
+    images = Image.objects.all()
+    serializer = ImageSerializer(images, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def createImage(request, pk):
+    album = get_object_or_404(Album, id=pk)
+    serializer = ImageSerializer(data = request.data)
+    
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
