@@ -36,7 +36,8 @@ urlpatterns=[
     path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag, name='plantsWithTag'),
     path('toolsWithTag/<str:tag_name>/', views.toolsWithSpecificTag, name='toolsWithTag'),
 
+# Album images
     path('imageList/', views.imageList, name='imageList'),
-    path('albumImages/<str:album>/', views.getAlbumImages, name='albumImages'),
+    path('albumImages/<str:pk>/', views.getAlbumImages, name='albumImages'),
     path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
 ]

@@ -200,8 +200,8 @@ def deleteAlbum(request, pk):
     return Response('Item successfully deleted !')
 
 @api_view(['GET'])
-def getAlbumImages(request, album):
-    album = get_object_or_404(Album, name=album)
+def getAlbumImages(request, pk):
+    album = get_object_or_404(Album, id=pk)
     images = album.image_set.all()
     serializer = ImageSerializer(images, many=True)
 
@@ -216,6 +216,7 @@ def imageList(request):
 @api_view(['POST'])
 def createImage(request, pk):
     album = get_object_or_404(Album, id=pk)
+    request.data['album'] = pk
     serializer = ImageSerializer(data = request.data)
     
     if serializer.is_valid():
