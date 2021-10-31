@@ -9,26 +9,40 @@ from Backend.models import Plant, Tool, Tag,Image, Album
 @api_view(['GET'])
 def ProductsAPIOverview(request):
     api_urls = {
-        'plantsList':'/plantList/',
-        'plantDetail':'/plantDetail/<str:pk>/',
-        'createPlant':'/createPlant/',
-        'updatePlant':'/updatePlant/<str:pk>/',
-        'deletePlant':'/deletePlant/<str:pk>/',
+        'how to use':'firstly add /api/ after that use the API address you want ;) ',
+        'plants List':'/plantsList/',
+        'plant Detail':'/plantDetail/<str:pk>/',
+        'create Plant':'/createPlant/',
+        'update Plant':'/updatePlant/<str:pk>/',
+        'delete Plant':'/deletePlant/<str:pk>/',
 
-        'toolsList':'/toolList/',
-        'toolDetail':'/toolDetail/<str:pk>/',
-        'createTool':'/createTool/',
-        'updateTool':'/updateTool/<str:pk>/',
-        'deleteTool':'/deleteTool/<str:pk>/',
+        'tools List':'/toolsList/',
+        'too lDetail':'/toolDetail/<str:pk>/',
+        'create Tool':'/createTool/',
+        'update Tool':'/updateTool/<str:pk>/',
+        'delete Tool':'/deleteTool/<str:pk>/',
 
-        'tagsList':'/tagList/',
-        'tagDetail':'/tagDetail/<str:pk>/',
-        'createTag':'/createTag/',
-        'updateTag':'/updateTag/<str:pk>/',
-        'deleteTag':'/deleteTag/<str:pk>/',
+        'tags List':'/tagsList/',
+        'tag Detail':'/tagDetail/<str:pk>/',
+        'create Tag':'/createTag/',
+        'update Tag':'/updateTag/<str:pk>/',
+        'delete Tag':'/deleteTag/<str:pk>/',
 
-        'plantsWithTag':'/plantsWithTag/<str:tag>/',
-        'toolsWithTag':'/toolsWithTag/<str:tag>/',
+        'albums List':'/albumsList/',
+        'album Detail':'/albumDetail/<str:pk>/',
+        'create Album':'/createAlbum/',
+        'update Album':'/updateAlbum/<str:pk>/',
+        'delete Album':'/deleteAlbum/<str:pk>/',
+
+        'plants Tags' : '/plantsTags/',
+        'tools Tags' : '/toolsTags',
+
+        'plants With Specific Tag':'/plantsWithTag/<str:tag>/',
+        'tools With Specific Tag':'/toolsWithTag/<str:tag>/',
+
+        'images List':'/imagesList/',
+        'Specific album Images':'/albumImages/<str:pk>/',
+        'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
     return Response(api_urls)
 
@@ -42,7 +56,7 @@ def plantList(request):
 
 @api_view(['GET'])
 def plantDetail(request, pk):
-    plants = Plant.objects.get(id=pk)
+    plants = get_object_or_404(Plant, id=pk)
     serializer = PlantSerializer(plants, many=False)
     return Response(serializer.data)
 
@@ -57,7 +71,7 @@ def createPlant(request):
 
 @api_view(['POST'])
 def updatePlant(request, pk):
-    plant = Plant.objects.get(id=pk)
+    plant = get_object_or_404(Plant, id=pk)
     serializer = PlantSerializer(instance = plant, data = request.data)
 
     if serializer.is_valid():
@@ -67,7 +81,7 @@ def updatePlant(request, pk):
 
 @api_view(['DELETE'])
 def deletePlant(request, pk):
-    plant = Plant.objects.get(id=pk)
+    plant = get_object_or_404(Plant, id=pk)
     plant.delete()
     return Response('Item successfully deleted !')
 
@@ -80,7 +94,7 @@ def toolList(request):
 
 @api_view(['GET'])
 def toolDetail(request, pk):
-    tools = Tool.objects.get(id=pk)
+    tools = get_object_or_404(Tool, id=pk)
     serializer = ToolSerializer(tools, many=False)
     return Response(serializer.data)
 
@@ -95,7 +109,7 @@ def createTool(request):
 
 @api_view(['POST'])
 def updateTool(request, pk):
-    tool = Tool.objects.get(id=pk)
+    tool = get_object_or_404(Tool, id=pk)
     serializer = ToolSerializer(instance = tool, data = request.data)
 
     if serializer.is_valid():
@@ -105,7 +119,7 @@ def updateTool(request, pk):
 
 @api_view(['DELETE'])
 def deleteTool(request, pk):
-    tool = Tool.objects.get(id=pk)
+    tool = get_object_or_404(Tool, id=pk)
     tool.delete()
     return Response('Item successfully deleted !')
 
@@ -118,7 +132,7 @@ def tagList(request):
 
 @api_view(['GET'])
 def tagDetail(request, pk):
-    tags = Tag.objects.get(id=pk)
+    tags = get_object_or_404(Tag, id=pk)
     serializer = TagSerializer(tags, many=False)
     return Response(serializer.data)
 
@@ -133,7 +147,7 @@ def createTag(request):
 
 @api_view(['POST'])
 def updateTag(request, pk):
-    tag = Tag.objects.get(id=pk)
+    tag = get_object_or_404(Tag, id=pk)
     serializer = TagSerializer(instance = tag, data = request.data)
 
     if serializer.is_valid():
@@ -143,20 +157,32 @@ def updateTag(request, pk):
 
 @api_view(['DELETE'])
 def deleteTag(request, pk):
-    tag = Tag.objects.get(id=pk)
+    tag = get_object_or_404(Tag, id=pk)
     tag.delete()
     return Response('Item successfully deleted !')
 
 @api_view(['GET'])
-def plantsWithSpecificTag(request, tag_name):
-    tag = Tag.objects.get(name=tag_name)
+def plantsTags(request):
+    tags = Tag.objects.all().filter(usage='Plants')
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+  
+@api_view(['GET'])
+def toolsTags(request):
+    tags = Tag.objects.all().filter(usage='Tools')
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def plantsWithSpecificTag(request, pk):
+    tag = get_object_or_404(Tag, id=pk)
     plants = tag.plant_set.all()
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def toolsWithSpecificTag(request, tag_name):
-    tag = Tag.objects.get(name=tag_name)
+def toolsWithSpecificTag(request, pk):
+    tag = get_object_or_404(Tag, id=pk)
     tools = tag.tool_set.all()
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
@@ -170,7 +196,7 @@ def albumList(request):
 
 @api_view(['GET'])
 def albumDetail(request, pk):
-    albums = Album.objects.get(id=pk)
+    albums = get_object_or_404(Album, id=pk)
     serializer = AlbumSerializer(albums, many=False)
     return Response(serializer.data)
 
@@ -185,7 +211,7 @@ def createAlbum(request):
 
 @api_view(['POST'])
 def updateAlbum(request, pk):
-    album = Album.objects.get(id=pk)
+    album = get_object_or_404(Album, id=pk)
     serializer = AlbumSerializer(instance = album, data = request.data)
 
     if serializer.is_valid():
@@ -195,7 +221,7 @@ def updateAlbum(request, pk):
 
 @api_view(['DELETE'])
 def deleteAlbum(request, pk):
-    album = Album.objects.get(id=pk)
+    album = get_object_or_404(Album, id=pk)
     album.delete()
     return Response('Item successfully deleted !')
 
