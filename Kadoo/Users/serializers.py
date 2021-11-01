@@ -2,13 +2,14 @@ from django.db.models.enums import Choices
 from rest_framework import serializers
 from Backend.models import Plant
 from Users.models import Member, MemberFields, NewUser
+from rest_framework.validators import UniqueValidator
 
 
 class CustomMemberSerializer(serializers.ModelSerializer):
     
     type = serializers.CharField(required=False, default=NewUser.Types.MEMBER)
-    email = serializers.EmailField(required=True)
-    user_name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=NewUser.objects.all(), message="This Email is Already Taken!")])
+    user_name = serializers.CharField(required=True, validators=[UniqueValidator(queryset=NewUser.objects.all(), message="This Username is Already Taken!")])
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     password = serializers.CharField(min_length=8, write_only=True)
