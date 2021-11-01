@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db.models.query import EmptyQuerySet, QuerySet
+from django.core.validators import RegexValidator
 
 
 class CustomAccountManager(BaseUserManager):
@@ -103,7 +104,8 @@ class MemberFields(models.Model):
     user = models.OneToOneField(NewUser, on_delete=models.CASCADE, related_name='user')
     credit_value = models.IntegerField('credit', default=0)
     address = models.TextField('address', max_length=500, blank=True)
-
+    phone_regex = RegexValidator(regex=r'^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$', message="Phone number must be entered in the format: '+## ### ### ####'. Up to 10 digits allowed.")
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True) # validators should be a list
     objects = MemberFieldsManager()
 
     def __str__(self):

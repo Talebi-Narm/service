@@ -26,12 +26,12 @@ class UserAdminConfig(UserAdmin):
 
 class MemberFieldAdminConfig(admin.ModelAdmin):
     model = MemberFields
-    search_fields = ('user', 'credit_value', 'address')
-    list_filter = ('user', 'credit_value', 'address')
+    search_fields = ('user', 'credit_value', 'address', 'phone_number')
+    list_filter = ('user', 'credit_value', 'address', 'phone_number')
     ordering = ('-user',)
-    list_display = ('user', 'credit_value', 'address')
+    list_display = ('user', 'credit_value', 'address', 'phone_number')
     fieldsets = (
-        (None, {'fields': ('user', 'credit_value')}),
+        (None, {'fields': ('user', 'credit_value','phone_number')}),
         ('Personal', {'fields': ('address',)}),
     )
     formfield_overrides = {
@@ -40,7 +40,7 @@ class MemberFieldAdminConfig(admin.ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('user', 'credit_value', 'address')}
+            'fields': ('user', 'credit_value', 'address', 'phone_number')}
          ),
     )
 

@@ -22,13 +22,17 @@ def apiOverview(request):
     return response.Response(api_urls)
 
 class CurrentUserView(APIView):
+    #GET CURRENT USER
+    #HTTP_401 : No Login
     def get(self, request):
         if request.user.is_anonymous:
-            return Response("AnonymousUser", status=status.HTTP_400_BAD_REQUEST)
+            return Response("Anonymous User: You should login first.", status=status.HTTP_401_UNAUTHORIZED)
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
 class BlacklistUpdate(APIView):
+    #USER LOGIUT (PUT TOKEN TO BLACK LIST)
+    #HTTP_400 : Bad request caused by wrong token
     permission_classes = [AllowAny]
     authentication_classes = ()
     def post(self, request):
@@ -36,9 +40,9 @@ class BlacklistUpdate(APIView):
             refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)
             token.blacklist()
-            return Response(status=status.HTTP_205_RESET_CONTENT)
+            return Response("You've just logged out!", status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response("Somthing went wrong! Token is Not Valid! You may not have login yet.", status=status.HTTP_400_BAD_REQUEST)
 
 class CustomMemberCreate(APIView):
     permission_classes = [AllowAny]
@@ -53,12 +57,19 @@ class CustomMemberCreate(APIView):
 
 class UpdateCredit(APIView):
     @csrf_exempt
+    #UPDATE CREDIT
+    #HTTP_401 : No Login
+    #HTTP_422 : Invalid value for credit (value >= 0)
     def post(self, request,amount):
+        if request.user.is_anonymous:
+            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         memberfieldsobj, created = MemberFields.objects.get_or_create(user = request.user)
+        if amount < 0:
+            return Response("Credit value can NOT set less than zero!", status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         memberfieldsobj.credit_value = amount
         memberfieldsobj.save()
         if memberfieldsobj:
-            return Response("Added", status=status.HTTP_201_CREATED)
-        return Response("error", status=status.HTTP_400_BAD_REQUEST)
+            return Response("Credit Valus has been updated to = " + str(amount) + " T", status=status.HTTP_200_OK)
+        return Response("OOOPS! Somthing went wrong!", status=status.HTTP_400_BAD_REQUEST)
     
 
