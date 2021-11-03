@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MemberFields, NewUser, SpecilistFields
+from .models import MemberFields, NewUser
 from django.contrib.auth.admin import UserAdmin
 from django.forms import TextInput, Textarea
 
@@ -44,26 +44,7 @@ class MemberFieldAdminConfig(admin.ModelAdmin):
          ),
     )
 
-class SpecialistFieldAdminConfig(admin.ModelAdmin):
-    model = MemberFields
-    search_fields = ('user', 'id_code', 'birth_date', 'degree', 'major', 'phone_number', 'about','address','is_online', 'rate')
-    list_filter = ('user', 'id_code', 'birth_date', 'degree', 'major', 'phone_number', 'about','address','is_online', 'rate')
-    ordering = ('-user',)
-    list_display = ('user', 'id_code', 'birth_date', 'degree', 'major', 'phone_number', 'about','address','is_online', 'rate')
-    fieldsets = (
-        (None, {'fields': ('user', 'id_code', 'birth_date', 'degree', 'major', 'phone_number', 'is_online', 'rate')}),
-        ('Personal', {'fields': ('address','about')}),
-    )
-    formfield_overrides = {
-         MemberFields.address: {'widget': Textarea(attrs={'rows': 10, 'cols': 40})},
-    }
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('user', 'id_code', 'birth_date', 'degree', 'major', 'phone_number', 'about','address','is_online', 'rate')}
-         ),
-    )
 
 admin.site.register({NewUser}, UserAdminConfig)
 admin.site.register({MemberFields}, MemberFieldAdminConfig)
-admin.site.register({SpecilistFields}, SpecialistFieldAdminConfig)
+

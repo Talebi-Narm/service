@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'Backend_API.apps.BackendApiConfig',
     'Users.apps.UsersConfig',
     'Cart.apps.CartConfig',
+    'Specialist.apps.SpecialistConfig',
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework',

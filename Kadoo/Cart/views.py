@@ -284,7 +284,7 @@ class RemovePlantFromCart(APIView):
 
 #Delete Tool
 class RemoveToolFromCart(APIView):
- def post(self, request, format='json'):
+ def delete(self, request, format='json'):
   serializer = CartItemIdSerializer(data=request.data)
   if serializer.is_valid():
    #Get Plant Data
