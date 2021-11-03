@@ -1,7 +1,6 @@
 from django.db.models.enums import Choices
 from rest_framework import serializers
 from Backend.models import Plant
-from Specialist.models import SpecialistFieldsManager
 from Users.models import Member, MemberFields, NewUser
 from rest_framework.validators import UniqueValidator
 
@@ -25,6 +24,7 @@ class CustomMemberSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
+        type = NewUser.Types.ADMIN
         instance = self.Meta.model(**validated_data)
         if password is not None:
             instance.set_password(password)

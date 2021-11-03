@@ -44,7 +44,5 @@ class MemberFieldAdminConfig(admin.ModelAdmin):
          ),
     )
 
-
 admin.site.register({NewUser}, UserAdminConfig)
 admin.site.register({MemberFields}, MemberFieldAdminConfig)
-

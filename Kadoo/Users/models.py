@@ -31,11 +31,11 @@ class CustomAccountManager(BaseUserManager):
         if not email:
             raise ValueError('You must provide an email address')
         if not user_name:
-            raise ValueError('You must provide a user name')
+            raise ValueError('You must provide an user name')
         if not first_name:
-            raise ValueError('You must provide a first name')
+            raise ValueError('You must provide an first name')
         if not last_name:
-            raise ValueError('You must provide a last name')
+            raise ValueError('You must provide an last name')
         
         email = self.normalize_email(email)
         user = self.model(type= type, email=email, user_name=user_name,
@@ -53,7 +53,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
         MEMBER = "MEMBER", "Member"
 
     base_type = Types.MEMBER
-    type = models.CharField('type', max_length=50, choices=Types.choices, default=base_type)
+    type = models.CharField('type', max_length=50, choices=Types.choices)
     email = models.EmailField('email address', unique=True)
     user_name = models.CharField(max_length=150, unique=True)
     first_name = models.CharField(max_length=150, blank=True)
@@ -105,9 +105,28 @@ class MemberFields(models.Model):
     credit_value = models.IntegerField('credit', default=0)
     address = models.TextField('address', max_length=500, blank=True)
     phone_regex = RegexValidator(regex=r'^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$', message="Phone number must be entered in the format: '+## ### ### ####'. Up to 10 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True) # validators should be a list
     objects = MemberFieldsManager()
 
     def __str__(self):
         return str(self.user)
 
+#--- Specialist Def
+class SpecialistManager(models.Manager):
+    def creat(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(type=NewUser.Types.SPECIALIST)
+
+class Specialist(NewUser):
+    base_type = NewUser.Types.SPECIALIST
+    objects = SpecialistManager()
+
+    @property
+    def more(self):
+        return self.SpecilistFields
+
+    class Meta:
+        proxy = True
+
+class SpecilistFields(models.Model):
+    user = models.OneToOneField(NewUser, on_delete=models.CASCADE)
+    #Ticket
