@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import search_filter_views as sfViews
 
 urlpatterns=[
     path('', views.ProductsAPIOverview, name='api'),
@@ -44,4 +45,10 @@ urlpatterns=[
     path('imageList/', views.imageList, name='imageList'),
     path('albumImages/<str:pk>/', views.getAlbumImages, name='albumImages'),
     path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
+
+# searching
+    path('plantsByName/<str:_name>/', sfViews.plantsByName, name='plantsByName'),
+    path('toolsByName/<str:_name>/', sfViews.toolsByName, name='toolsByName'),
+    path('plantsByPrice/<str:prices>/', sfViews.plantsByPrice, name='plantsByPrice'),
+    path('toolsByPrice/<str:prices>/', sfViews.toolsByPrice, name='toolsByPrice'),
 ]
