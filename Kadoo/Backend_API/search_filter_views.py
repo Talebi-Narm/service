@@ -62,8 +62,8 @@ def toolsByPrice(request, prices:str):
 
     print(lower, higher, type(lower), type(higher))
     if (higher == inf):
-        tools = Tool.objects.filter(price__gt = lower)
+        tools = Tool.objects.filter(price__gte = lower)
     else:
-        tools = Tool.objects.filter(price__gt = lower, price__lt= higher)
+        tools = Tool.objects.filter(price__gte = lower, price__lte= higher)
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
