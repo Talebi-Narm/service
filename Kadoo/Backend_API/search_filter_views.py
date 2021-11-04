@@ -41,7 +41,7 @@ def plantsByPrice(request, prices:str):
     elif (higher == inf):
         plants = Plant.objects.filter(price__gte = lower)
     elif (lower == 0):
-        plants = Plant.objects.filter(price__lte = lower)
+        plants = Plant.objects.filter(price__lte = higher)
     else:
         plants = Plant.objects.filter(price__gt = lower, price__lt= higher)
     serializer = PlantSerializer(plants, many=True)
@@ -68,7 +68,7 @@ def toolsByPrice(request, prices:str):
     elif (higher == inf):
         tools = Tool.objects.filter(price__gte = lower)
     elif (lower == 0):
-        tools = Tool.objects.filter(price__lte = lower)
+        tools = Tool.objects.filter(price__lte = higher)
     else:
         tools = Tool.objects.filter(price__gte = lower, price__lte= higher)
     serializer = ToolSerializer(tools, many=True)
