@@ -36,11 +36,11 @@ def plantsByPrice(request, prices:str):
     except:
         higher = inf
 
-    if (higher == inf and lower == 0)
+    if (higher == inf and lower == 0):
         plants = Plant.objects.all()
     elif (higher == inf):
         plants = Plant.objects.filter(price__gte = lower)
-    elif (lower == 0)
+    elif (lower == 0):
         plants = Plant.objects.filter(price__lte = lower)
     else:
         plants = Plant.objects.filter(price__gt = lower, price__lt= higher)
@@ -63,11 +63,11 @@ def toolsByPrice(request, prices:str):
     except:
         higher = inf
 
-    if (higher == inf and lower == 0)
+    if (higher == inf and lower == 0):
         tools = Tool.objects.all()
     elif (higher == inf):
         tools = Tool.objects.filter(price__gte = lower)
-    elif (lower == 0)
+    elif (lower == 0):
         tools = Tool.objects.filter(price__lte = lower)
     else:
         tools = Tool.objects.filter(price__gte = lower, price__lte= higher)
