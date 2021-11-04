@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from .serializers import PlantSerializer, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer
 from Backend.models import Plant, Tool, Tag,Image, Album
 
+from .search_filter_views import searchAndFilterOverview
+
 @api_view(['GET'])
 def ProductsAPIOverview(request):
     api_urls = {
@@ -44,6 +46,7 @@ def ProductsAPIOverview(request):
         'Specific album Images':'/albumImages/<str:pk>/',
         'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
+    api_urls.update(searchAndFilterOverview())
     return Response(api_urls)
 
 

@@ -6,7 +6,7 @@ urlpatterns=[
     path('', views.ProductsAPIOverview, name='api'),
 
 # Plant API
-    path('plantsList/', views.plantList, name='planstList'),
+    path('plantsList/', views.plantList, name='plantsList'),
     path('plantDetail/<str:pk>/', views.plantDetail, name='plantDetail'),
     path('createPlant/', views.createPlant, name='createPlant'),
     path('updatePlant/<str:pk>/', views.updatePlant, name='updatePlant'),
@@ -51,4 +51,7 @@ urlpatterns=[
     path('toolsByName/<str:_name>/', sfViews.toolsByName, name='toolsByName'),
     path('plantsByPrice/<str:prices>/', sfViews.plantsByPrice, name='plantsByPrice'),
     path('toolsByPrice/<str:prices>/', sfViews.toolsByPrice, name='toolsByPrice'),
+
+# advance search
+    path('plantsAdvanceSearch/<str:filters>/', sfViews.plantsAdvanceSearch, name='plantsAdvanceSearch'),
 ]
