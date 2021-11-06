@@ -54,4 +54,5 @@ urlpatterns=[
 
 # advance search
     path('plantsAdvanceSearch/<str:filters>/', sfViews.plantsAdvanceSearch, name='plantsAdvanceSearch'),
+    path('toolsAdvanceSearch/<str:filters>/', sfViews.toolsAdvanceSearch, name='toolsAdvanceSearch'),
 ]

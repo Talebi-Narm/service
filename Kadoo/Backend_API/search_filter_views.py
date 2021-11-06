@@ -168,3 +168,44 @@ def plantsAdvanceSearch(request, filters:str):
 
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def toolsAdvanceSearch(request, filters:str):
+    filters = filters.split('-')
+    try:
+        tags = filters[3:]
+    except:
+        tags = []
+    
+    tools = Tool.objects.all()
+
+    try:
+        _name = filters[0]
+    except:
+        _name = ''
+
+    try:
+        lower = int(filters[1])
+    except:
+        lower = 0
+
+    try:
+        higher = int(filters[2])
+    except:
+        higher = inf
+
+    if (_name != ''):
+        plants = plants.filter(name__contains = _name)
+
+    if (higher == inf and lower == 0):
+        pass
+    elif (higher == inf):
+        tools = tools.filter(price__gte = lower)
+    elif (lower == 0):
+        tools = tools.filter(price__lte = higher)
+    else:
+        tools = tools.filter(price__gt = lower, price__lt= higher)
+
+    serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
