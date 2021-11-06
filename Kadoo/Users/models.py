@@ -31,11 +31,11 @@ class CustomAccountManager(BaseUserManager):
         if not email:
             raise ValueError('You must provide an email address')
         if not user_name:
-            raise ValueError('You must provide an user name')
+            raise ValueError('You must provide a user name')
         if not first_name:
-            raise ValueError('You must provide an first name')
+            raise ValueError('You must provide a first name')
         if not last_name:
-            raise ValueError('You must provide an last name')
+            raise ValueError('You must provide a last name')
         
         email = self.normalize_email(email)
         user = self.model(type= type, email=email, user_name=user_name,
@@ -53,7 +53,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
         MEMBER = "MEMBER", "Member"
 
     base_type = Types.MEMBER
-    type = models.CharField('type', max_length=50, choices=Types.choices)
+    type = models.CharField('type', max_length=50, choices=Types.choices, default=base_type)
     email = models.EmailField('email address', unique=True)
     user_name = models.CharField(max_length=150, unique=True)
     first_name = models.CharField(max_length=150, blank=True)
