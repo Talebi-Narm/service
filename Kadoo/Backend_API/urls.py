@@ -46,10 +46,12 @@ urlpatterns=[
     path('albumImages/<str:pk>/', views.getAlbumImages, name='albumImages'),
     path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
 
-# searching
+# searching and filtering for plants
     path('plantsByName/<str:_name>/', sfViews.plantsByName, name='plantsByName'),
-    path('toolsByName/<str:_name>/', sfViews.toolsByName, name='toolsByName'),
     path('plantsByPrice/<str:prices>/', sfViews.plantsByPrice, name='plantsByPrice'),
+
+# searching and filtering for tools
+    path('toolsByName/<str:_name>/', sfViews.toolsByName, name='toolsByName'),
     path('toolsByPrice/<str:prices>/', sfViews.toolsByPrice, name='toolsByPrice'),
 
 # advance search

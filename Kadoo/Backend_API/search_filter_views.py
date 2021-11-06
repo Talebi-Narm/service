@@ -8,6 +8,7 @@ from Backend.models import Plant, Tool, Tag,Image, Album
 
 from math import inf
 
+# Overview
 def searchAndFilterOverview():
     api_urls = {
         'search in plants by name':'/plantsByName/<str:_name>/',
@@ -18,16 +19,19 @@ def searchAndFilterOverview():
     }
     return api_urls
 
+# universal defs
+def findTag(_name):
+    try:
+        tag = Tag.objects.get(name=_name)
+    except:
+        tag = None
+    return tag
+
+# filters for plants
 @api_view(['GET'])
 def plantsByName(request, _name):
     plants = Plant.objects.filter(name__contains = _name)
     serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def toolsByName(request, _name):
-    tools = Tool.objects.filter(name__contains = _name)
-    serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -57,40 +61,7 @@ def plantsByPrice(request, prices:str):
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def toolsByPrice(request, prices:str):
-    prices = prices.split('-')
-    lower = 0
-    higher = inf
-
-    try:
-        lower = int(prices[0])
-    except:
-        lower = 0
-
-    try:
-        higher = int(prices[1])
-    except:
-        higher = inf
-
-    if (higher == inf and lower == 0):
-        tools = Tool.objects.all()
-    elif (higher == inf):
-        tools = Tool.objects.filter(price__gte = lower)
-    elif (lower == 0):
-        tools = Tool.objects.filter(price__lte = higher)
-    else:
-        tools = Tool.objects.filter(price__gte = lower, price__lte= higher)
-    serializer = ToolSerializer(tools, many=True)
-    return Response(serializer.data)
-
-def findTag(_name):
-    try:
-        tag = Tag.objects.get(name=_name)
-    except:
-        tag = None
-    return tag
-
+# advance
 @api_view(['GET'])
 def plantsAdvanceSearch(request, filters:str):
     filters = filters.split('-')
@@ -162,7 +133,6 @@ def plantsAdvanceSearch(request, filters:str):
 
     for tag in tags:
         tag = findTag(tag)
-        print('----------------', tag.name)
         if tag != None:
             plants = plants.filter(tags__in=[tag.id])
 
@@ -170,6 +140,42 @@ def plantsAdvanceSearch(request, filters:str):
     return Response(serializer.data)
 
 
+# filters for tools
+@api_view(['GET'])
+def toolsByName(request, _name):
+    tools = Tool.objects.filter(name__contains = _name)
+    serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def toolsByPrice(request, prices:str):
+    prices = prices.split('-')
+    lower = 0
+    higher = inf
+
+    try:
+        lower = int(prices[0])
+    except:
+        lower = 0
+
+    try:
+        higher = int(prices[1])
+    except:
+        higher = inf
+
+    if (higher == inf and lower == 0):
+        tools = Tool.objects.all()
+    elif (higher == inf):
+        tools = Tool.objects.filter(price__gte = lower)
+    elif (lower == 0):
+        tools = Tool.objects.filter(price__lte = higher)
+    else:
+        tools = Tool.objects.filter(price__gte = lower, price__lte= higher)
+    serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
+
+
+# advance
 @api_view(['GET'])
 def toolsAdvanceSearch(request, filters:str):
     filters = filters.split('-')
@@ -206,6 +212,11 @@ def toolsAdvanceSearch(request, filters:str):
         tools = tools.filter(price__lte = higher)
     else:
         tools = tools.filter(price__gt = lower, price__lt= higher)
+
+    for tag in tags:
+        tag = findTag(tag)
+        if tag != None:
+            tools = tools.filter(tags__in=[tag.id])
 
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
