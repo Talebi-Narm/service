@@ -61,6 +61,43 @@ def plantsByPrice(request, prices:str):
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def plantsByEnvironment(request, _environment):
+    plants = Plant.objects.filter(environment = _environment)
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def plantsByWater(request, _water):
+    plants = Plant.objects.filter(water = _water)
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def plantsByLight(request, _light):
+    plants = Plant.objects.filter(light = _light)
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def plantsByGrowthRate(request, _growthRate):
+    plants = Plant.objects.filter(growthRate = _growthRate)
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def plantsByTags(request, tags:str):
+    tags:list = tags.split('-')
+    plants = Plant.objects.all()
+
+    for tag in tags:
+        tag = findTag(tag)
+        if tag != None:
+            plants = plants.filter(tags__in=[tag.id])
+
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
 # advance
 @api_view(['GET'])
 def plantsAdvanceSearch(request, filters:str):
