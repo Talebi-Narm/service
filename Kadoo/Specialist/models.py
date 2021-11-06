@@ -5,6 +5,15 @@ from django.core.validators import RegexValidator
 from Users.models import NewUser
 
 class SpecialistManager(models.Manager):
+    def get_empty_query_set(self):
+        return self.EmptyQuerySet(self.model, self._db)
+
+    def get_query_set(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(type=NewUser.Types.SPECIALIST)
+
+    def get_or_create(self, *args, **kwargs):
+        return self.get_query_set().get_or_create(*args, **kwargs)
+
     def creat(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(type=NewUser.Types.SPECIALIST)
 

@@ -56,7 +56,7 @@ class CustomSpecialistCreate(APIView):
 #Get All Specialists Primary Info
 class GetAllSpecialistPrimaryInfo(APIView):
  def get(self, request, format='json'):
-   Specialists = Specialist.objects.all()
+   Specialists = Specialist.objects.filter(type=NewUser.Types.SPECIALIST)
    serializer = UserSerializer(Specialists, many=True)
    return Response(serializer.data)
 
