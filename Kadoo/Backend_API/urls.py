@@ -53,6 +53,7 @@ urlpatterns=[
 # searching and filtering for tools
     path('toolsByName/<str:_name>/', sfViews.toolsByName, name='toolsByName'),
     path('toolsByPrice/<str:prices>/', sfViews.toolsByPrice, name='toolsByPrice'),
+    path('toolsByTags/<str:tags>/', sfViews.toolsByTags, name='toolsByTags'),
 
 # advance search
     path('plantsAdvanceSearch/<str:filters>/', sfViews.plantsAdvanceSearch, name='plantsAdvanceSearch'),

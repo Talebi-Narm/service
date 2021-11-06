@@ -174,6 +174,18 @@ def toolsByPrice(request, prices:str):
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def toolsByTags(request, tags:str):
+    tags:list = tags.split('-')
+    tools = Tool.objects.all()
+
+    for tag in tags:
+        tag = findTag(tag)
+        if tag != None:
+            tools = tools.filter(tags__in=[tag.id])
+
+    serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
 
 # advance
 @api_view(['GET'])
