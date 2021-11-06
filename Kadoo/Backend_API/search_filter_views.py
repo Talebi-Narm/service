@@ -14,7 +14,7 @@ def searchAndFilterOverview():
         'search in tools by name':'/toolsByName/<str:_name>/',
         'search in plants by price':'/plantsByPrice/<str:lower>-<str:higher>/',
         'search in tools by price':'/toolsByPrice/<str:lower>-<str:higher>/',
-        'advance search in plants':'/plantsAdvanceSearch/<str:lower>-<str:higher>-<str:environment>-<str:water>-<str:light>-<str:growthRate>/',
+        'advance search in plants':'/plantsAdvanceSearch/<str:lower>-<str:higher>-<str:environment>-<str:water>-<str:light>-<str:growthRate>-<str:tag1>-<str:tag2>-.../',
     }
     return api_urls
 
@@ -84,49 +84,69 @@ def toolsByPrice(request, prices:str):
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
+def findTag(_name):
+    try:
+        tag = Tag.objects.get(name=_name)
+    except:
+        tag = None
+    return tag
+
 @api_view(['GET'])
 def plantsAdvanceSearch(request, filters:str):
     filters = filters.split('-')
+    try:
+        tags = filters[7:]
+    except:
+        tags = []
+    
     plants = Plant.objects.all()
 
     try:
-        lower = int(filters[0])
+        _name = filters[0]
+    except:
+        _name = ''
+
+    try:
+        lower = int(filters[1])
     except:
         lower = 0
 
     try:
-        higher = int(filters[1])
+        higher = int(filters[2])
     except:
         higher = inf
 
     try:
-        _environment = filters[2]
+        _environment = filters[3]
     except:
         _environment = ''
 
     try:
-        _water = filters[3]
+        _water = filters[4]
     except:
         _water = ''
     
     try:
-        _light = filters[4]
+        _light = filters[5]
     except:
         _light = ''
 
     try:
-        _growthRate = filters[5]
+        _growthRate = filters[6]
     except:
         _growthRate = ''
     
+    if (_name != ''):
+        plants = plants.filter(name__contains = _name)
+
     if (higher == inf and lower == 0):
-        plants = Plant.objects.all()
+        pass
     elif (higher == inf):
-        plants = Plant.objects.filter(price__gte = lower)
+        plants = plants.filter(price__gte = lower)
     elif (lower == 0):
-        plants = Plant.objects.filter(price__lte = higher)
+        plants = plants.filter(price__lte = higher)
     else:
-        plants = Plant.objects.filter(price__gt = lower, price__lt= higher)
+        plants = plants.filter(price__gt = lower, price__lt= higher)
 
     if (_environment != ''):
         plants = plants.filter(environment = _environment)
@@ -139,6 +159,12 @@ def plantsAdvanceSearch(request, filters:str):
 
     if (_growthRate != ''):
         plants = plants.filter(growthRate = _growthRate)
+
+    for tag in tags:
+        tag = findTag(tag)
+        print('----------------', tag.name)
+        if tag != None:
+            plants = plants.filter(tags__in=[tag.id])
 
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
