@@ -1,14 +1,13 @@
-from django.db.models.enums import Choices
 from rest_framework import serializers
-from Backend.models import Plant
-from Specialist.models import SpecialistFieldsManager
-from Users.models import Member, MemberFields, NewUser
+
+from Specialist.models import Specialist, SpecilistFields
+from Users.models import NewUser
 from rest_framework.validators import UniqueValidator
 
-
-class CustomMemberSerializer(serializers.ModelSerializer):
+class CustomSpecialistSerializer(serializers.ModelSerializer):
     
-    type = serializers.CharField(required=False, default=NewUser.Types.MEMBER)
+    type = serializers.CharField(required=False, default=NewUser.Types.SPECIALIST)
+    is_staff = serializers.BooleanField(required=False, default=True)
     email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=NewUser.objects.all(), message="This Email is Already Taken!")])
     user_name = serializers.CharField(required=True, validators=[UniqueValidator(queryset=NewUser.objects.all(), message="This Username is Already Taken!")])
     first_name = serializers.CharField(required=True)
@@ -16,11 +15,12 @@ class CustomMemberSerializer(serializers.ModelSerializer):
     password = serializers.CharField(min_length=8, write_only=True)
 
     class Meta:
-        model = Member
-        fields = ('type','email', 'user_name', 'first_name', 'last_name', 'password')
+        model = Specialist
+        fields = ('type','is_staff' ,'email', 'user_name', 'first_name', 'last_name', 'password')
         extra_kwargs = {
             'password': {'write_only': True},
-            'type': {'Read_only': True}
+            'type': {'Read_only': True},
+            'is_staff': {'Read_only': True}
         }
 
     def create(self, validated_data):
@@ -31,7 +31,13 @@ class CustomMemberSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class UserSerializer(serializers.ModelSerializer):
+
+
+class SpecialistCompeleteInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = NewUser
-        fields = ('email', 'user_name', 'first_name', 'last_name')
+        model = SpecilistFields
+        fields = '__all__'
+
+
+class SpecialistIdSerializer(serializers.Serializer):
+ id = serializers.UUIDField(required=True)
