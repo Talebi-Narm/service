@@ -6,7 +6,7 @@ urlpatterns=[
     path('', views.ProductsAPIOverview, name='api'),
 
 # Plant API
-    path('plantsList/', views.plantList, name='planstList'),
+    path('plantsList/', views.plantList, name='plantsList'),
     path('plantDetail/<str:pk>/', views.plantDetail, name='plantDetail'),
     path('createPlant/', views.createPlant, name='createPlant'),
     path('updatePlant/<str:pk>/', views.updatePlant, name='updatePlant'),
@@ -46,9 +46,21 @@ urlpatterns=[
     path('albumImages/<str:pk>/', views.getAlbumImages, name='albumImages'),
     path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
 
-# searching
+# searching and filtering for plants
     path('plantsByName/<str:_name>/', sfViews.plantsByName, name='plantsByName'),
-    path('toolsByName/<str:_name>/', sfViews.toolsByName, name='toolsByName'),
     path('plantsByPrice/<str:prices>/', sfViews.plantsByPrice, name='plantsByPrice'),
+    path('plantsByEnvironment/<str:_environment>/', sfViews.plantsByEnvironment, name='plantsByEnvironment'),
+    path('plantsByWater/<str:_water>/', sfViews.plantsByWater, name='plantsByWater'),
+    path('plantsByLight/<str:_light>/', sfViews.plantsByLight, name='plantsByLight'),
+    path('plantsByGrowthRate/<str:_growthRate>/', sfViews.plantsByGrowthRate, name='plantsByGrowthRate'),
+    path('plantsByTags/<str:tags>/', sfViews.plantsByTags, name='plantsByTags'),
+
+# searching and filtering for tools
+    path('toolsByName/<str:_name>/', sfViews.toolsByName, name='toolsByName'),
     path('toolsByPrice/<str:prices>/', sfViews.toolsByPrice, name='toolsByPrice'),
+    path('toolsByTags/<str:tags>/', sfViews.toolsByTags, name='toolsByTags'),
+
+# advance search
+    path('plantsAdvanceSearch/<str:filters>/', sfViews.plantsAdvanceSearch, name='plantsAdvanceSearch'),
+    path('toolsAdvanceSearch/<str:filters>/', sfViews.toolsAdvanceSearch, name='toolsAdvanceSearch'),
 ]
