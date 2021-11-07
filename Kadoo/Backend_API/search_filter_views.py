@@ -29,12 +29,6 @@ def findTag(_name):
 
 # filters for plants
 @api_view(['GET'])
-def plantsByName(request, _name):
-    plants = Plant.objects.filter(name__contains = _name)
-    serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
 def plantsByPrice(request, prices:str):
     prices = prices.split('-')
     lower = 0
@@ -199,7 +193,7 @@ def toolsByPrice(request, prices:str):
         higher = int(prices[1])
     except:
         higher = inf
-
+        
     if (higher == inf and lower == 0):
         tools = Tool.objects.all()
     elif (higher == inf):
@@ -210,7 +204,6 @@ def toolsByPrice(request, prices:str):
         tools = Tool.objects.filter(price__gte = lower, price__lte= higher)
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
-
 @api_view(['GET'])
 def toolsByTags(request, tags:str):
     tags:list = tags.split('-')
