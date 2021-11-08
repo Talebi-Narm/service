@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from Backend.models import Plant, Tool
 
 from Cart.models import PlantCartModel, ToolCartModel
 
@@ -17,10 +18,20 @@ class PlantCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlantCartModel
         fields = '__all__'
+        
+
+class PlantWithCountCartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plant
+        fields = '__all__'
+
 
 class ToolCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToolCartModel
         fields = '__all__'
 
- 
+class ToolWithCountCartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tool
+        fields = '__all__'
