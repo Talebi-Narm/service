@@ -46,7 +46,7 @@ def ProductsAPIOverview(request):
         'Specific album Images':'/albumImages/<str:pk>/',
         'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
-    api_urls.update(searchAndFilterOverview())
+    api_urls.update(SFSP_Overview())
     return Response(api_urls)
 
 

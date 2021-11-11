@@ -9,7 +9,7 @@ from Backend.models import Plant, Tool, Tag,Image, Album
 from math import inf
 
 # Overview
-def searchAndFilterOverview():
+def SFSP_Overview():
     api_urls = {
         # plants filter and search
         'search in plants by name':'/plantsByName/<str:name>/',
@@ -25,9 +25,19 @@ def searchAndFilterOverview():
         'search in tools by price':'/toolsByPrice/<str:lower_price>-<str:higher_price>/',
         'search in tools by tags':'/toolsByTags/<str:tag1>-<str:tag2>-.../',
 
+        # plants sorting
+        'sorting plants by name (kind = "ASC" for ascending and "DES" for descending)':'/plantsSortByName/<str:kind>/',
+        'sorting plants by price (kind = "ASC" for ascending and "DES" for descending)':'/plantsSortByPrice/<str:kind>/',
+        'sort by crated time (newest)':'/plantsSortByNewest/',
+
+        # tools sorting
+        'sorting tools by name (kind = "ASC" for ascending and "DES" for descending)':'/toolsSortByName/<str:kind>/',
+        'sorting tools by price (kind = "ASC" for ascending and "DES" for descending)':'/toolsSortByPrice/<str:kind>/',
+        'sort by crated time (newest)':'/toolsSortByNewest/',
+
         # advance search
-        'advance search in plants':'/plantsAdvanceSearch/<str:name>-<str:lower_price>-<str:higher_price>-<str:environment>-<str:water>-<str:light>-<str:growthRate>-<str:tag1>-<str:tag2>-.../',
-        'advance search in tools':'/toolsAdvanceSearch/<str:name>-<str:tag1>-<str:tag2>-.../',
+        'advance search in plants':'/plantsAdvanceSearch/<str:sort>-<str:kind>-<str:name>-<str:lower_price>-<str:higher_price>-<str:environment>-<str:water>-<str:light>-<str:growthRate>-<str:tag1>-<str:tag2>-.../',
+        'advance search in tools':'/toolsAdvanceSearch/<str:sort>-<str:kind>-<str:name>-<str:lower_price>-<str:higher_price>-<str:tag1>-<str:tag2>-.../',
         }
     return api_urls
 
@@ -115,48 +125,58 @@ def plantsByTags(request, tags:str):
 def plantsAdvanceSearch(request, filters:str):
     filters = filters.split('-')
     try:
-        tags = filters[7:]
+        tags = filters[9:]
     except:
         tags = []
     
+    try:
+        sort = filters[0]
+    except:
+        sort = None
+        
+    try:
+        kind = filters[1]
+    except:
+        kind = None
+        
     plants = Plant.objects.all()
 
     try:
-        _name = filters[0]
+        _name = filters[2]
     except:
-        _name = ''
+        _name = None
 
     try:
-        lower = int(filters[1])
+        lower = int(filters[3])
     except:
         lower = 0
 
     try:
-        higher = int(filters[2])
+        higher = int(filters[4])
     except:
         higher = inf
 
     try:
-        _environment = filters[3]
+        _environment = filters[5]
     except:
-        _environment = ''
+        _environment = None
 
     try:
-        _water = filters[4]
+        _water = filters[6]
     except:
-        _water = ''
+        _water = None
     
     try:
-        _light = filters[5]
+        _light = filters[7]
     except:
-        _light = ''
+        _light = None
 
     try:
-        _growthRate = filters[6]
+        _growthRate = filters[8]
     except:
-        _growthRate = ''
+        _growthRate = None
     
-    if (_name != ''):
+    if (_name != None):
         plants = plants.filter(name__contains = _name)
 
     if (higher == inf and lower == 0):
@@ -168,22 +188,35 @@ def plantsAdvanceSearch(request, filters:str):
     else:
         plants = plants.filter(price__gt = lower, price__lt= higher)
 
-    if (_environment != ''):
+    if (_environment != None):
         plants = plants.filter(environment = _environment)
 
-    if (_water != ''):
+    if (_water != None):
         plants = plants.filter(water = _water)
 
-    if (_light != ''):
+    if (_light != None):
         plants = plants.filter(light = _light)
 
-    if (_growthRate != ''):
+    if (_growthRate != None):
         plants = plants.filter(growthRate = _growthRate)
 
     for tag in tags:
         tag = findTag(tag)
         if tag != None:
             plants = plants.filter(tags__in=[tag.id])
+
+    if (sort == 'name'):
+        if kind == 'ASC':
+            plants = plants.order_by('name')
+        elif kind == 'DES':
+            plants = plants.order_by('name').reverse()
+    elif (sort == 'price'):
+        if kind == 'ASC':
+            plants = plants.order_by('price')
+        elif kind == 'DES':
+            plants = plants.order_by('price').reverse()
+    elif (sort == 'time'):
+        plants = plants.order_by('created').reverse()
 
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
@@ -222,6 +255,7 @@ def toolsByPrice(request, prices:str):
         tools = Tool.objects.filter(price__gte = lower, price__lte= higher)
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
+
 @api_view(['GET'])
 def toolsByTags(request, tags:str):
     tags:list = tags.split('-')
@@ -240,28 +274,38 @@ def toolsByTags(request, tags:str):
 def toolsAdvanceSearch(request, filters:str):
     filters = filters.split('-')
     try:
-        tags = filters[3:]
+        tags = filters[5:]
     except:
         tags = []
     
     tools = Tool.objects.all()
 
     try:
-        _name = filters[0]
+        sort = filters[0]
     except:
-        _name = ''
+        sort = None
+        
+    try:
+        kind = filters[1]
+    except:
+        kind = None
 
     try:
-        lower = int(filters[1])
+        _name = filters[2]
+    except:
+        _name = None
+
+    try:
+        lower = int(filters[3])
     except:
         lower = 0
 
     try:
-        higher = int(filters[2])
+        higher = int(filters[4])
     except:
         higher = inf
 
-    if (_name != ''):
+    if (_name != None):
         plants = plants.filter(name__contains = _name)
 
     if (higher == inf and lower == 0):
@@ -278,5 +322,80 @@ def toolsAdvanceSearch(request, filters:str):
         if tag != None:
             tools = tools.filter(tags__in=[tag.id])
 
+    if (sort == 'name'):
+        if kind == 'ASC':
+            tools = tools.order_by('name')
+        elif kind == 'DES':
+            tools = tools.order_by('name').reverse()
+    elif (sort == 'price'):
+        if kind == 'ASC':
+            tools = tools.order_by('price')
+        elif kind == 'DES':
+            tools = tools.order_by('price').reverse()
+    elif (sort == 'time'):
+        tools = tools.order_by('created').reverse()
+        
+    serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
+
+# plants sorting
+@api_view(['GET'])
+def plantsSortByName(request, kind):
+    plants = Plant.objects.all()
+
+    if kind == 'ASC':
+        plants = plants.order_by('name')
+    elif kind == 'DES':
+        plants = plants.order_by('name').reverse()
+    
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def plantsSortByPrice(request, kind):
+    plants = Plant.objects.all()
+
+    if kind == 'ASC':
+        plants = plants.order_by('price')
+    elif kind == 'DES':
+        plants = plants.order_by('price').reverse()
+    
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def plantsSortByCreateDate(request):
+    plants = Plant.objects.all().order_by('created').reverse()
+    serializer = PlantSerializer(plants, many=True)
+    return Response(serializer.data)
+
+# tools sorting
+@api_view(['GET'])
+def toolsSortByName(request, kind):
+    tools = Tool.objects.all()
+
+    if kind == 'ASC':
+        tools = tools.order_by('name')
+    elif kind == 'DES':
+        tools = tools.order_by('name').reverse()
+    
+    serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def toolsSortByPrice(request, kind):
+    tools = Tool.objects.all()
+
+    if kind == 'ASC':
+        tools = tools.order_by('price')
+    elif kind == 'DES':
+        tools = tools.order_by('price').reverse()
+    
+    serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def toolsSortByCreateDate(request):
+    tools = Tool.objects.all().order_by('created').reverse()
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
