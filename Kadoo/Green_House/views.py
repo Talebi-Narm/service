@@ -9,7 +9,7 @@ from .serializers import myPlantSerializer
 @api_view(['GET'])
 def allOfMyPlant(request):
     if request.user.is_anonymous:
-      return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
     _user = request.user
     myPlants = myPlant.objects.filter(user = _user)
     serializer = myPlantSerializer(myPlants, many=True)
