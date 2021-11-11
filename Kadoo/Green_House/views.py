@@ -6,6 +6,14 @@ from rest_framework.response import Response
 from .models import myPlant
 from .serializers import myPlantSerializer
 
+def GH_Overview():
+    api_urls = {
+        'see green house plants':'/myPlants/',
+        'add to green house plants':'/addToMyPlants/',
+        'update plant in green house':'/updateInMyPlants/<str:pk>/',
+    }
+    return api_urls
+
 @api_view(['GET'])
 def allOfMyPlant(request):
     if request.user.is_anonymous:
