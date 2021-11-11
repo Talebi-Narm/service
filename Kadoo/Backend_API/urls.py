@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from . import SFSP_views as sfsp_Views
+from . import SFSP_views as sfsp_view
 
 urlpatterns=[
     path('', views.ProductsAPIOverview, name='api'),
