@@ -11,12 +11,24 @@ from math import inf
 # Overview
 def searchAndFilterOverview():
     api_urls = {
-        'search in plants by name':'/plantsByName/<str:_name>/',
-        'search in tools by name':'/toolsByName/<str:_name>/',
-        'search in plants by price':'/plantsByPrice/<str:lower>-<str:higher>/',
-        'search in tools by price':'/toolsByPrice/<str:lower>-<str:higher>/',
-        'advance search in plants':'/plantsAdvanceSearch/<str:lower>-<str:higher>-<str:environment>-<str:water>-<str:light>-<str:growthRate>-<str:tag1>-<str:tag2>-.../',
-    }
+        # plants filter and search
+        'search in plants by name':'/plantsByName/<str:name>/',
+        'search in plants by price':'/plantsByPrice/<str:lower_price>-<str:higher_price>/',
+        'search in plants by environment':'/plantsByEnvironment/<str:environment>/',
+        'search in plants by water':'/plantsByWater/<str:water>/',
+        'search in plants by light':'/plantsByLight/<str:light>/',
+        'search in plants by growth rate':'/plantsByGrowthRate/<str:growthRate>/',
+        'search in plants by tags':'/plantsByTags/<str:tag1>-<str:tag2>-.../',
+
+        # tools filter and search
+        'search in tools by name':'/toolsByName/<str:name>/',
+        'search in tools by price':'/toolsByPrice/<str:lower_price>-<str:higher_price>/',
+        'search in tools by tags':'/toolsByTags/<str:tag1>-<str:tag2>-.../',
+
+        # advance search
+        'advance search in plants':'/plantsAdvanceSearch/<str:name>-<str:lower_price>-<str:higher_price>-<str:environment>-<str:water>-<str:light>-<str:growthRate>-<str:tag1>-<str:tag2>-.../',
+        'advance search in tools':'/toolsAdvanceSearch/<str:name>-<str:tag1>-<str:tag2>-.../',
+        }
     return api_urls
 
 # universal defs
