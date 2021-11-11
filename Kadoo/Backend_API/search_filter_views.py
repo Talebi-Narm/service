@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-
 from .serializers import PlantSerializer, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer
 from Backend.models import Plant, Tool, Tag,Image, Album
 
@@ -279,68 +278,5 @@ def toolsAdvanceSearch(request, filters:str):
         if tag != None:
             tools = tools.filter(tags__in=[tag.id])
 
-    serializer = ToolSerializer(tools, many=True)
-    return Response(serializer.data)
-
-
-# plants sorting
-@api_view(['GET'])
-def plantsSortByName(request, kind):
-    plants = Plant.objects.all()
-
-    if kind == 'ACS':
-        plants = plants.order_by('name')
-    elif kind == 'DES':
-        plants = plants.order_by('name').reverse()
-    
-    serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def plantsSortByPrice(request, kind):
-    plants = Plant.objects.all()
-
-    if kind == 'ACS':
-        plants = plants.order_by('price')
-    elif kind == 'DES':
-        plants = plants.order_by('price').reverse()
-    
-    serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def plantsSortByCreateDate(request):
-    plants = Plant.objects.all().order_by('created').reverse()
-    serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
-
-# tools sorting
-@api_view(['GET'])
-def toolsSortByName(request, kind):
-    tools = Tool.objects.all()
-
-    if kind == 'ACS':
-        tools = tools.order_by('name')
-    elif kind == 'DES':
-        tools = tools.order_by('name').reverse()
-    
-    serializer = ToolSerializer(tools, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def toolsSortByPrice(request, kind):
-    tools = Tool.objects.all()
-
-    if kind == 'ACS':
-        tools = tools.order_by('price')
-    elif kind == 'DES':
-        tools = tools.order_by('price').reverse()
-    
-    serializer = ToolSerializer(tools, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def toolsSortByCreateDate(request):
-    tools = Tool.objects.all().order_by('created').reverse()
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
