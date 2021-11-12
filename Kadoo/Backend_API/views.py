@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from .serializers import PlantSerializer, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer
 from Backend.models import Plant, Tool, Tag,Image, Album
 
+from .SFSP_views import SFSP_Overview
 from .search_filter_views import searchAndFilterOverview
 from Green_House.views import GH_Overview
 
@@ -47,6 +48,7 @@ def ProductsAPIOverview(request):
         'Specific album Images':'/albumImages/<str:pk>/',
         'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
+    api_urls.update(SFSP_Overview())
     api_urls.update(searchAndFilterOverview())
     api_urls.update(GH_Overview())
     return Response(api_urls)
