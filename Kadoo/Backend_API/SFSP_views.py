@@ -69,8 +69,16 @@ def sorting(myList: list, by , order):
 
 # filters for plants
 @api_view(['GET'])
-def plantsByName(request, _name , _paginator):
+def plantsByName(request, _name , _paginator, _sorting):
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+
     try:
         count = int(_paginator[0])
         page = int(_paginator[1])
@@ -82,13 +90,23 @@ def plantsByName(request, _name , _paginator):
     if(_paginator != None):
         plants = paginator(plants, count, page)
 
+    if (_sorting != None):
+        plants = sorting(plants, by, order)
+        
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
     
 @api_view(['GET'])
-def plantsByPrice(request, prices, _paginator):
+def plantsByPrice(request, prices, _paginator, _sorting):
     prices = prices.split('-')
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
 
     lower = 0
     higher = inf
@@ -120,13 +138,24 @@ def plantsByPrice(request, prices, _paginator):
 
     if(_paginator != None):
         plants = paginator(plants, count, page)
-
+    
+    if (_sorting != None):
+        plants = sorting(plants, by, order)
+        
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByEnvironment(request, _environment, _paginator):
+def plantsByEnvironment(request, _environment, _paginator, _sorting):
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+        
     try:
         count = int(_paginator[0])
         page = int(_paginator[1])
@@ -137,13 +166,24 @@ def plantsByEnvironment(request, _environment, _paginator):
 
     if(_paginator != None):
         plants = paginator(plants, count, page)
-
+    
+    if (_sorting != None):
+        plants = sorting(plants, by, order)
+        
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByWater(request, _water, _paginator):
+def plantsByWater(request, _water, _paginator, _sorting):
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+        
     try:
         count = int(_paginator[0])
         page = int(_paginator[1])
@@ -154,13 +194,24 @@ def plantsByWater(request, _water, _paginator):
 
     if(_paginator != None):
         plants = paginator(plants, count, page)
-
+    
+    if (_sorting != None):
+        plants = sorting(plants, by, order)
+        
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByLight(request, _light, _paginator):
+def plantsByLight(request, _light, _paginator, _sorting):
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+        
     try:
         count = int(_paginator[0])
         page = int(_paginator[1])
@@ -171,13 +222,24 @@ def plantsByLight(request, _light, _paginator):
 
     if(_paginator != None):
         plants = paginator(plants, count, page)
-
+    
+    if (_sorting != None):
+        plants = sorting(plants, by, order)
+        
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByGrowthRate(request, _growthRate, _paginator):
+def plantsByGrowthRate(request, _growthRate, _paginator, _sorting):
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+        
     try:
         count = int(_paginator[0])
         page = int(_paginator[1])
@@ -188,14 +250,25 @@ def plantsByGrowthRate(request, _growthRate, _paginator):
 
     if(_paginator != None):
         plants = paginator(plants, count, page)
-
+    
+    if (_sorting != None):
+        plants = sorting(plants, by, order)
+        
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByTags(request, tags:str, _paginator):
+def plantsByTags(request, tags:str, _paginator, _sorting):
     tags:list = tags.split('-')
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+        
 
     try:
         count = int(_paginator[0])
@@ -212,15 +285,26 @@ def plantsByTags(request, tags:str, _paginator):
 
     if(_paginator != None):
         plants = paginator(plants, count, page)
-
+    
+    if (_sorting != None):
+        plants = sorting(plants, by, order)
+        
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 # advance
 @api_view(['GET'])
-def plantsAdvanceSearch(request, filters:str, _paginator):
+def plantsAdvanceSearch(request, filters:str, _paginator, _sorting):
     filters = filters.split('-')
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+        
 
     try:
         count = int(_paginator[0])
@@ -229,54 +313,44 @@ def plantsAdvanceSearch(request, filters:str, _paginator):
         _paginator = None
 
     try:
-        tags = filters[9:]
+        tags = filters[7:]
     except:
         tags = []
-    
-    try:
-        sort = filters[0]
-    except:
-        sort = None
-        
-    try:
-        kind = filters[1]
-    except:
-        kind = None
-        
+     
     plants = Plant.objects.all()
 
     try:
-        _name = filters[2]
+        _name = filters[0]
     except:
         _name = None
 
     try:
-        lower = int(filters[3])
+        lower = int(filters[1])
     except:
         lower = 0
 
     try:
-        higher = int(filters[4])
+        higher = int(filters[2])
     except:
         higher = inf
 
     try:
-        _environment = filters[5]
+        _environment = filters[3]
     except:
         _environment = None
 
     try:
-        _water = filters[6]
+        _water = filters[4]
     except:
         _water = None
     
     try:
-        _light = filters[7]
+        _light = filters[5]
     except:
         _light = None
 
     try:
-        _growthRate = filters[8]
+        _growthRate = filters[6]
     except:
         _growthRate = None
     
@@ -309,30 +383,28 @@ def plantsAdvanceSearch(request, filters:str, _paginator):
         if tag != None:
             plants = plants.filter(tags__in=[tag.id])
 
-    if (sort == 'name'):
-        if kind == 'ASC':
-            plants = plants.order_by('name')
-        elif kind == 'DES':
-            plants = plants.order_by('name').reverse()
-    elif (sort == 'price'):
-        if kind == 'ASC':
-            plants = plants.order_by('price')
-        elif kind == 'DES':
-            plants = plants.order_by('price').reverse()
-    elif (sort == 'time'):
-        plants = plants.order_by('created').reverse()
-
     if(_paginator != None):
         plants = paginator(plants, count, page)
-
+    
+    if (_sorting != None):
+        plants = sorting(plants, by, order)
+        
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 
 # filters for tools
 @api_view(['GET'])
-def toolsByName(request, _name, _paginator):
+def toolsByName(request, _name, _paginator, _sorting):
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+        
     try:
         count = int(_paginator[0])
         page = int(_paginator[1])
@@ -343,14 +415,24 @@ def toolsByName(request, _name, _paginator):
 
     if(_paginator != None):
         tools = paginator(tools, count, page)
-
+    
+    if (_sorting != None):
+        tools = sorting(tools, by, order)
+        
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def toolsByPrice(request, prices:str, _paginator):
+def toolsByPrice(request, prices:str, _paginator, _sorting):
     prices = prices.split('-')
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
 
     try:
         count = int(_paginator[0])
@@ -382,14 +464,24 @@ def toolsByPrice(request, prices:str, _paginator):
     
     if(_paginator != None):
         tools = paginator(tools, count, page)
-
+    
+    if (_sorting != None):
+        tools = sorting(tools, by, order)
+    
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def toolsByTags(request, tags:str, _paginator):
+def toolsByTags(request, tags:str, _paginator, _sorting):
     tags:list = tags.split('-')
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
+
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
 
     try:
         count = int(_paginator[0])
@@ -406,16 +498,26 @@ def toolsByTags(request, tags:str, _paginator):
     
     if(_paginator != None):
         tools = paginator(tools, count, page)
-
+    
+    if (_sorting != None):
+        tools = sorting(tools, by, order)
+    
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 # advance
 @api_view(['GET'])
-def toolsAdvanceSearch(request, filters:str, _paginator):
+def toolsAdvanceSearch(request, filters:str, _paginator, _sorting):
     filters = filters.split('-')
     _paginator = _paginator.split('-')
+    _sorting = _sorting.split('-')
 
+    try:
+        by = sorting[0]
+        order = sorting[1]
+    except:
+        _sorting = None
+        
     try:
         count = int(_paginator[0])
         page = int(_paginator[1])
@@ -423,34 +525,24 @@ def toolsAdvanceSearch(request, filters:str, _paginator):
         _paginator = None
 
     try:
-        tags = filters[5:]
+        tags = filters[3:]
     except:
         tags = []
     
     tools = Tool.objects.all()
 
     try:
-        sort = filters[0]
-    except:
-        sort = None
-        
-    try:
-        kind = filters[1]
-    except:
-        kind = None
-
-    try:
-        _name = filters[2]
+        _name = filters[0]
     except:
         _name = None
 
     try:
-        lower = int(filters[3])
+        lower = int(filters[1])
     except:
         lower = 0
 
     try:
-        higher = int(filters[4])
+        higher = int(filters[2])
     except:
         higher = inf
 
@@ -470,22 +562,12 @@ def toolsAdvanceSearch(request, filters:str, _paginator):
         tag = findTag(tag)
         if tag != None:
             tools = tools.filter(tags__in=[tag.id])
-
-    if (sort == 'name'):
-        if kind == 'ASC':
-            tools = tools.order_by('name')
-        elif kind == 'DES':
-            tools = tools.order_by('name').reverse()
-    elif (sort == 'price'):
-        if kind == 'ASC':
-            tools = tools.order_by('price')
-        elif kind == 'DES':
-            tools = tools.order_by('price').reverse()
-    elif (sort == 'time'):
-        tools = tools.order_by('created').reverse()
     
     if(_paginator != None):
         tools = paginator(tools, count, page)
+    
+    if (_sorting != None):
+        tools = sorting(tools, by, order)
     
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
