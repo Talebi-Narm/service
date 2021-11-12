@@ -58,6 +58,15 @@ def paginator(myList: list, count, page):
 
     return myList[first:end]
 
+def sorting(myList: list, by , order):
+    if (by != 'name' or by != 'price' or by != 'time'):
+        if (order == 'ASC'):
+            myList = myList.order_by(by)
+        elif (order == 'DES'):
+            myList = myList.order_by(by).reverse()
+    
+    return myList
+
 # filters for plants
 @api_view(['GET'])
 def plantsByName(request, _name , _paginator):
@@ -485,30 +494,20 @@ def toolsAdvanceSearch(request, filters:str, _paginator):
 @api_view(['GET'])
 def plantsSortByName(request, kind):
     plants = Plant.objects.all()
-
-    if kind == 'ASC':
-        plants = plants.order_by('name')
-    elif kind == 'DES':
-        plants = plants.order_by('name').reverse()
-    
+    plants = sorting(plants, 'name' , kind)
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def plantsSortByPrice(request, kind):
     plants = Plant.objects.all()
-
-    if kind == 'ASC':
-        plants = plants.order_by('price')
-    elif kind == 'DES':
-        plants = plants.order_by('price').reverse()
-    
+    plants = sorting(plants, 'price' , kind)
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def plantsSortByCreateDate(request):
-    plants = Plant.objects.all().order_by('created').reverse()
+    plants = sorting(plants, 'time' , kind)
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
@@ -516,29 +515,19 @@ def plantsSortByCreateDate(request):
 @api_view(['GET'])
 def toolsSortByName(request, kind):
     tools = Tool.objects.all()
-
-    if kind == 'ASC':
-        tools = tools.order_by('name')
-    elif kind == 'DES':
-        tools = tools.order_by('name').reverse()
-    
+    tools = sorting(tools, 'name' , kind)
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def toolsSortByPrice(request, kind):
     tools = Tool.objects.all()
-
-    if kind == 'ASC':
-        tools = tools.order_by('price')
-    elif kind == 'DES':
-        tools = tools.order_by('price').reverse()
-    
+    tools = sorting(tools, 'price' , kind)
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def toolsSortByCreateDate(request):
-    tools = Tool.objects.all().order_by('created').reverse()
+    tools = sorting(plants, 'time' , kind)
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
