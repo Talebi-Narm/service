@@ -7,7 +7,6 @@ from .serializers import PlantSerializer, ToolSerializer, TagSerializer, ImageSe
 from Backend.models import Plant, Tool, Tag,Image, Album
 
 from .SFSP_views import SFSP_Overview
-from .search_filter_views import searchAndFilterOverview
 from Green_House.views import GH_Overview
 
 @api_view(['GET'])
@@ -49,7 +48,6 @@ def ProductsAPIOverview(request):
         'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
     api_urls.update(SFSP_Overview())
-    api_urls.update(searchAndFilterOverview())
     api_urls.update(GH_Overview())
     return Response(api_urls)
 
