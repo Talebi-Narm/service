@@ -47,18 +47,18 @@ urlpatterns=[
     path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
 
 # searching and filtering for plants
-    path('plantsByName/<str:_name>/<str:_paginator>/', sfsp_view.plantsByName, name='plantsByName'),
-    path('plantsByPrice/<str:prices>/<str:_paginator>/', sfsp_view.plantsByPrice, name='plantsByPrice'),
-    path('plantsByEnvironment/<str:_environment>/<str:_paginator>/', sfsp_view.plantsByEnvironment, name='plantsByEnvironment'),
-    path('plantsByWater/<str:_water>/<str:_paginator>/', sfsp_view.plantsByWater, name='plantsByWater'),
-    path('plantsByLight/<str:_light>/<str:_paginator>/', sfsp_view.plantsByLight, name='plantsByLight'),
-    path('plantsByGrowthRate/<str:_growthRate>/<str:_paginator>/', sfsp_view.plantsByGrowthRate, name='plantsByGrowthRate'),
-    path('plantsByTags/<str:tags>/<str:_paginator>/', sfsp_view.plantsByTags, name='plantsByTags'),
+    path('plantsByName/<str:_name>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsByName, name='plantsByName'),
+    path('plantsByPrice/<str:prices>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsByPrice, name='plantsByPrice'),
+    path('plantsByEnvironment/<str:_environment>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsByEnvironment, name='plantsByEnvironment'),
+    path('plantsByWater/<str:_water>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsByWater, name='plantsByWater'),
+    path('plantsByLight/<str:_light>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsByLight, name='plantsByLight'),
+    path('plantsByGrowthRate/<str:_growthRate>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsByGrowthRate, name='plantsByGrowthRate'),
+    path('plantsByTags/<str:tags>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsByTags, name='plantsByTags'),
 
 # searching and filtering for tools
-    path('toolsByName/<str:_name>/', sfsp_view.toolsByName, name='toolsByName'),
-    path('toolsByPrice/<str:prices>/', sfsp_view.toolsByPrice, name='toolsByPrice'),
-    path('toolsByTags/<str:tags>/', sfsp_view.toolsByTags, name='toolsByTags'),
+    path('toolsByName/<str:_name>/<str:_paginator>/<str:_sorting>/', sfsp_view.toolsByName, name='toolsByName'),
+    path('toolsByPrice/<str:prices>/<str:_paginator>/<str:_sorting>/', sfsp_view.toolsByPrice, name='toolsByPrice'),
+    path('toolsByTags/<str:tags>/<str:_paginator>/<str:_sorting>/', sfsp_view.toolsByTags, name='toolsByTags'),
 
 # plants sorting
     path('plantsSortByName/<str:kind>/', sfsp_view.plantsSortByName, name='plantsSortByName'),
@@ -71,6 +71,6 @@ urlpatterns=[
     path('toolsSortByNewest/', sfsp_view.toolsSortByCreateDate, name='toolsSortByCreateDate'),
 
 # advance search
-    path('plantsAdvanceSearch/<str:filters>/', sfsp_view.plantsAdvanceSearch, name='plantsAdvanceSearch'),
-    path('toolsAdvanceSearch/<str:filters>/', sfsp_view.toolsAdvanceSearch, name='toolsAdvanceSearch'),
+    path('plantsAdvanceSearch/<str:filters>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsAdvanceSearch, name='plantsAdvanceSearch'),
+    path('toolsAdvanceSearch/<str:filters>/<str:_paginator>/<str:_sorting>/', sfsp_view.toolsAdvanceSearch, name='toolsAdvanceSearch'),
 ]

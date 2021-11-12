@@ -12,32 +12,34 @@ from math import inf
 def SFSP_Overview():
     api_urls = {
         # plants filter and search
-        'search in plants by name':'/plantsByName/<str:name>/',
-        'search in plants by price':'/plantsByPrice/<str:lower_price>-<str:higher_price>/',
-        'search in plants by environment':'/plantsByEnvironment/<str:environment>/',
-        'search in plants by water':'/plantsByWater/<str:water>/',
-        'search in plants by light':'/plantsByLight/<str:light>/',
-        'search in plants by growth rate':'/plantsByGrowthRate/<str:growthRate>/',
-        'search in plants by tags':'/plantsByTags/<str:tag1>-<str:tag2>-.../',
+        'search in plants by name':'/plantsByName/<name>/<count>-<page>/<order_by>-<kind>/',
+        'search in plants by price':'/plantsByPrice/<lower_price>-<higher_price>/<count>-<page>/<order_by>-<kind>/',
+        'search in plants by environment':'/plantsByEnvironment/<environment>/<count>-<page>/<order_by>-<kind>/',
+        'search in plants by water':'/plantsByWater/<water>/<count>-<page>/<order_by>-<kind>/',
+        'search in plants by light':'/plantsByLight/<light>/<count>-<page>/<order_by>-<kind>/',
+        'search in plants by growth rate':'/plantsByGrowthRate/<growthRate>/<count>-<page>/<order_by>-<kind>/',
+        'search in plants by tags':'/plantsByTags/<tag1>-<tag2>-.../<count>-<page>/<order_by>-<kind>/',
 
         # tools filter and search
-        'search in tools by name':'/toolsByName/<str:name>/',
-        'search in tools by price':'/toolsByPrice/<str:lower_price>-<str:higher_price>/',
-        'search in tools by tags':'/toolsByTags/<str:tag1>-<str:tag2>-.../',
+        'search in tools by name':'/toolsByName/<name>/<count>-<page>/<order_by>-<kind>/',
+        'search in tools by price':'/toolsByPrice/<lower_price>-<higher_price>/<count>-<page>/<order_by>-<kind>/',
+        'search in tools by tags':'/toolsByTags/<tag1>-<tag2>-.../<count>-<page>/<order_by>-<kind>/',
 
+        # note :
+        '--------note for sorting ------':'------(kind = "ASC" for ascending and "DES" for descending)----',
         # plants sorting
-        'sorting plants by name (kind = "ASC" for ascending and "DES" for descending)':'/plantsSortByName/<str:kind>/',
-        'sorting plants by price (kind = "ASC" for ascending and "DES" for descending)':'/plantsSortByPrice/<str:kind>/',
+        'sorting plants by name':'/plantsSortByName/<kind>/',
+        'sorting plants by price':'/plantsSortByPrice/<kind>/',
         'sort by crated time (newest)':'/plantsSortByNewest/',
 
         # tools sorting
-        'sorting tools by name (kind = "ASC" for ascending and "DES" for descending)':'/toolsSortByName/<str:kind>/',
-        'sorting tools by price (kind = "ASC" for ascending and "DES" for descending)':'/toolsSortByPrice/<str:kind>/',
+        'sorting tools by name (kind = "ASC" for ascending and "DES" for descending)':'/toolsSortByName/<kind>/',
+        'sorting tools by price (kind = "ASC" for ascending and "DES" for descending)':'/toolsSortByPrice/<kind>/',
         'sort by crated time (newest)':'/toolsSortByNewest/',
 
         # advance search
-        'advance search in plants':'/plantsAdvanceSearch/<str:sort>-<str:kind>-<str:name>-<str:lower_price>-<str:higher_price>-<str:environment>-<str:water>-<str:light>-<str:growthRate>-<str:tag1>-<str:tag2>-.../',
-        'advance search in tools':'/toolsAdvanceSearch/<str:sort>-<str:kind>-<str:name>-<str:lower_price>-<str:higher_price>-<str:tag1>-<str:tag2>-.../',
+        'advance search in plants':'/plantsAdvanceSearch/<name>-<lower_price>-<higher_price>-<environment>-<water>-<light>-<growthRate>-<tag1>-<tag2>-.../<count>-<page>/<order_by>-<kind>/',
+        'advance search in tools':'/toolsAdvanceSearch/<name>-<lower_price>-<higher_price>-<tag1>-<tag2>-.../<count>-<page>/<order_by>-<kind>/',
         }
     return api_urls
 
@@ -60,6 +62,8 @@ def paginator(myList: list, count, page):
 
 def sorting(myList: list, by , order):
     if (by != 'name' or by != 'price' or by != 'time'):
+        if (by == 'time'):
+            return myList.order_by(by).reverse()
         if (order == 'ASC'):
             myList = myList.order_by(by)
         elif (order == 'DES'):
@@ -589,7 +593,7 @@ def plantsSortByPrice(request, kind):
 
 @api_view(['GET'])
 def plantsSortByCreateDate(request):
-    plants = sorting(plants, 'time' , kind)
+    plants = sorting(plants, 'time' , 'DES')
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
@@ -610,6 +614,6 @@ def toolsSortByPrice(request, kind):
 
 @api_view(['GET'])
 def toolsSortByCreateDate(request):
-    tools = sorting(plants, 'time' , kind)
+    tools = sorting(plants, 'time' , 'DES')
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
