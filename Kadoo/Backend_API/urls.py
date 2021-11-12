@@ -47,13 +47,13 @@ urlpatterns=[
     path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
 
 # searching and filtering for plants
-    path('plantsByName/<str:_name>/', sfsp_view.plantsByName, name='plantsByName'),
-    path('plantsByPrice/<str:prices>/', sfsp_view.plantsByPrice, name='plantsByPrice'),
-    path('plantsByEnvironment/<str:_environment>/', sfsp_view.plantsByEnvironment, name='plantsByEnvironment'),
-    path('plantsByWater/<str:_water>/', sfsp_view.plantsByWater, name='plantsByWater'),
-    path('plantsByLight/<str:_light>/', sfsp_view.plantsByLight, name='plantsByLight'),
-    path('plantsByGrowthRate/<str:_growthRate>/', sfsp_view.plantsByGrowthRate, name='plantsByGrowthRate'),
-    path('plantsByTags/<str:tags>/', sfsp_view.plantsByTags, name='plantsByTags'),
+    path('plantsByName/<str:_name>/<str:_paginator>/', sfsp_view.plantsByName, name='plantsByName'),
+    path('plantsByPrice/<str:prices>/<str:_paginator>/', sfsp_view.plantsByPrice, name='plantsByPrice'),
+    path('plantsByEnvironment/<str:_environment>/<str:_paginator>/', sfsp_view.plantsByEnvironment, name='plantsByEnvironment'),
+    path('plantsByWater/<str:_water>/<str:_paginator>/', sfsp_view.plantsByWater, name='plantsByWater'),
+    path('plantsByLight/<str:_light>/<str:_paginator>/', sfsp_view.plantsByLight, name='plantsByLight'),
+    path('plantsByGrowthRate/<str:_growthRate>/<str:_paginator>/', sfsp_view.plantsByGrowthRate, name='plantsByGrowthRate'),
+    path('plantsByTags/<str:tags>/<str:_paginator>/', sfsp_view.plantsByTags, name='plantsByTags'),
 
 # searching and filtering for tools
     path('toolsByName/<str:_name>/', sfsp_view.toolsByName, name='toolsByName'),

@@ -49,19 +49,47 @@ def findTag(_name):
         tag = None
     return tag
 
+def paginator(myList: list, count, page):
+    first = (page-1)*count
+    try:
+        end = (page)*count
+    except:
+        end = len(myList)
+
+    return myList[first:end]
+
 # filters for plants
 @api_view(['GET'])
-def plantsByName(request, _name):
+def plantsByName(request, _name , _paginator):
+    _paginator = _paginator.split('-')
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     plants = Plant.objects.filter(name__contains = _name)
+
+    if(_paginator != None):
+        plants = paginator(plants, count, page)
+
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
     
 @api_view(['GET'])
-def plantsByPrice(request, prices:str):
+def plantsByPrice(request, prices, _paginator):
     prices = prices.split('-')
+    _paginator = _paginator.split('-')
+
     lower = 0
     higher = inf
 
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+        
     try:
         lower = int(prices[0])
     except:
@@ -80,36 +108,92 @@ def plantsByPrice(request, prices:str):
         plants = Plant.objects.filter(price__lte = higher)
     else:
         plants = Plant.objects.filter(price__gt = lower, price__lt= higher)
+
+    if(_paginator != None):
+        plants = paginator(plants, count, page)
+
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByEnvironment(request, _environment):
+def plantsByEnvironment(request, _environment, _paginator):
+    _paginator = _paginator.split('-')
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     plants = Plant.objects.filter(environment = _environment)
+
+    if(_paginator != None):
+        plants = paginator(plants, count, page)
+
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByWater(request, _water):
+def plantsByWater(request, _water, _paginator):
+    _paginator = _paginator.split('-')
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     plants = Plant.objects.filter(water = _water)
+
+    if(_paginator != None):
+        plants = paginator(plants, count, page)
+
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByLight(request, _light):
+def plantsByLight(request, _light, _paginator):
+    _paginator = _paginator.split('-')
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     plants = Plant.objects.filter(light = _light)
+
+    if(_paginator != None):
+        plants = paginator(plants, count, page)
+
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByGrowthRate(request, _growthRate):
+def plantsByGrowthRate(request, _growthRate, _paginator):
+    _paginator = _paginator.split('-')
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     plants = Plant.objects.filter(growthRate = _growthRate)
+
+    if(_paginator != None):
+        plants = paginator(plants, count, page)
+
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def plantsByTags(request, tags:str):
+def plantsByTags(request, tags:str, _paginator):
     tags:list = tags.split('-')
+    _paginator = _paginator.split('-')
+
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     plants = Plant.objects.all()
 
     for tag in tags:
@@ -117,13 +201,24 @@ def plantsByTags(request, tags:str):
         if tag != None:
             plants = plants.filter(tags__in=[tag.id])
 
+    if(_paginator != None):
+        plants = paginator(plants, count, page)
+
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 # advance
 @api_view(['GET'])
-def plantsAdvanceSearch(request, filters:str):
+def plantsAdvanceSearch(request, filters:str, _paginator):
     filters = filters.split('-')
+    _paginator = _paginator.split('-')
+
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     try:
         tags = filters[9:]
     except:
@@ -218,20 +313,42 @@ def plantsAdvanceSearch(request, filters:str):
     elif (sort == 'time'):
         plants = plants.order_by('created').reverse()
 
+    if(_paginator != None):
+        plants = paginator(plants, count, page)
+
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 
 # filters for tools
 @api_view(['GET'])
-def toolsByName(request, _name):
+def toolsByName(request, _name, _paginator):
+    _paginator = _paginator.split('-')
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     tools = Tool.objects.filter(name__contains = _name)
+
+    if(_paginator != None):
+        tools = paginator(tools, count, page)
+
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def toolsByPrice(request, prices:str):
+def toolsByPrice(request, prices:str, _paginator):
     prices = prices.split('-')
+    _paginator = _paginator.split('-')
+
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     lower = 0
     higher = inf
 
@@ -253,26 +370,49 @@ def toolsByPrice(request, prices:str):
         tools = Tool.objects.filter(price__lte = higher)
     else:
         tools = Tool.objects.filter(price__gte = lower, price__lte= higher)
+    
+    if(_paginator != None):
+        tools = paginator(tools, count, page)
+
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def toolsByTags(request, tags:str):
+def toolsByTags(request, tags:str, _paginator):
     tags:list = tags.split('-')
+    _paginator = _paginator.split('-')
+
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     tools = Tool.objects.all()
 
     for tag in tags:
         tag = findTag(tag)
         if tag != None:
             tools = tools.filter(tags__in=[tag.id])
+    
+    if(_paginator != None):
+        tools = paginator(tools, count, page)
 
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 # advance
 @api_view(['GET'])
-def toolsAdvanceSearch(request, filters:str):
+def toolsAdvanceSearch(request, filters:str, _paginator):
     filters = filters.split('-')
+    _paginator = _paginator.split('-')
+
+    try:
+        count = int(_paginator[0])
+        page = int(_paginator[1])
+    except:
+        _paginator = None
+
     try:
         tags = filters[5:]
     except:
@@ -334,7 +474,10 @@ def toolsAdvanceSearch(request, filters:str):
             tools = tools.order_by('price').reverse()
     elif (sort == 'time'):
         tools = tools.order_by('created').reverse()
-        
+    
+    if(_paginator != None):
+        tools = paginator(tools, count, page)
+    
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
