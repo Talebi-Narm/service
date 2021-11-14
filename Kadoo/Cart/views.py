@@ -153,9 +153,8 @@ class GetUnapprovedPlantsCartWithCount(APIView):
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
   PlantsCartItems = PlantCartModel.objects.filter(user=userToGetCart, is_approved=False).values('plant_item')
-  PlantsItems = Plant.objects.filter(id__in = PlantsCartItems)
-  PlantsCountItems = PlantCartModel.objects.filter(user=userToGetCart, is_approved=False).values('plant_count')
-  
+  PlantsItems = Plant.objects.filter(id__in = PlantsCartItems).order_by('name')
+  PlantsCountItems = PlantCartModel.objects.filter(user=userToGetCart, is_approved=False).order_by('plant_item__name').values('plant_count')
   index = 0
   for PlantItem in PlantsItems:
     countitem = PlantsCountItems[index]
@@ -174,8 +173,8 @@ class GetUnapprovedToolsCartWithCount(APIView):
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
   ToolsCartItems = ToolCartModel.objects.filter(user=userToGetCart, is_approved=False).values('tool_item')
-  ToolsItems = Tool.objects.filter(id__in = ToolsCartItems)
-  ToolsCountItems = ToolCartModel.objects.filter(user=userToGetCart, is_approved=False).values('tool_count')
+  ToolsItems = Tool.objects.filter(id__in = ToolsCartItems).order_by('name')
+  ToolsCountItems = ToolCartModel.objects.filter(user=userToGetCart, is_approved=False).order_by('tool_item__name').values('tool_count')
   
   index = 0
   for ToolItem in ToolsItems:

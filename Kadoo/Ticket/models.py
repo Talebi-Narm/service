@@ -14,7 +14,7 @@ class TicketModel(models.Model):
     )
 
     id = models.UUIDField(default = uuid.uuid4, unique = True, primary_key = True, editable = False)
-    author = models.ForeignKey('Users.NewUser', on_delete=models.CASCADE)
+    author = models.ForeignKey('Users.NewUser', null = True, blank = True, on_delete=models.CASCADE)
     Category = models.CharField(max_length = 50, choices = category_quantifiers, default='General', null = True, blank = True)
     body = models.TextField(null = True, blank = True)
     priority = models.IntegerField(blank = True, default=0)
