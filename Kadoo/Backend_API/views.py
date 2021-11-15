@@ -254,3 +254,15 @@ def createImage(request, pk):
         serializer.save()
 
     return Response(serializer.data)
+@api_view(['GET'])
+def plantTags(request, pk):
+    tags = get_object_or_404(Plant, id=pk).tags
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def toolTags(request, pk):
+    tags = get_object_or_404(Tool, id=pk).tags
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+    return Response(serializer.data)

@@ -74,3 +74,12 @@ urlpatterns=[
     path('plantsAdvanceSearch/<str:filters>/<str:_paginator>/<str:_sorting>/', sfsp_view.plantsAdvanceSearch, name='plantsAdvanceSearch'),
     path('toolsAdvanceSearch/<str:filters>/<str:_paginator>/<str:_sorting>/', sfsp_view.toolsAdvanceSearch, name='toolsAdvanceSearch'),
 ]
+# category API
+    path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag, name='plantsWithTag'),
+    path('toolsWithTag/<str:tag_name>/', views.toolsWithSpecificTag, name='toolsWithTag'),
+
+# get plant names
+    path('plantTags/<str:pk>/', views.plantTags, name='plantsTag'),
+    path('toolTags/<str:pk>/', views.toolTags, name='toolsTag'),
+]
+]
