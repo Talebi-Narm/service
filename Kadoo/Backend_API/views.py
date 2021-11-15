@@ -43,6 +43,9 @@ def ProductsAPIOverview(request):
         'plants With Specific Tag':'/plantsWithTag/<str:tag>/',
         'tools With Specific Tag':'/toolsWithTag/<str:tag>/',
 
+        'get a plant tags':'/plantTags/<str:pk>/',
+        'get a tool tags':'/toolTags/<str:pk>/',
+
         'images List':'/imagesList/',
         'Specific album Images':'/albumImages/<str:pk>/',
         'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
@@ -238,6 +241,7 @@ def getAlbumImages(request, pk):
 
     return Response(serializer.data)
 
+# images
 @api_view(['GET'])
 def imageList(request):
     images = Image.objects.all()
@@ -254,6 +258,8 @@ def createImage(request, pk):
         serializer.save()
 
     return Response(serializer.data)
+
+# get tags of a product
 @api_view(['GET'])
 def plantTags(request, pk):
     tags = get_object_or_404(Plant, id=pk).tags
