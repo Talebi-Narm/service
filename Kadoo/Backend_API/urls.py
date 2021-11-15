@@ -28,4 +28,8 @@ urlpatterns=[
 # category API
     path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag, name='plantsWithTag'),
     path('toolsWithTag/<str:tag_name>/', views.toolsWithSpecificTag, name='toolsWithTag'),
+
+# get plant names
+    path('plantTags/<str:pk>/', views.plantTags, name='plantsTag'),
+    path('toolTags/<str:pk>/', views.toolTags, name='toolsTag'),
 ]

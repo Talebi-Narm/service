@@ -5,7 +5,6 @@ class PlantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plant
         fields = '__all__'
-
 class ToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tool
@@ -15,3 +14,8 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = '__all__'
+
+class TagNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['name']

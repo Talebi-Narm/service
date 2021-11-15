@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -159,4 +159,16 @@ def toolsWithSpecificTag(request, tag_name):
     tag = Tag.objects.get(name=tag_name)
     tools = tag.tool_set.all()
     serializer = ToolSerializer(tools, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def plantTags(request, pk):
+    tags = get_object_or_404(Plant, id=pk).tags
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def toolTags(request, pk):
+    tags = get_object_or_404(Tool, id=pk).tags
+    serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
