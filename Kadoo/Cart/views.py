@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from Backend.models import Plant, Tool
 from Cart.models import OrderModel, PlantCartModel, ToolCartModel
 
-from Cart.serializers import CartItemIdSerializer, CartItemSerializer, PlantCartSerializer, ToolCartSerializer, DesicriptionSerializer
+from Cart.serializers import CartItemIdSerializer, CartItemSerializer, PlantCartSerializer, PlantWithCountCartSerializer, ToolCartSerializer, DesicriptionSerializer, ToolWithCountCartSerializer
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -18,6 +18,8 @@ def apiOverview(request):
         '(get) Get All Tools of User':'/user-all-tools/',
         '(get) Get All Unapproved Plants of User (in Cart)':'/user-unapproved-plants-cart/',
         '(get) Get All Unapproved Tools of User (in Cart)':'/user-unapproved-tools-cart/',
+        '(get) Get All Unapproved Plants of User with Count (in Cart)':'/user-unapproved-plants-cart-count/',
+        '(get) Get All Unapproved Tools of User with Count (in Cart)':'/user-unapproved-tools-cart-count/',
         '(get) Get All Approved Plants of User':'/user-approved-plants-cart/',
         '(get) Get All Approved Tools of User':'/user-approved-tools-cart/',
         '(get) Get Price Of The Cart':'/user-price-cart/',
@@ -142,6 +144,47 @@ class GetUnapprovedToolsCart(APIView):
   if ToolsCartItems.count == 0:
     return response.Response("There is No Tool in Cart!", status=status.HTTP_404_NOT_FOUND);
   serializer = ToolCartSerializer(ToolsCartItems, many=True)
+  return response.Response(serializer.data, status=status.HTTP_200_OK)
+
+#Read ALL Unapproved Plants Plant Format
+class GetUnapprovedPlantsCartWithCount(APIView):
+ def get(self, request, format='json'):
+  if request.user.is_anonymous:
+    return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+  userToGetCart = request.user
+  PlantsCartItems = PlantCartModel.objects.filter(user=userToGetCart, is_approved=False).values('plant_item')
+  PlantsItems = Plant.objects.filter(id__in = PlantsCartItems).order_by('name')
+  PlantsCountItems = PlantCartModel.objects.filter(user=userToGetCart, is_approved=False).order_by('plant_item__name').values('plant_count')
+  index = 0
+  for PlantItem in PlantsItems:
+    countitem = PlantsCountItems[index]
+    print(countitem)
+    PlantItem.count = countitem['plant_count']
+    index = index + 1
+  if PlantsCartItems.count == 0:
+    return response.Response("There is No Plant in Cart!", status=status.HTTP_404_NOT_FOUND);
+  serializer = PlantWithCountCartSerializer(PlantsItems, many=True)
+  return response.Response(serializer.data, status=status.HTTP_200_OK)
+
+#Read All Unapproved Tools Tool Format
+class GetUnapprovedToolsCartWithCount(APIView):
+ def get(self, request, format='json'):
+  if request.user.is_anonymous:
+    return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+  userToGetCart = request.user
+  ToolsCartItems = ToolCartModel.objects.filter(user=userToGetCart, is_approved=False).values('tool_item')
+  ToolsItems = Tool.objects.filter(id__in = ToolsCartItems).order_by('name')
+  ToolsCountItems = ToolCartModel.objects.filter(user=userToGetCart, is_approved=False).order_by('tool_item__name').values('tool_count')
+  
+  index = 0
+  for ToolItem in ToolsItems:
+    countitem = ToolsCountItems[index]
+    print(countitem)
+    ToolItem.count = countitem['tool_count']
+    index = index + 1
+  if ToolsCountItems.count == 0:
+    return response.Response("There is No Plant in Cart!", status=status.HTTP_404_NOT_FOUND);
+  serializer = ToolWithCountCartSerializer(ToolsItems, many=True)
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read ALL Approved Plants
@@ -284,7 +327,7 @@ class RemovePlantFromCart(APIView):
 
 #Delete Tool
 class RemoveToolFromCart(APIView):
- def post(self, request, format='json'):
+ def delete(self, request, format='json'):
   serializer = CartItemIdSerializer(data=request.data)
   if serializer.is_valid():
    #Get Plant Data

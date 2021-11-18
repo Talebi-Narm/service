@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from .serializers import PlantSerializer, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer
 from Backend.models import Plant, Tool, Tag,Image, Album
 
+from .SFSP_views import SFSP_Overview
+from Green_House.views import GH_Overview
+
 @api_view(['GET'])
 def ProductsAPIOverview(request):
     api_urls = {
@@ -40,10 +43,15 @@ def ProductsAPIOverview(request):
         'plants With Specific Tag':'/plantsWithTag/<str:tag>/',
         'tools With Specific Tag':'/toolsWithTag/<str:tag>/',
 
+        'get a plant tags':'/plantTags/<str:pk>/',
+        'get a tool tags':'/toolTags/<str:pk>/',
+
         'images List':'/imagesList/',
         'Specific album Images':'/albumImages/<str:pk>/',
         'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
+    api_urls.update(SFSP_Overview())
+    api_urls.update(GH_Overview())
     return Response(api_urls)
 
 
@@ -233,6 +241,7 @@ def getAlbumImages(request, pk):
 
     return Response(serializer.data)
 
+# images
 @api_view(['GET'])
 def imageList(request):
     images = Image.objects.all()
@@ -248,4 +257,18 @@ def createImage(request, pk):
     if serializer.is_valid():
         serializer.save()
 
+    return Response(serializer.data)
+
+# get tags of a product
+@api_view(['GET'])
+def plantTags(request, pk):
+    tags = get_object_or_404(Plant, id=pk).tags
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def toolTags(request, pk):
+    tags = get_object_or_404(Tool, id=pk).tags
+    serializer = TagSerializer(tags, many=True)
+    return Response(serializer.data)
     return Response(serializer.data)
