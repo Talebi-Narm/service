@@ -106,6 +106,7 @@ class MemberFields(models.Model):
     address = models.TextField('address', max_length=500, blank=True)
     phone_regex = RegexValidator(regex=r'^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$', message="Phone number must be entered in the format: '+## ### ### ####'. Up to 10 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+
     objects = MemberFieldsManager()
 
     def __str__(self):
