@@ -25,6 +25,6 @@ class overrideSerializer(serializers.Serializer):
 
 class reminderSerializer(serializers.Serializer):
     useDefault = serializers.BooleanField(required=True)
-    overrides = serializers.ListField(required=False, default=[]
+    overrides = serializers.ListField(required=False, default=[],
         child = overrideSerializer(many=True)
     )
