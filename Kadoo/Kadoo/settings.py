@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'Backend_API.apps.BackendApiConfig',
     'Users.apps.UsersConfig',
     'Green_House.apps.GreenHouseConfig',
+    'Reminder.apps.ReminderConfig',
     'Cart.apps.CartConfig',
     'Specialist.apps.SpecialistConfig',
     'Ticket.apps.TicketConfig',
