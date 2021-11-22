@@ -1,21 +1,12 @@
 from rest_framework import serializers
 import datetime
 
-class timeSerializer(serializers.Serializer):
-    time = serializers.DateTimeField(required=False, default=datetime.datetime.now())
-    timeZone = serializers.CharField(required=False, default='Asia/Tehran')
+class atendeesSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
 
-class EventSerializer(serializers.Serializer):
-    summary = serializers.CharField(required=True)
-    description = serializers.CharField(required=False, default=None)
-    startTime = timeSerializer(many=False)
-    endTime = timeSerializer(many=False)
-    recurrence = serializers.ListField(required=False, default=[],
-        child = serializers.CharField(required=True)
-    )
-    atendees = serializers.ListField(required=False, default=[],
-        child = serializers.EmailField(required=True)
-    )
+class timeSerializer(serializers.Serializer):
+    dateTime = serializers.DateTimeField(required=False, default=datetime.datetime.now())
+    timeZone = serializers.CharField(required=False, default='Asia/Tehran')
 
 class overrideSerializer(serializers.Serializer):
     method = serializers.ChoiceField(required=True,
@@ -25,6 +16,16 @@ class overrideSerializer(serializers.Serializer):
 
 class reminderSerializer(serializers.Serializer):
     useDefault = serializers.BooleanField(required=True)
-    overrides = serializers.ListField(required=False, default=[],
-        child = overrideSerializer(many=True)
+    overrides = overrideSerializer(required=False, default=[], many=True)
+
+class EventSerializer(serializers.Serializer):
+    summary = serializers.CharField(required=True)
+    description = serializers.CharField(required=False, default=None)
+    start = timeSerializer(required=False, many=False)
+    end = timeSerializer(required=False, many=False)
+    recurrence = serializers.ListField(required=False, default=[],
+        child = serializers.CharField(required=True)
     )
+    atendees = atendeesSerializer(required=False, default=[], many=True)
+
+    reminders = reminderSerializer(required=False,default=None, many=False)

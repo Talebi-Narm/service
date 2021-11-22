@@ -10,4 +10,5 @@ def reminder(request):
     data = EventSerializer(data=request.data)
     if data.is_valid():
         return Response(data.data)
-    return Response('invalid data')
+    
+    return Response(data.errors)
