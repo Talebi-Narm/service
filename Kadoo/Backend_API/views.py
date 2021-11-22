@@ -164,11 +164,15 @@ def toolsWithSpecificTag(request, tag_name):
 @api_view(['GET'])
 def plantTags(request, pk):
     tags = get_object_or_404(Plant, id=pk).tags
+    if tags.count() == 0:
+        return Response('No Tags !')
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def toolTags(request, pk):
     tags = get_object_or_404(Tool, id=pk).tags
+    if tags.count() == 0:
+        return Response('No Tags !')
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
