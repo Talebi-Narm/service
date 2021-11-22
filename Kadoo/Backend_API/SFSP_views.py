@@ -61,9 +61,9 @@ def paginator(myList: list, count, page):
     return myList[first:end]
 
 def sorting(myList: list, by , order):
-    if (by != 'name' or by != 'price' or by != 'time'):
+    if (by == 'name' or by == 'price' or by == 'time'):
         if (by == 'time'):
-            return myList.order_by(by).reverse()
+            return myList.order_by('created').reverse()
         if (order == 'ASC'):
             myList = myList.order_by(by)
         elif (order == 'DES'):
@@ -616,6 +616,6 @@ def toolsSortByPrice(request, kind):
 @api_view(['GET'])
 def toolsSortByCreateDate(request):
     tools = Tool.objects.all()
-    tools = sorting(plants, 'time' , 'DES')
+    tools = sorting(tools, 'time' , 'DES')
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
