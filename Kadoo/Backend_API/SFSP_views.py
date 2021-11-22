@@ -593,6 +593,7 @@ def plantsSortByPrice(request, kind):
 
 @api_view(['GET'])
 def plantsSortByCreateDate(request):
+    plants = Plant.objects.all()
     plants = sorting(plants, 'time' , 'DES')
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
@@ -614,6 +615,7 @@ def toolsSortByPrice(request, kind):
 
 @api_view(['GET'])
 def toolsSortByCreateDate(request):
+    tools = Tool.objects.all()
     tools = sorting(plants, 'time' , 'DES')
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
