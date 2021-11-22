@@ -15,4 +15,11 @@ urlpatterns=[
     path('get-all/', views.GetTAllCoin.as_view(), name='get-all'),
     path('get/', views.GetThisUserCoin.as_view(), name='get'),
     path('get/<str:pk>/', views.GetUserCoinWithId.as_view(), name='get-id'),
+    
+    path('daily-login-update/', views.DailyUpdateLoginUserCoin.as_view(), name='daily-login-update'),
+    path('daily-watering-update/', views.DailyUpdateWateringUserCoin.as_view(), name='daily-watering-update'),
+    path('weekly-login-update/', views.WeeklyUpdateLoginUserCoin.as_view(), name='weekly-login-update'),
+    path('weekly-watering-update/', views.WeeklyUpdateWateringUserCoin.as_view(), name='weekly-watering-update'),
+    path('new-login/', views.AddLogin.as_view(), name='new-login'),
+    path('new-watering/', views.Addwatering.as_view(), name='new-watering'),
 ]
