@@ -30,12 +30,12 @@ def SFSP_Overview():
         # plants sorting
         'sorting plants by name':'/plantsSortByName/<kind>/',
         'sorting plants by price':'/plantsSortByPrice/<kind>/',
-        'sort by crated time (newest)':'/plantsSortByNewest/',
+        'sorting plants by crated time (newest)':'/plantsSortByNewest/',
 
         # tools sorting
-        'sorting tools by name (kind = "ASC" for ascending and "DES" for descending)':'/toolsSortByName/<kind>/',
-        'sorting tools by price (kind = "ASC" for ascending and "DES" for descending)':'/toolsSortByPrice/<kind>/',
-        'sort by crated time (newest)':'/toolsSortByNewest/',
+        'sorting tools by name':'/toolsSortByName/<kind>/',
+        'sorting tools by price':'/toolsSortByPrice/<kind>/',
+        'sorting tools by crated time (newest)':'/toolsSortByNewest/',
 
         # advance search
         'advance search in plants':'/plantsAdvanceSearch/<name>-<lower_price>-<higher_price>-<environment>-<water>-<light>-<growthRate>-<tag1>-<tag2>-.../<count>-<page>/<order_by>-<kind>/',
