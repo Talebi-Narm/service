@@ -70,6 +70,8 @@ def plantDetail(request, pk):
 
 @api_view(['POST'])
 def createPlant(request):
+    album = Album.objects.create(name=request.data['name'])
+    request.data['album'] = album.id
     serializer = PlantSerializer(data = request.data)
 
     if serializer.is_valid():
@@ -108,6 +110,8 @@ def toolDetail(request, pk):
 
 @api_view(['POST'])
 def createTool(request):
+    album = Album.objects.create(name=request.data['name'])
+    request.data['album'] = album.id
     serializer = ToolSerializer(data = request.data)
 
     if serializer.is_valid():
