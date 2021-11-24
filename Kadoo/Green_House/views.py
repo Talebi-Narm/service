@@ -5,6 +5,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from Coin.models import CoinManagementModel
+
 from .models import myPlant
 from Backend.models import Plant
 from .serializers import *
@@ -46,7 +48,7 @@ def addPlantToMyGreenHouse(request):
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         if Plant.objects.filter(id=serializer.data["plant"]).exists() == False:
-            return response.Response("This plant does NOT Exist!", status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            return Response("This plant does NOT Exist!", status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         _user = request.user
         _plant = Plant.objects.get(id=serializer.data['plant'])
         try :
@@ -55,6 +57,11 @@ def addPlantToMyGreenHouse(request):
             _location = None
         _myPlant = myPlant.objects.create(user=_user, plant=_plant, location=serializer.data['location'])
         _myPlant.save()
+        if _myPlant:
+            CoinData = CoinManagementModel.objects.get(user=_user)
+            CoinData.coin_vlaue -= 50
+            CoinData.used_plant_count += 1
+            CoinData.save()
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -71,4 +78,10 @@ def updatePlantInMyGreenHouse(request, pk):
     serializer = myPlantSerializer(instance =_myPlant, data=request.data)
     if serializer.is_valid():
         serializer.save()
+        if serializer:
+            if serializer.data["isArchived"] == True:
+                CoinData = CoinManagementModel.objects.get(user=request.user)
+                CoinData.coin_vlaue += 50
+                CoinData.used_plant_count -= 1
+                CoinData.save()
     return Response(serializer.data)
