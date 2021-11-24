@@ -59,6 +59,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
+    calnderID = models.CharField(max_length=150, blank=True)
     #image
     is_active = models.BooleanField(default=True)
     about = models.TextField('about', max_length=500, blank=True)
