@@ -70,6 +70,8 @@ def plantDetail(request, pk):
 
 @api_view(['POST'])
 def createPlant(request):
+    album = Album.objects.create(name=request.data['name'])
+    request.data['album'] = album.id
     serializer = PlantSerializer(data = request.data)
 
     if serializer.is_valid():
@@ -108,6 +110,8 @@ def toolDetail(request, pk):
 
 @api_view(['POST'])
 def createTool(request):
+    album = Album.objects.create(name=request.data['name'])
+    request.data['album'] = album.id
     serializer = ToolSerializer(data = request.data)
 
     if serializer.is_valid():
@@ -263,12 +267,16 @@ def createImage(request, pk):
 @api_view(['GET'])
 def plantTags(request, pk):
     tags = get_object_or_404(Plant, id=pk).tags
+    if tags.count() == 0:
+        return Response('No Tags !')
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def toolTags(request, pk):
     tags = get_object_or_404(Tool, id=pk).tags
+    if tags.count() == 0:
+        return Response('No Tags !')
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
     return Response(serializer.data)
