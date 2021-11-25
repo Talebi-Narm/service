@@ -491,7 +491,7 @@ def plantsSort(request):
 
 # tools sorting
 @api_view(['POST'])
-def toolsSortByName(request):
+def toolsSort(request):
     getData = sortSerializer(data=request.data)
     if getData.is_valid():
         tools = Tool.objects.all()

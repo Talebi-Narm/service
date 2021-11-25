@@ -61,14 +61,10 @@ urlpatterns=[
     path('toolsByTags/', sfsp_view.toolsByTags, name='toolsByTags'),
 
 # plants sorting
-    path('plantsSortByName/', sfsp_view.plantsSortByName, name='plantsSortByName'),
-    path('plantsSortByPrice/', sfsp_view.plantsSortByPrice, name='plantsSortByPrice'),
-    path('plantsSortByNewest/', sfsp_view.plantsSortByCreateDate, name='plantsSortByCreateDate'),
+    path('plantsSort/', sfsp_view.plantsSort, name='plantsSort'),
 
 # tools sorting
-    path('toolsSortByName/', sfsp_view.toolsSortByName, name='toolsSortByName'),
-    path('toolsSortByPrice/', sfsp_view.toolsSortByPrice, name='toolsSortByPrice'),
-    path('toolsSortByNewest/', sfsp_view.toolsSortByCreateDate, name='toolsSortByCreateDate'),
+    path('toolsSort/', sfsp_view.toolsSort, name='toolsSort'),
 
 # advance search
     path('plantsAdvanceSearch/', sfsp_view.plantsAdvanceSearch, name='plantsAdvanceSearch'),
