@@ -59,6 +59,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
+    calnderID = models.CharField(max_length=150, blank=True)
     #image
     is_active = models.BooleanField(default=True)
     about = models.TextField('about', max_length=500, blank=True)
@@ -106,6 +107,7 @@ class MemberFields(models.Model):
     address = models.TextField('address', max_length=500, blank=True)
     phone_regex = RegexValidator(regex=r'^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$', message="Phone number must be entered in the format: '+## ### ### ####'. Up to 10 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+
     objects = MemberFieldsManager()
 
     def __str__(self):

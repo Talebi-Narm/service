@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'Cart.apps.CartConfig',
     'Specialist.apps.SpecialistConfig',
     'Ticket.apps.TicketConfig',
+    'Coin.apps.CoinConfig',
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework',
