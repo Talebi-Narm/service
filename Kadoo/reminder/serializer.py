@@ -1,12 +1,13 @@
 from rest_framework import serializers
-import datetime
+from datetime import datetime
+import pytz
 
 class atendeesSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
 
 class timeSerializer(serializers.Serializer):
-    dateTime = serializers.DateTimeField(required=False, default=datetime.datetime.now())
-    timeZone = serializers.CharField(required=False, default='Asia/Tehran')
+    dateTime = serializers.DateTimeField(required=False, default=datetime.now())
+    timeZone = serializers.CharField(required=False, default=str(pytz.timezone('Asia/Tehran')))
 
 class overrideSerializer(serializers.Serializer):
     method = serializers.ChoiceField(required=True,

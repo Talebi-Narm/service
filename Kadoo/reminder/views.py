@@ -2,6 +2,8 @@ from __future__ import print_function
 
 from django.shortcuts import get_object_or_404
 
+from rest_framework import status
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -14,8 +16,15 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
+from django.utils import timezone
+
 @api_view(['POST'])
 def reminder(request):
+    if request.user.is_anonymous:
+        return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+
+    _user = request.user
+
     SCOPES = ['https://www.googleapis.com/auth/calendar']
     data = EventSerializer(data=request.data)
     if data.is_valid():
@@ -33,16 +42,20 @@ def reminder(request):
 
         service = build('calendar', 'v3', credentials=creds)
         
-        calendar = {
-            'summary': 'plants',
+        _calendar = {
+            'summary': 'Plants',
             'timeZone': 'Asia/Tehran'
         }
         
         try:
-            created_calendar = service.calendars().get(calendarId='KEY').execute()
+            calendar = service.calendars().get(calendarId=_user.calnderID).execute()
         except:
-            created_calendar = service.calendars().insert(body=calendar).execute()
-        event = service.events().insert(calendarId=created_calendar['id'], body=data.data).execute()
+            calendar = service.calendars().insert(body=_calendar).execute()
+            _user.calenderID = calendar['id']
+        
+        print(_user.calnderID)
+        print(calendar['id'])
+        event = service.events().insert(calendarId=calendar['id'], body=data.data).execute()
 
         return Response(data.data)
     
