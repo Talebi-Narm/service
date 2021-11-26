@@ -82,31 +82,31 @@ class tagsSerializer(serializers.Serializer):
     )
 
 class plantAdvanceSerializer(serializers.Serializer):    
-    name = serializers.CharField(required=False, default=None)
-    price = priceSerializer(required=False, default=None)
-    environment = serializers.ChoiceField(required=False, default=None,
+    name = serializers.CharField(required=False, default=None, allow_null=True,)
+    price = priceSerializer(required=False, default=None, allow_null=True)
+    environment = serializers.ChoiceField(required=False, default=None, allow_null=True,
         choices = ['cold', 'tropical', 'none']
     )
-    water = serializers.ChoiceField(required=False, default=None,
+    water = serializers.ChoiceField(required=False, default=None, allow_null=True,
         choices = ['low', 'medium', 'much']
     )
-    light = serializers.ChoiceField(required=False, default=None,
+    light = serializers.ChoiceField(required=False, default=None, allow_null=True,
         choices = ['low', 'medium', 'much']
     )
-    growthRate = serializers.ChoiceField(required=False, default=None,
+    growthRate = serializers.ChoiceField(required=False, default=None, allow_null=True,
         choices = ['low', 'medium', 'much']
     )
-    tags = serializers.ListField(required=False, default=[],
+    tags = serializers.ListField(required=False, default=[], allow_null=True,
         child = serializers.CharField(required=True)
     )
-    pagination = paginatorSerializer(required=False, default=None)
-    sort = sortSerializer(required=False, default=None)
+    pagination = paginatorSerializer(required=False, default=None, allow_null=True)
+    sort = sortSerializer(required=False, default=None, allow_null=True)
 
 class toolAdvanceSerializer(serializers.Serializer):
-    name = serializers.CharField(required=False, default=None)
-    price = priceSerializer(required=False, default=None)
-    tags = serializers.ListField(required=False, default=[],
+    name = serializers.CharField(required=False, default=None, allow_null=True)
+    price = priceSerializer(required=False, default=None, allow_null=True,)
+    tags = serializers.ListField(required=False, default=[], allow_null=True,
         child = serializers.CharField(required=True)
     )
-    pagination = paginatorSerializer(required=False, default=None)
-    sort = sortSerializer(required=False, default=None)
+    pagination = paginatorSerializer(required=False, default=None, allow_null=True)
+    sort = sortSerializer(required=False, default=None, allow_null=True)
