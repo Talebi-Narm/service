@@ -51,7 +51,8 @@ def reminder(request):
             calendar = service.calendars().get(calendarId=_user.calnderID).execute()
         except:
             calendar = service.calendars().insert(body=_calendar).execute()
-            _user.calenderID = calendar['id']
+            _user.calnderID = calendar['id']
+            _user.save()
         
         print(_user.calnderID)
         print(calendar['id'])
