@@ -205,7 +205,8 @@ def deleteAlbum(request, pk):
 
 @api_view(['GET'])
 def getAlbumImages(request, pk):
-    album = get_object_or_404(Album, id=pk)
+    plantAlbum = get_object_or_404(Plant, id=pk)
+    album = get_object_or_404(Album, name=plantAlbum)
     images = album.image_set.all()
     serializer = ImageSerializer(images, many=True)
 
