@@ -43,7 +43,8 @@ urlpatterns=[
 
 # Album Images API
     path('imageList/', views.imageList, name='imageList'),
-    path('albumImages/<str:pk>/', views.getAlbumImages, name='albumImages'),
+    path('plantAlbumImages/<str:pk>/', views.getPlantsAlbumImages, name='plantAlbumImages'),
+    path('toolAlbumImages/<str:pk>/', views.getToolsAlbumImages, name='toolAlbumImages'),
     path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
 
 # searching and filtering for plants

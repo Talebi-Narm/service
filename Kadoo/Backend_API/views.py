@@ -238,7 +238,7 @@ def deleteAlbum(request, pk):
     return Response('Item successfully deleted !')
 
 @api_view(['GET'])
-def getAlbumImages(request, pk):
+def getPlantsAlbumImages(request, pk):
     plantAlbum = get_object_or_404(Plant, id=pk)
     album = get_object_or_404(Album, name=plantAlbum)
     images = album.image_set.all()
@@ -247,6 +247,15 @@ def getAlbumImages(request, pk):
     return Response(serializer.data)
 
 # images
+@api_view(['GET'])
+def getToolsAlbumImages(request, pk):
+    toolAlbum = get_object_or_404(Tool, id=pk)
+    album = get_object_or_404(Album, name=toolAlbum)
+    images = album.image_set.all()
+    serializer = ImageSerializer(images, many=True)
+
+    return Response(serializer.data)
+
 @api_view(['GET'])
 def imageList(request):
     images = Image.objects.all()
