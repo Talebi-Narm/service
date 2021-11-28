@@ -49,16 +49,37 @@ def reminder(request):
         }
         
         try:
-            calendar = service.calendars().get(calendarId=_user.calnderID).execute()
+            calendar = service.calendarList().get(calendarId=_user.calendarID).execute()
         except:
             calendar = service.calendars().insert(body=_calendar).execute()
-            _user.calnderID = calendar['id']
+            _user.calendarID = calendar['id']
             _user.save()
         
-        print(_user.calnderID)
+        print(_user.calendarID)
         print(calendar['id'])
         event = service.events().insert(calendarId=calendar['id'], body=data.data).execute()
 
         return Response(data.data)
     
     return Response(data.errors)
+
+@api_view(['GET'])
+def deleteCreds(request):
+    if request.user.is_anonymous:
+        return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+
+    _user = request.user
+    _user.creds = None
+    _user.save()
+    return Response("delted successfully !")
+
+@api_view(['GET'])
+def deleteCalendar(request):
+    if request.user.is_anonymous:
+        return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+    _user = request.user
+    if not _user.calendarID:
+        return Response("you have no calendar !")
+    _user.calendarID = None
+    _user.save()
+    return Response("delted successfully !")

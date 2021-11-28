@@ -5,15 +5,15 @@ from django.forms import TextInput, Textarea
 
 class UserAdminConfig(UserAdmin):
     model = NewUser
-    search_fields = ('type', 'email', 'user_name', 'first_name', 'last_name', 'calnderID')
-    list_filter = ('type', 'email', 'user_name', 'first_name', 'last_name', 'is_active', 'is_staff', 'calnderID')
+    search_fields = ('type', 'email', 'user_name', 'first_name', 'last_name', 'calendarID')
+    list_filter = ('type', 'email', 'user_name', 'first_name', 'last_name', 'is_active', 'is_staff', 'calendarID')
     ordering = ('-start_date',)
-    list_display = ('email', 'type', 'user_name', 'first_name', 'last_name', 'is_active', 'is_staff', 'calnderID')
+    list_display = ('email', 'type', 'user_name', 'first_name', 'last_name', 'is_active', 'is_staff', 'calendarID')
     fieldsets = (
         (None, {'fields': ('type', 'email', 'user_name', 'first_name','last_name')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
         ('Personal', {'fields': ('about',)}),
-        ('Calendar', {'fields': ('calnderID','creds',)}),
+        ('Calendar', {'fields': ('calendarID','creds',)}),
     )
     formfield_overrides = {
         NewUser.about: {'widget': Textarea(attrs={'rows': 10, 'cols': 40})},
@@ -22,7 +22,7 @@ class UserAdminConfig(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('type', 'email', 'user_name', 'first_name','last_name', 'password1', 'password2','is_active', 'is_staff','calnderID')}
+            'fields': ('type', 'email', 'user_name', 'first_name','last_name', 'password1', 'password2','is_active', 'is_staff','calendarID')}
          ),
     )
 

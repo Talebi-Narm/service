@@ -7,7 +7,7 @@ class atendeesSerializer(serializers.Serializer):
 
 class timeSerializer(serializers.Serializer):
     dateTime = serializers.DateTimeField(required=False, default=datetime.now())
-    timeZone = serializers.CharField(required=False, default=str(pytz.timezone('Asia/Tehran')))
+    timeZone = serializers.CharField(required=False, default="Asia/Tehran")
 
 class overrideSerializer(serializers.Serializer):
     method = serializers.ChoiceField(required=True,
