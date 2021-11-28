@@ -17,6 +17,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
 from django.utils import timezone
+import json
 
 @api_view(['POST'])
 def reminder(request):
@@ -29,16 +30,16 @@ def reminder(request):
     data = EventSerializer(data=request.data)
     if data.is_valid():
         creds = None
-        if os.path.exists('token.json'):
-            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        if _user.creds:
+            creds = Credentials.from_authorized_user_info(json.loads(_user.creds), SCOPES)
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
                 creds = flow.run_local_server(port=0)
-            with open('token.json', 'w') as token:
-                token.write(creds.to_json())
+            _user.creds = creds.to_json()
+            _user.save()
 
         service = build('calendar', 'v3', credentials=creds)
         
