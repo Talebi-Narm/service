@@ -275,7 +275,6 @@ def plantsAdvanceSearch(request):
         data = {'pageCount':1}
 
         plants = Plant.objects.all()
-
         sort = getData.data['sort']
         pagination = getData.data['pagination']
 
@@ -293,14 +292,15 @@ def plantsAdvanceSearch(request):
         if (price is not None):
             lower = price['lower']
             higher = price['higher']
-            if (higher == inf and lower == 0):
-                pass
-            elif (higher == inf):
-                plants = plants.filter(price__gte = lower)
-            elif (lower == 0):
-                plants = plants.filter(price__lte = higher)
-            else:
-                plants = plants.filter(price__gt = lower, price__lt= higher)
+            if (lower is not None and higher is not None):
+                if (higher == inf and lower == 0):
+                    pass
+                elif (higher == inf):
+                    plants = plants.filter(price__gte = lower)
+                elif (lower == 0):
+                    plants = plants.filter(price__lte = higher)
+                else:
+                    plants = plants.filter(price__gt = lower, price__lt= higher)
 
         if (_environment is not None):
             plants = plants.filter(environment = _environment)
@@ -320,11 +320,13 @@ def plantsAdvanceSearch(request):
                 plants = plants.filter(tags__in=[tag.id])
 
         if (sort is not None):
-            plants = sorting(plants, sort['kind'], sort['order'])
+            if (sort['kind'] is not None and sort['order'] is not None):
+                plants = sorting(plants, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            plants = paginator(plants, pagination['count'], pagination['page'])
-            data['pageCount'] = floor(plants.count()/pagination['count']) +1
+            if (pagination['count'] is not None and pagination['page'] is not None):
+                plants = paginator(plants, pagination['count'], pagination['page'])
+                data['pageCount'] = floor(plants.count()/pagination['count']) +1
             
         serializer = PlantSerializer(plants, many=True)
 
@@ -448,14 +450,15 @@ def toolsAdvanceSearch(request):
         if (price is not None):
             lower = price['lower']
             higher = price['higher']
-            if (higher == inf and lower == 0):
-                pass
-            elif (higher == inf):
-                tools = tools.filter(price__gte = lower)
-            elif (lower == 0):
-                tools = tools.filter(price__lte = higher)
-            else:
-                tools = tools.filter(price__gt = lower, price__lt= higher)
+            if (lower is not None and higher is not None):
+                if (higher == inf and lower == 0):
+                    pass
+                elif (higher == inf):
+                    tools = tools.filter(price__gte = lower)
+                elif (lower == 0):
+                    tools = tools.filter(price__lte = higher)
+                else:
+                    tools = tools.filter(price__gt = lower, price__lt= higher)
 
         for tag in tags:
             tag = findTag(tag)
@@ -463,11 +466,13 @@ def toolsAdvanceSearch(request):
                 tools = tools.filter(tags__in=[tag.id])
 
         if (sort is not None):
-            tools = sorting(tools, sort['kind'], sort['order'])
+            if (sort['kind'] is not None and sort['order'] is not None):
+                tools = sorting(tools, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            tools = paginator(tools, pagination['count'], pagination['page'])
-            data['pageCount'] = floor(tools.count()/pagination['count']) +1
+            if (pagination['count'] is not None and pagination['page'] is not None):
+                tools = paginator(tools, pagination['count'], pagination['page'])
+                data['pageCount'] = floor(tools.count()/pagination['count']) +1
             
         serializer = ToolSerializer(tools, many=True)
 
@@ -484,7 +489,8 @@ def plantsSort(request):
         plants = Plant.objects.all()
         kind = getData.data['kind']
         order = getData.data['order']
-        plants = sorting(plants,kind,order)
+        if (sort['kind'] is not None and sort['order'] is not None):
+            plants = sorting(plants,kind,order)
         serializer = PlantSerializer(plants, many=True)
         return Response(serializer.data)
     return Response(getData.errors)
@@ -497,7 +503,8 @@ def toolsSort(request):
         tools = Tool.objects.all()
         kind = getData.data['kind']
         order = getData.data['order']
-        tools = sorting(tools,kind,order)
+        if (sort['kind'] is not None and sort['order'] is not None):
+            tools = sorting(tools,kind,order)
         serializer = ToolSerializer(tools, many=True)
         return Response(serializer.data)
     return Response(getData.errors)

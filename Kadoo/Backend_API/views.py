@@ -47,7 +47,8 @@ def ProductsAPIOverview(request):
         'get a tool tags':'/toolTags/<str:pk>/',
 
         'images List':'/imagesList/',
-        'Specific album Images':'/albumImages/<str:pk>/',
+        'Specific plant album Images':'/plantAlbumImages/<str:pk>/',
+        'Specific tool album Images':'/toolAlbumImages/<str:pk>/',
         'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
     api_urls.update(SFSP_Overview())

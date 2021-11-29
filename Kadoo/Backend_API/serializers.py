@@ -27,14 +27,14 @@ class AlbumSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class paginatorSerializer(serializers.Serializer):
-    count = serializers.IntegerField(required=True)
-    page = serializers.IntegerField(required=True)
+    count = serializers.IntegerField(required=True, allow_null=True)
+    page = serializers.IntegerField(required=True, allow_null=True)
 
 class sortSerializer(serializers.Serializer):
-    kind = serializers.ChoiceField(required=True,
+    kind = serializers.ChoiceField(required=True, allow_null=True,
         choices = ['name', 'price', 'time']
     )
-    order = serializers.ChoiceField(required=False, default='ASC',
+    order = serializers.ChoiceField(required=False, default='ASC', allow_null=True,
         choices = ['ASC', 'DES']
     )
 
@@ -44,45 +44,45 @@ class nameSerializer(serializers.Serializer):
     sort = sortSerializer(required=False, default=None)
     
 class priceSerializer(serializers.Serializer):
-    lower = serializers.IntegerField(required=False, default=0)
-    higher = serializers.IntegerField(required=False, default=inf)
+    lower = serializers.IntegerField(required=False, default=0, allow_null=True)
+    higher = serializers.IntegerField(required=False, default=inf, allow_null=True)
     pagination = paginatorSerializer(required=False, default=None)
     sort = sortSerializer(required=False, default=None)
     
 class environmentSerializer(serializers.Serializer):
-    environment = serializers.ChoiceField(required=True,
+    environment = serializers.ChoiceField(required=True, allow_null=True,
         choices = ['cold', 'tropical', 'none']
     )
     pagination = paginatorSerializer(required=False, default=None)
-    sort = sortSerializer(required=False, default=None)
+    sort = sortSerializer(required=False, default=None, allow_null=True)
     
 class waterSerializer(serializers.Serializer):
-    water = serializers.ChoiceField(required=True,
+    water = serializers.ChoiceField(required=True, allow_null=True,
         choices = ['low', 'medium', 'much']
     )
-    pagination = paginatorSerializer(required=False, default=None)
-    sort = sortSerializer(required=False, default=None)
+    pagination = paginatorSerializer(required=False, default=None, allow_null=True)
+    sort = sortSerializer(required=False, default=None, allow_null=True)
     
 class lightSerializer(serializers.Serializer):
-    light = serializers.ChoiceField(required=True,
+    light = serializers.ChoiceField(required=True,allow_null=True,
         choices = ['low', 'medium', 'much']
     )
-    pagination = paginatorSerializer(required=False, default=None)
-    sort = sortSerializer(required=False, default=None)
+    pagination = paginatorSerializer(required=False, default=None, allow_null=True)
+    sort = sortSerializer(required=False, default=None, allow_null=True)
 class growthRateSerializer(serializers.Serializer):
-    growthRate = serializers.ChoiceField(required=True,
+    growthRate = serializers.ChoiceField(required=True,allow_null=True,
         choices = ['low', 'medium', 'much']
     )
-    pagination = paginatorSerializer(required=False, default=None)
-    sort = sortSerializer(required=False, default=None)
+    pagination = paginatorSerializer(required=False, default=None, allow_null=True)
+    sort = sortSerializer(required=False, default=None, allow_null=True)
 
 class tagsSerializer(serializers.Serializer):
-    tags = serializers.ListField(required=False, default=[],
+    tags = serializers.ListField(required=False, default=[], allow_null=True,
         child = serializers.CharField(required=True)
     )
 
 class plantAdvanceSerializer(serializers.Serializer):    
-    name = serializers.CharField(required=False, default=None, allow_null=True,)
+    name = serializers.CharField(required=False, default=None, allow_null=True)
     price = priceSerializer(required=False, default=None, allow_null=True)
     environment = serializers.ChoiceField(required=False, default=None, allow_null=True,
         choices = ['cold', 'tropical', 'none']
