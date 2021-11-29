@@ -520,13 +520,16 @@ def toolsSort(request):
 def plantsPagination(request):
     getData = paginatorSerializer(data=request.data)
     if getData.is_valid():
+        data = {}
         plants = Plant.objects.all()
         count = getData.data['count']
         page = getData.data['page']
         if (count is not None and page is not None):
+            data['pageCount'] = floor(tools.count()/count) +1
             plants = paginator(plants, count, page)
         serializer = PlantSerializer(plants, many=True)
-        return Response(serializer.data)
+        data['data'] = serializer.data
+        return Response(data)
     return Response(getData.errors)
 
 # tools pagination
@@ -534,11 +537,14 @@ def plantsPagination(request):
 def toolsPagination(request):
     getData = paginatorSerializer(data=request.data)
     if getData.is_valid():
+        data = {}
         tools = Tool.objects.all()
         count = getData.data['count']
         page = getData.data['page']
         if (count is not None and page is not None):
+            data['pageCount'] = floor(tools.count()/count) +1
             tools = paginator(tools, count, page)
         serializer = ToolSerializer(tools, many=True)
-        return Response(serializer.data)
+        data['data'] = serializer.data
+        return Response(data)
     return Response(getData.errors)
