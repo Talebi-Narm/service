@@ -99,6 +99,7 @@ class plantAdvanceSerializer(serializers.Serializer):
     tags = serializers.ListField(required=False, default=[], allow_null=True,
         child = serializers.CharField(required=True)
     )
+    onlyAvailables = serializers.BooleanField(required=False, default=False, allow_null=True)
     pagination = paginatorSerializer(required=False, default=None, allow_null=True)
     sort = sortSerializer(required=False, default=None, allow_null=True)
 
@@ -108,5 +109,6 @@ class toolAdvanceSerializer(serializers.Serializer):
     tags = serializers.ListField(required=False, default=[], allow_null=True,
         child = serializers.CharField(required=True)
     )
+    onlyAvailables = serializers.BooleanField(required=False, default=False, allow_null=True)
     pagination = paginatorSerializer(required=False, default=None, allow_null=True)
     sort = sortSerializer(required=False, default=None, allow_null=True)

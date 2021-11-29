@@ -285,6 +285,10 @@ def plantsAdvanceSearch(request):
         _light = getData.data['light']
         _growthRate = getData.data['growthRate']
         tags = getData.data['tags']
+        onlyAvailables = getData['onlyAvailables']
+        
+        if (onlyAvailables is not None):
+            plant = plant.filter(count__gt = 0)
 
         if (_name is not None):
             plants = plants.filter(name__contains = _name)
@@ -443,6 +447,10 @@ def toolsAdvanceSearch(request):
         _name = getData.data['name']
         price = getData.data['price']
         tags = getData.data['tags']
+        onlyAvailables = getData['onlyAvailables']
+        
+        if (onlyAvailables is not None):
+            plant = plant.filter(count__gt = 0)
 
         if (_name is not None):
             tools = tools.filter(name__contains = _name)
