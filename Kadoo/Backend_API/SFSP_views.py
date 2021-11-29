@@ -27,15 +27,13 @@ def SFSP_Overview():
 
         # note :
         '--------note for sorting ------':'------(kind = "ASC" for ascending and "DES" for descending)----',
-        # plants sorting
-        'sorting plants by name':'/plantsSortByName/',
-        'sorting plants by price':'/plantsSortByPrice/',
-        'sorting plants by crated time (newest)':'/plantsSortByNewest/',
+        # sorting
+        'sorting plants':'/plantsSort/',
+        'sorting tools':'/toolsSort/',
 
-        # tools sorting
-        'sorting tools by name':'/toolsSortByName/',
-        'sorting tools by price':'/toolsSortByPrice/',
-        'sorting tools by crated time (newest)':'/toolsSortByNewest/',
+        # pagination
+        'pagination plants':'/plantsPagination/',
+        'pagination tools':'/toolsPagination/',
 
         # advance search
         'advance search in plants':'/plantsAdvanceSearch/',
@@ -511,8 +509,36 @@ def toolsSort(request):
         tools = Tool.objects.all()
         kind = getData.data['kind']
         order = getData.data['order']
-        if (sort['kind'] is not None and sort['order'] is not None):
+        if (kind is not None and order is not None):
             tools = sorting(tools,kind,order)
+        serializer = ToolSerializer(tools, many=True)
+        return Response(serializer.data)
+    return Response(getData.errors)
+
+# plants pagination
+@api_view(['POST'])
+def plantsPagination(request):
+    getData = paginatorSerializer(data=request.data)
+    if getData.is_valid():
+        plants = Plant.objects.all()
+        count = getData.data['count']
+        page = getData.data['page']
+        if (count is not None and page is not None):
+            plants = paginator(plants, count, page)
+        serializer = PlantSerializer(plants, many=True)
+        return Response(serializer.data)
+    return Response(getData.errors)
+
+# tools pagination
+@api_view(['POST'])
+def toolsPagination(request):
+    getData = paginatorSerializer(data=request.data)
+    if getData.is_valid():
+        tools = Tool.objects.all()
+        count = getData.data['count']
+        page = getData.data['page']
+        if (count is not None and page is not None):
+            tools = paginator(tools, count, page)
         serializer = ToolSerializer(tools, many=True)
         return Response(serializer.data)
     return Response(getData.errors)
