@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from Backend.models import Plant, Tool, Tag, Image, Album
-from math import inf
 class PlantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plant
@@ -45,7 +44,7 @@ class nameSerializer(serializers.Serializer):
     
 class priceSerializer(serializers.Serializer):
     lower = serializers.IntegerField(required=False, default=0, allow_null=True)
-    higher = serializers.IntegerField(required=False, default=inf, allow_null=True)
+    higher = serializers.IntegerField(required=False, default=-1, allow_null=True)
     pagination = paginatorSerializer(required=False, default=None)
     sort = sortSerializer(required=False, default=None)
     
