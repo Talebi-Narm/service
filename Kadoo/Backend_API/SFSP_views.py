@@ -286,7 +286,7 @@ def plantsAdvanceSearch(request):
         onlyAvailables = getData['onlyAvailables']
         
         if (onlyAvailables is not None):
-            plant = plant.filter(count__gt = 0)
+            plants = plants.filter(count__gt = 0)
 
         if (_name is not None):
             plants = plants.filter(name__contains = _name)
@@ -448,7 +448,7 @@ def toolsAdvanceSearch(request):
         onlyAvailables = getData['onlyAvailables']
         
         if (onlyAvailables is not None):
-            plant = plant.filter(count__gt = 0)
+            tools = tools.filter(count__gt = 0)
 
         if (_name is not None):
             tools = tools.filter(name__contains = _name)
