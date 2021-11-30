@@ -68,6 +68,7 @@ urlpatterns=[
 # plants and tool pagination
     path('plantsPagination/', sfsp_view.plantsPagination, name='plantsPagination'),
     path('toolsPagination/', sfsp_view.toolsPagination, name='toolsPagination'),
+    path('allPagination/', sfsp_view.allPagination, name='allPagination'),
 
 # advance search
     path('plantsAdvanceSearch/', sfsp_view.plantsAdvanceSearch, name='plantsAdvanceSearch'),

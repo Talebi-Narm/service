@@ -49,6 +49,7 @@ class Plant(models.Model):
     created = models.DateTimeField(auto_now_add = True, blank=True)
     modified = models.DateField(auto_now = True, blank=True)
     tags = models.ManyToManyField("Tag", blank = True)
+    kind = models.CharField(max_length=10, default="Plant", blank=True, editable=False)
     environment = models.CharField(max_length = 50, choices = conditions, null = True, blank = True)
     water =  models.CharField(max_length = 50, choices = quantifiers, null = True, blank = True)
     light = models.CharField( max_length = 50, choices = quantifiers, null = True, blank = True)
@@ -75,6 +76,7 @@ class Tool(models.Model):
     album = models.ForeignKey('Album', on_delete=models.SET_NULL, null = True, blank = True)
     price = models.IntegerField(null = True, blank = True)
     tags = models.ManyToManyField("Tag", blank = True)
+    kind = models.CharField(max_length=10, default="Tool", blank=True, editable=False)
     created = models.DateTimeField(auto_now_add = True, blank=True)
     modified = models.DateField(auto_now = True, blank=True)
 

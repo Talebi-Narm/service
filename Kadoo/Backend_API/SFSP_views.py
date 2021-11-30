@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from .serializers import *
 from Backend.models import Plant, Tool, Tag,Image, Album
 
-from math import inf, floor
+from math import floor
+import random
 
 # Overview
 def SFSP_Overview():
@@ -34,6 +35,7 @@ def SFSP_Overview():
         # pagination
         'pagination plants':'/plantsPagination/',
         'pagination tools':'/toolsPagination/',
+        'pagination all':'/allPagination/',
 
         # advance search
         'advance search in plants':'/plantsAdvanceSearch/',
@@ -107,14 +109,15 @@ def plantsByPrice(request):
         lower = getData.data['lower']
         higher = getData.data['higher']
 
-        if (higher == inf and lower == 0):
-            plants = Plant.objects.all()
-        elif (higher == inf):
-            plants = Plant.objects.filter(price__gte = lower)
-        elif (lower == 0):
-            plants = Plant.objects.filter(price__lte = higher)
-        else:
-            plants = Plant.objects.filter(price__gt = lower, price__lt= higher)
+        if (lower is not None and higher is not None):
+            if (higher == -1 and lower == 0):
+                plants = Plant.objects.all()
+            elif (higher == -1):
+                plants = Plant.objects.filter(price__gte = lower)
+            elif (lower == 0):
+                plants = Plant.objects.filter(price__lte = higher)
+            else:
+                plants = Plant.objects.filter(price__gt = lower, price__lt= higher)
 
         if (sort is not None):
             plants = sorting(plants, sort['kind'], sort['order'])
@@ -286,7 +289,7 @@ def plantsAdvanceSearch(request):
         onlyAvailables = getData['onlyAvailables']
         
         if (onlyAvailables is not None):
-            plant = plant.filter(count__gt = 0)
+            plants = plants.filter(count__gt = 0)
 
         if (_name is not None):
             plants = plants.filter(name__contains = _name)
@@ -295,9 +298,9 @@ def plantsAdvanceSearch(request):
             lower = price['lower']
             higher = price['higher']
             if (lower is not None and higher is not None):
-                if (higher == inf and lower == 0):
+                if (higher == -1 and lower == 0):
                     pass
-                elif (higher == inf):
+                elif (higher == -1):
                     plants = plants.filter(price__gte = lower)
                 elif (lower == 0):
                     plants = plants.filter(price__lte = higher)
@@ -377,14 +380,15 @@ def toolsByPrice(request, prices:str, _paginator, _sorting):
         lower = getData.data['lower']
         higher = getData.data['higher']
 
-        if (higher == inf and lower == 0):
-            tools = Tool.objects.all()
-        elif (higher == inf):
-            tools = Tool.objects.filter(price__gte = lower)
-        elif (lower == 0):
-            tools = Tool.objects.filter(price__lte = higher)
-        else:
-            tools = Tool.objects.filter(price__gt = lower, price__lt= higher)
+        if( lower is not None and higher is not None):
+            if (higher == -1 and lower == 0):
+                tools = Tool.objects.all()
+            elif (higher == -1):
+                tools = Tool.objects.filter(price__gte = lower)
+            elif (lower == 0):
+                tools = Tool.objects.filter(price__lte = higher)
+            else:
+                tools = Tool.objects.filter(price__gt = lower, price__lt= higher)
 
         if (sort is not None):
             tools = sorting(tools, sort['kind'], sort['order'])
@@ -448,7 +452,7 @@ def toolsAdvanceSearch(request):
         onlyAvailables = getData['onlyAvailables']
         
         if (onlyAvailables is not None):
-            plant = plant.filter(count__gt = 0)
+            tools = tools.filter(count__gt = 0)
 
         if (_name is not None):
             tools = tools.filter(name__contains = _name)
@@ -457,9 +461,9 @@ def toolsAdvanceSearch(request):
             lower = price['lower']
             higher = price['higher']
             if (lower is not None and higher is not None):
-                if (higher == inf and lower == 0):
+                if (higher == -1 and lower == 0):
                     pass
-                elif (higher == inf):
+                elif (higher == -1):
                     tools = tools.filter(price__gte = lower)
                 elif (lower == 0):
                     tools = tools.filter(price__lte = higher)
@@ -546,5 +550,25 @@ def toolsPagination(request):
             tools = paginator(tools, count, page)
         serializer = ToolSerializer(tools, many=True)
         data['data'] = serializer.data
+        return Response(data)
+    return Response(getData.errors)
+
+@api_view(['POST'])
+def allPagination(request):
+    getData = paginatorSerializer(data=request.data)
+    if getData.is_valid():
+        data = {}
+        plants = Plant.objects.all()
+        tools = Tool.objects.all()
+        count = getData.data['count']
+        page = getData.data['page']
+        if (count is not None and page is not None):
+            data['pageCount'] = floor((tools.count() + plants.count())/count) +1
+        plantsSerializer = PlantSerializer(plants, many=True)
+        toolsSerializer = ToolSerializer(tools, many=True)
+        li = plantsSerializer.data + toolsSerializer.data
+        random.shuffle(li)
+        li = paginator(li, count, page)
+        data['data'] = li
         return Response(data)
     return Response(getData.errors)
