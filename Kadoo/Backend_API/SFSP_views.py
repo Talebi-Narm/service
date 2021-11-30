@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from .serializers import *
 from Backend.models import Plant, Tool, Tag,Image, Album
 
+from math import floor
+import random
+
 # Overview
 def SFSP_Overview():
     api_urls = {
@@ -32,6 +35,7 @@ def SFSP_Overview():
         # pagination
         'pagination plants':'/plantsPagination/',
         'pagination tools':'/toolsPagination/',
+        'pagination all':'/allPagination/',
 
         # advance search
         'advance search in plants':'/plantsAdvanceSearch/',
@@ -546,5 +550,25 @@ def toolsPagination(request):
             tools = paginator(tools, count, page)
         serializer = ToolSerializer(tools, many=True)
         data['data'] = serializer.data
+        return Response(data)
+    return Response(getData.errors)
+
+@api_view(['POST'])
+def allPagination(request):
+    getData = paginatorSerializer(data=request.data)
+    if getData.is_valid():
+        data = {}
+        plants = Plant.objects.all()
+        tools = Tool.objects.all()
+        count = getData.data['count']
+        page = getData.data['page']
+        if (count is not None and page is not None):
+            data['pageCount'] = floor((tools.count() + plants.count())/count) +1
+        plantsSerializer = PlantSerializer(plants, many=True)
+        toolsSerializer = ToolSerializer(tools, many=True)
+        li = plantsSerializer.data + toolsSerializer.data
+        random.shuffle(li)
+        li = paginator(li, count, page)
+        data['data'] = li
         return Response(data)
     return Response(getData.errors)
