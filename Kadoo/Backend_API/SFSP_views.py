@@ -6,8 +6,6 @@ from rest_framework.response import Response
 from .serializers import *
 from Backend.models import Plant, Tool, Tag,Image, Album
 
-from math import inf, floor
-
 # Overview
 def SFSP_Overview():
     api_urls = {
@@ -107,14 +105,15 @@ def plantsByPrice(request):
         lower = getData.data['lower']
         higher = getData.data['higher']
 
-        if (higher == inf and lower == 0):
-            plants = Plant.objects.all()
-        elif (higher == inf):
-            plants = Plant.objects.filter(price__gte = lower)
-        elif (lower == 0):
-            plants = Plant.objects.filter(price__lte = higher)
-        else:
-            plants = Plant.objects.filter(price__gt = lower, price__lt= higher)
+        if (lower is not None and higher is not None):
+            if (higher == -1 and lower == 0):
+                plants = Plant.objects.all()
+            elif (higher == -1):
+                plants = Plant.objects.filter(price__gte = lower)
+            elif (lower == 0):
+                plants = Plant.objects.filter(price__lte = higher)
+            else:
+                plants = Plant.objects.filter(price__gt = lower, price__lt= higher)
 
         if (sort is not None):
             plants = sorting(plants, sort['kind'], sort['order'])
@@ -295,9 +294,9 @@ def plantsAdvanceSearch(request):
             lower = price['lower']
             higher = price['higher']
             if (lower is not None and higher is not None):
-                if (higher == inf and lower == 0):
+                if (higher == -1 and lower == 0):
                     pass
-                elif (higher == inf):
+                elif (higher == -1):
                     plants = plants.filter(price__gte = lower)
                 elif (lower == 0):
                     plants = plants.filter(price__lte = higher)
@@ -377,14 +376,15 @@ def toolsByPrice(request, prices:str, _paginator, _sorting):
         lower = getData.data['lower']
         higher = getData.data['higher']
 
-        if (higher == inf and lower == 0):
-            tools = Tool.objects.all()
-        elif (higher == inf):
-            tools = Tool.objects.filter(price__gte = lower)
-        elif (lower == 0):
-            tools = Tool.objects.filter(price__lte = higher)
-        else:
-            tools = Tool.objects.filter(price__gt = lower, price__lt= higher)
+        if( lower is not None and higher is not None):
+            if (higher == -1 and lower == 0):
+                tools = Tool.objects.all()
+            elif (higher == -1):
+                tools = Tool.objects.filter(price__gte = lower)
+            elif (lower == 0):
+                tools = Tool.objects.filter(price__lte = higher)
+            else:
+                tools = Tool.objects.filter(price__gt = lower, price__lt= higher)
 
         if (sort is not None):
             tools = sorting(tools, sort['kind'], sort['order'])
@@ -457,9 +457,9 @@ def toolsAdvanceSearch(request):
             lower = price['lower']
             higher = price['higher']
             if (lower is not None and higher is not None):
-                if (higher == inf and lower == 0):
+                if (higher == -1 and lower == 0):
                     pass
-                elif (higher == inf):
+                elif (higher == -1):
                     tools = tools.filter(price__gte = lower)
                 elif (lower == 0):
                     tools = tools.filter(price__lte = higher)
