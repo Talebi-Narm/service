@@ -27,7 +27,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 class paginatorSerializer(serializers.Serializer):
     count = serializers.IntegerField(required=True, allow_null=True)
-    page = serializers.IntegerField(required=True, allow_null=True)
+    page = serializers.IntegerField(required=False, default=1, allow_null=True)
 
 class sortSerializer(serializers.Serializer):
     kind = serializers.ChoiceField(required=True, allow_null=True,

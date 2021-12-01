@@ -63,11 +63,11 @@ def paginator(myList: list, count, page):
 def sorting(myList: list, by , order):
     if (by == 'name' or by == 'price' or by == 'time'):
         if (by == 'time'):
-            return myList.order_by('created').reverse()
+            return sorted(myList, key=lambda x:x['created'], reverse=True)
         if (order == 'ASC'):
-            myList = myList.order_by(by)
+            return sorted(myList, key=lambda x:x[by])
         elif (order == 'DES'):
-            myList = myList.order_by(by).reverse()
+            return sorted(myList, key=lambda x:x[by], reverse=True)
     
     return myList
 
@@ -324,17 +324,23 @@ def plantsAdvanceSearch(request):
             if tag is not None:
                 plants = plants.filter(tags__in=[tag.id])
 
+        serializer = PlantSerializer(plants, many=True)
+        li = serializer.data
+        
+        min_price = min(li, key=lambda x:x['price'])
+        max_price = max(li, key=lambda x:x['price'])
+
+        data['priceBound'] = {'lower':min_price['price'], 'higher':max_price['price']}
+
         if (sort is not None):
             if (sort['kind'] is not None and sort['order'] is not None):
-                plants = sorting(plants, sort['kind'], sort['order'])
+                li = sorting(li, sort['kind'], sort['order'])
 
         if(pagination is not None):
             if (pagination['count'] is not None and pagination['page'] is not None):
-                plants = paginator(plants, pagination['count'], pagination['page'])
-                data['pageCount'] = floor(plants.count()/pagination['count']) +1
+                li = paginator(li, pagination['count'], pagination['page'])
+                data['pageCount'] = floor(len(li)/pagination['count']) +1
             
-        serializer = PlantSerializer(plants, many=True)
-
         data['data'] = serializer.data
 
         return Response(data)
@@ -474,17 +480,23 @@ def toolsAdvanceSearch(request):
             tag = findTag(tag)
             if tag is not None:
                 tools = tools.filter(tags__in=[tag.id])
+            
+        serializer = ToolSerializer(tools, many=True)
+        li = serializer.data
+        
+        min_price = min(li, key=lambda x:x['price'])
+        max_price = max(li, key=lambda x:x['price'])
+
+        data['priceBound'] = {'lower':min_price['price'], 'higher':max_price['price']}
 
         if (sort is not None):
             if (sort['kind'] is not None and sort['order'] is not None):
-                tools = sorting(tools, sort['kind'], sort['order'])
+                li = sorting(li, sort['kind'], sort['order'])
 
         if(pagination is not None):
             if (pagination['count'] is not None and pagination['page'] is not None):
-                tools = paginator(tools, pagination['count'], pagination['page'])
-                data['pageCount'] = floor(tools.count()/pagination['count']) +1
-            
-        serializer = ToolSerializer(tools, many=True)
+                li = paginator(li, pagination['count'], pagination['page'])
+                data['pageCount'] = floor(len(li)/pagination['count']) +1
 
         data['data'] = serializer.data
 
@@ -499,7 +511,7 @@ def plantsSort(request):
         plants = Plant.objects.all()
         kind = getData.data['kind']
         order = getData.data['order']
-        if (sort['kind'] is not None and sort['order'] is not None):
+        if (kind is not None and order is not None):
             plants = sorting(plants,kind,order)
         serializer = PlantSerializer(plants, many=True)
         return Response(serializer.data)
@@ -567,7 +579,7 @@ def allPagination(request):
         plantsSerializer = PlantSerializer(plants, many=True)
         toolsSerializer = ToolSerializer(tools, many=True)
         li = plantsSerializer.data + toolsSerializer.data
-        random.shuffle(li)
+        li = sorted(li, key= lambda x:x['price'], reverse=True)
         li = paginator(li, count, page)
         data['data'] = li
         return Response(data)
