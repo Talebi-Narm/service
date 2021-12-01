@@ -567,7 +567,7 @@ def allPagination(request):
         plantsSerializer = PlantSerializer(plants, many=True)
         toolsSerializer = ToolSerializer(tools, many=True)
         li = plantsSerializer.data + toolsSerializer.data
-        random.shuffle(li)
+        li = sorted(li, key= lambda x:x['price'], reverse=True)
         li = paginator(li, count, page)
         data['data'] = li
         return Response(data)
