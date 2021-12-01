@@ -47,7 +47,8 @@ def ProductsAPIOverview(request):
         'get a tool tags':'/toolTags/<str:pk>/',
 
         'images List':'/imagesList/',
-        'Specific album Images':'/albumImages/<str:pk>/',
+        'Specific plant album Images':'/plantAlbumImages/<str:pk>/',
+        'Specific tool album Images':'/toolAlbumImages/<str:pk>/',
         'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
     api_urls.update(SFSP_Overview())
@@ -70,6 +71,8 @@ def plantDetail(request, pk):
 
 @api_view(['POST'])
 def createPlant(request):
+    album = Album.objects.create(name=request.data['name'])
+    request.data['album'] = album.id
     serializer = PlantSerializer(data = request.data)
 
     if serializer.is_valid():
@@ -108,6 +111,8 @@ def toolDetail(request, pk):
 
 @api_view(['POST'])
 def createTool(request):
+    album = Album.objects.create(name=request.data['name'])
+    request.data['album'] = album.id
     serializer = ToolSerializer(data = request.data)
 
     if serializer.is_valid():
@@ -234,14 +239,24 @@ def deleteAlbum(request, pk):
     return Response('Item successfully deleted !')
 
 @api_view(['GET'])
-def getAlbumImages(request, pk):
-    album = get_object_or_404(Album, id=pk)
+def getPlantsAlbumImages(request, pk):
+    plantAlbum = get_object_or_404(Plant, id=pk)
+    album = get_object_or_404(Album, name=plantAlbum)
     images = album.image_set.all()
     serializer = ImageSerializer(images, many=True)
 
     return Response(serializer.data)
 
 # images
+@api_view(['GET'])
+def getToolsAlbumImages(request, pk):
+    toolAlbum = get_object_or_404(Tool, id=pk)
+    album = get_object_or_404(Album, name=toolAlbum)
+    images = album.image_set.all()
+    serializer = ImageSerializer(images, many=True)
+
+    return Response(serializer.data)
+
 @api_view(['GET'])
 def imageList(request):
     images = Image.objects.all()
@@ -263,12 +278,16 @@ def createImage(request, pk):
 @api_view(['GET'])
 def plantTags(request, pk):
     tags = get_object_or_404(Plant, id=pk).tags
+    if tags.count() == 0:
+        return Response('No Tags !')
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def toolTags(request, pk):
     tags = get_object_or_404(Tool, id=pk).tags
+    if tags.count() == 0:
+        return Response('No Tags !')
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
     return Response(serializer.data)
