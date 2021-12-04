@@ -2,11 +2,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_swagger.views import get_swagger_view
 
+schema_view = get_swagger_view(title='Kadoo Project Swagger')
 
 urlpatterns = [
     path('', include('Backend.urls')),
-    
+    path('swagger/', schema_view),
+    path('accounts/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('Backend_API.urls')),
     path('api/', include('Green_House.urls')),
