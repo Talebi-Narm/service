@@ -40,6 +40,7 @@ def SFSP_Overview():
         # advance search
         'advance search in plants':'/plantsAdvanceSearch/',
         'advance search in tools':'/toolsAdvanceSearch/',
+        'advance search in all products':'/allAdvanceSearch/',
         }
     return api_urls
 
@@ -294,19 +295,6 @@ def plantsAdvanceSearch(request):
         if (_name is not None):
             plants = plants.filter(name__contains = _name)
 
-        if (price is not None):
-            lower = price['lower']
-            higher = price['higher']
-            if (lower is not None and higher is not None):
-                if (higher == -1 and lower == 0):
-                    pass
-                elif (higher == -1):
-                    plants = plants.filter(price__gte = lower)
-                elif (lower == 0):
-                    plants = plants.filter(price__lte = higher)
-                else:
-                    plants = plants.filter(price__gt = lower, price__lt= higher)
-
         if (_environment is not None):
             plants = plants.filter(environment = _environment)
 
@@ -330,6 +318,19 @@ def plantsAdvanceSearch(request):
         min_price = min(li, key=lambda x:x['price'])
         max_price = max(li, key=lambda x:x['price'])
 
+        if (price is not None):
+            lower = price['lower']
+            higher = price['higher']
+            if (lower is not None and higher is not None):
+                if (higher == -1 and lower == 0):
+                    pass
+                elif (higher == -1):
+                    li = list(filter(lambda x:x['price'] >= lower, li))
+                elif (lower == 0):                    
+                    li = list(filter(lambda x:x['price'] <= higher, li))
+                else:
+                    li = list(filter(lambda x:x['price'] >= lower and x['price'] <= higher, li))
+
         data['priceBound'] = {'lower':min_price['price'], 'higher':max_price['price']}
 
         if (sort is not None):
@@ -341,7 +342,7 @@ def plantsAdvanceSearch(request):
                 li = paginator(li, pagination['count'], pagination['page'])
                 data['pageCount'] = ceil(len(li)/pagination['count'])
             
-        data['data'] = serializer.data
+        data['data'] = li
 
         return Response(data)
     return Response(getData.errors)
@@ -442,7 +443,7 @@ def toolsByTags(request):
 # advance
 @api_view(['POST'])
 def toolsAdvanceSearch(request):
-    getData = plantAdvanceSerializer(data=request.data)
+    getData = toolAdvanceSerializer(data=request.data)
     if getData.is_valid():
 
         data = {'pageCount':1}
@@ -463,19 +464,6 @@ def toolsAdvanceSearch(request):
         if (_name is not None):
             tools = tools.filter(name__contains = _name)
 
-        if (price is not None):
-            lower = price['lower']
-            higher = price['higher']
-            if (lower is not None and higher is not None):
-                if (higher == -1 and lower == 0):
-                    pass
-                elif (higher == -1):
-                    tools = tools.filter(price__gte = lower)
-                elif (lower == 0):
-                    tools = tools.filter(price__lte = higher)
-                else:
-                    tools = tools.filter(price__gt = lower, price__lt= higher)
-
         for tag in tags:
             tag = findTag(tag)
             if tag is not None:
@@ -487,8 +475,21 @@ def toolsAdvanceSearch(request):
         min_price = min(li, key=lambda x:x['price'])
         max_price = max(li, key=lambda x:x['price'])
 
-        data['priceBound'] = {'lower':min_price['price'], 'higher':max_price['price']}
+        if (price is not None):
+            lower = price['lower']
+            higher = price['higher']
+            if (lower is not None and higher is not None):
+                if (higher == -1 and lower == 0):
+                    pass
+                elif (higher == -1):
+                    li = list(filter(lambda x:x['price'] >= lower, li))
+                elif (lower == 0):                    
+                    li = list(filter(lambda x:x['price'] <= higher, li))
+                else:
+                    li = list(filter(lambda x:x['price'] >= lower and x['price'] <= higher, li))
 
+        data['priceBound'] = {'lower':min_price['price'], 'higher':max_price['price']}
+        
         if (sort is not None):
             if (sort['kind'] is not None and sort['order'] is not None):
                 li = sorting(li, sort['kind'], sort['order'])
@@ -498,7 +499,7 @@ def toolsAdvanceSearch(request):
                 li = paginator(li, pagination['count'], pagination['page'])
                 data['pageCount'] = ceil(len(li)/pagination['count'])
 
-        data['data'] = serializer.data
+        data['data'] = li
 
         return Response(data)
     return Response(getData.errors)
@@ -583,5 +584,69 @@ def allPagination(request):
         li = sorted(li, key= lambda x:x['price'], reverse=True)
         li = paginator(li, count, page)
         data['data'] = li
+        return Response(data)
+    return Response(getData.errors)
+
+# all products advance search
+@api_view(['POST'])
+def allAdvanceSearch(request):
+    getData = toolAdvanceSerializer(data=request.data)
+    if getData.is_valid():
+
+        data = {'pageCount':1}
+
+        plants = Plant.objects.all()
+        tools = Tool.objects.all()
+
+        sort = getData.data['sort']
+        pagination = getData.data['pagination']
+
+        _name = getData.data['name']
+        price = getData.data['price']
+        onlyAvailables = getData['onlyAvailables']
+        
+        if (onlyAvailables is not None):
+            plants = plants.filter(count__gt = 0)
+            tools = tools.filter(count__gt = 0)
+
+        if (_name is not None):
+            plants = plants.filter(name__contains = _name)
+            tools = tools.filter(name__contains = _name)
+            
+        plantsSerializer = PlantSerializer(plants, many=True)
+        toolsSerializer = ToolSerializer(tools, many=True)
+        li = plantsSerializer.data + toolsSerializer.data
+        
+        min_price = min(li, key=lambda x:x['price'])
+        max_price = max(li, key=lambda x:x['price'])
+
+        if (price is not None):
+            lower = price['lower']
+            higher = price['higher']
+            if (lower is not None and higher is not None):
+                if (higher == -1 and lower == 0):
+                    pass
+                elif (higher == -1):
+                    li = list(filter(lambda x:x['price'] >= lower, li))
+                elif (lower == 0):                    
+                    li = list(filter(lambda x:x['price'] <= higher, li))
+                else:
+                    li = list(filter(lambda x:x['price'] >= lower and x['price'] <= higher, li))
+
+        data['priceBound'] = {'lower':min_price['price'], 'higher':max_price['price']}
+
+        if (sort is not None):
+            if (sort['kind'] is not None and sort['order'] is not None):
+                li = sorting(li, sort['kind'], sort['order'])
+        else:
+            li = sorting(li, "name", "ASC")
+
+        if(pagination is not None):
+            if (pagination['count'] is not None and pagination['page'] is not None):
+                li = paginator(li, pagination['count'], pagination['page'])
+                data['pageCount'] = ceil(len(li)/pagination['count'])
+
+        data['data'] = li
+
         return Response(data)
     return Response(getData.errors)
