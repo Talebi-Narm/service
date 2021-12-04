@@ -27,7 +27,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 class paginatorSerializer(serializers.Serializer):
     count = serializers.IntegerField(required=True, allow_null=True)
-    page = serializers.IntegerField(required=True, allow_null=True)
+    page = serializers.IntegerField(required=False, default=1, allow_null=True)
 
 class sortSerializer(serializers.Serializer):
     kind = serializers.ChoiceField(required=True, allow_null=True,
@@ -108,6 +108,13 @@ class toolAdvanceSerializer(serializers.Serializer):
     tags = serializers.ListField(required=False, default=[], allow_null=True,
         child = serializers.CharField(required=True)
     )
+    onlyAvailables = serializers.BooleanField(required=False, default=False, allow_null=True)
+    pagination = paginatorSerializer(required=False, default=None, allow_null=True)
+    sort = sortSerializer(required=False, default=None, allow_null=True)
+
+class allAdvanceSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False, default=None, allow_null=True)
+    price = priceSerializer(required=False, default=None, allow_null=True,)
     onlyAvailables = serializers.BooleanField(required=False, default=False, allow_null=True)
     pagination = paginatorSerializer(required=False, default=None, allow_null=True)
     sort = sortSerializer(required=False, default=None, allow_null=True)
