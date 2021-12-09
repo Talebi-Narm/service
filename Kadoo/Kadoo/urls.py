@@ -18,7 +18,8 @@ urlpatterns = [
     path('api/user/', include('Users.urls', namespace='users')),
     path('api/cart/', include('Cart.urls', namespace='cart')),
     path('api/specialist/', include('Specialist.urls', namespace='specialist')),
-    path('api/ticket/', include('Ticket.urls', namespace='specialist')),
+    path('api/ticket/', include('Ticket.urls', namespace='ticket')),
+    path('api/coin/', include('Coin.urls', namespace='coin')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
