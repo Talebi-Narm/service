@@ -9,7 +9,7 @@ from Coin.models import CoinManagementModel, LastSeenLogModel, LastWateringLogMo
 
 import datetime
 
-from serializers import CoinSerializer, CoinValueSerializer, CoinValueWithIdSerializer
+from .serializers import CoinSerializer, CoinValueSerializer, CoinValueWithIdSerializer
 from Users.models import Member
 
 @api_view(['GET'])
