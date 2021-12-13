@@ -55,8 +55,6 @@ def reminder(request):
             _user.calendarID = calendar['id']
             _user.save()
         
-        print(_user.calendarID)
-        print(calendar['id'])
         event = service.events().insert(calendarId=calendar['id'], body=data.data).execute()
 
         return Response(data.data)
@@ -71,7 +69,7 @@ def deleteCreds(request):
     _user = request.user
     _user.creds = None
     _user.save()
-    return Response("delted successfully !")
+    return Response("Email disconnected successfully !")
 
 @api_view(['GET'])
 def deleteCalendar(request):
@@ -82,4 +80,4 @@ def deleteCalendar(request):
         return Response("you have no calendar !")
     _user.calendarID = None
     _user.save()
-    return Response("delted successfully !")
+    return Response("Calendar deleted successfully !")

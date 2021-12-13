@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from datetime import datetime
-import pytz
 
 class atendeesSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
@@ -21,6 +20,7 @@ class reminderSerializer(serializers.Serializer):
 
 class EventSerializer(serializers.Serializer):
     summary = serializers.CharField(required=True)
+    location = serializers.CharField(required=False, default=None)
     description = serializers.CharField(required=False, default=None)
     start = timeSerializer(required=False, many=False)
     end = timeSerializer(required=False, many=False)
