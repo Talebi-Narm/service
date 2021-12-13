@@ -16,7 +16,7 @@ from Users.models import Member
 def apiOverview(request):
     api_urls = {
         '(post) Update Coin Value With New Value (*value)':'/upadte-value/',
-        '(post) Update Coin Value With New Value For User With ID (*Id,*value)':'/update-value/<str:pk>/',
+        '(post) Update Coin Value With New Value For User With ID (*Id,*value)':'/update-value-Id/',
         '(post) Add New Value To Coin Value (*value)':'/add-value/',
         '(post) Add New Value To Coin Value For User With ID (*Id,*value)':'/add-value-Id/',
         '(post) Reduce New Value From Coin Value (*value)':'/reduce-value/',
@@ -162,15 +162,18 @@ class DailyUpdateLoginUserCoin(APIView):
         YesterdayDate = datetime.date.today() - datetime.timedelta(days=1)
         print(TodayDate)
         print(YesterdayDate)
-        CountLogInToday = LastSeenLogModel.objects.filter(date__gte = TodayDate).count()
-        CountLogInYesterday = LastSeenLogModel.objects.filter(date__gte = TodayDate).count()
-        if (CountLogInToday == 1 and CountLogInYesterday != 0):
+        CountLogInToday = LastSeenLogModel.objects.filter(date = TodayDate).count()
+        CountLogInYesterday = LastSeenLogModel.objects.filter(date= YesterdayDate).count()
+        print(CountLogInToday)
+        print(CountLogInYesterday)
+        if (CountLogInToday != 0 and CountLogInYesterday != 0):
             CoinValue = 5
             CoinData.coin_value += CoinValue
             CoinData.save()
             if CoinData:
                 return Response("Keep Going! Your Doing Good!", status=status.HTTP_200_OK)
             return Response("OOOPS! Something Went Wrong!", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("No Login for past two days.", status=status.HTTP_202_ACCEPTED)
 
 #Auto Update Watering Daily Coin This User
 class DailyUpdateWateringUserCoin(APIView):
@@ -183,8 +186,8 @@ class DailyUpdateWateringUserCoin(APIView):
         YesterdayDate = datetime.date.today() - datetime.timedelta(days=1)
         print(TodayDate)
         print(YesterdayDate)
-        CountLogInToday = LastWateringLogModel.objects.filter(date__gte = TodayDate).count()
-        CountLogInYesterday = LastWateringLogModel.objects.filter(date__gte = TodayDate).count()
+        CountLogInToday = LastWateringLogModel.objects.filter(date = TodayDate).count()
+        CountLogInYesterday = LastWateringLogModel.objects.filter(date = YesterdayDate).count()
         if (CountLogInToday == 1 and CountLogInYesterday != 0):
             CoinValue = 7
             CoinData.coin_value += CoinValue
@@ -192,6 +195,7 @@ class DailyUpdateWateringUserCoin(APIView):
             if CoinData:
                 return Response("Keep Going! Your Doing Good!", status=status.HTTP_200_OK)
             return Response("OOOPS! Something Went Wrong!", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("No Login for past two days.", status=status.HTTP_202_ACCEPTED)
 
 #Auto Update Login Weekly Coin This User
 class WeeklyUpdateLoginUserCoin(APIView):
@@ -203,9 +207,10 @@ class WeeklyUpdateLoginUserCoin(APIView):
         flag = True
         for i in range(6):
             DateToCheck = datetime.date.today() - datetime.timedelta(days=i)
-            CountLogIn = LastSeenLogModel.objects.filter(date__gte = DateToCheck).count()
+            CountLogIn = LastSeenLogModel.objects.filter(date = DateToCheck).count()
             if (CountLogIn == 0):
                 flag = False
+                break
         if flag == True:
             CoinValue = 25
             CoinData.coin_value += CoinValue
@@ -213,6 +218,7 @@ class WeeklyUpdateLoginUserCoin(APIView):
             if CoinData:
                 return Response("Keep Going! Your Doing Good!", status=status.HTTP_200_OK)
             return Response("OOOPS! Something Went Wrong!", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("No Login for past week.", status=status.HTTP_202_ACCEPTED)
 
 #Auto Update Watering Weekly Coin This User
 class WeeklyUpdateWateringUserCoin(APIView):
@@ -224,9 +230,10 @@ class WeeklyUpdateWateringUserCoin(APIView):
         flag = True
         for i in range(6):
             DateToCheck = datetime.date.today() - datetime.timedelta(days=i)
-            CountLogIn = LastWateringLogModel.objects.filter(date__gte = DateToCheck).count()
+            CountLogIn = LastWateringLogModel.objects.filter(date = DateToCheck).count()
             if (CountLogIn == 0):
                 flag = False
+                break
         if flag == True:
             CoinValue = 50
             CoinData.coin_value += CoinValue
@@ -234,6 +241,7 @@ class WeeklyUpdateWateringUserCoin(APIView):
             if CoinData:
                 return Response("Keep Going! Your Doing Good!", status=status.HTTP_200_OK)
             return Response("OOOPS! Something Went Wrong!", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response("No Login for past week.", status=status.HTTP_202_ACCEPTED)
 
 
 #------- Read
@@ -242,7 +250,7 @@ class WeeklyUpdateWateringUserCoin(APIView):
 #Read All Coin Data
 class GetTAllCoin(APIView):
     def get(self, request, format='json'):
-        CoinInfo = CoinManagementModel.objects.all
+        CoinInfo = CoinManagementModel.objects.all()
         serializer = CoinSerializer(CoinInfo, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -252,7 +260,10 @@ class GetThisUserCoin(APIView):
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToGet = request.user
-        CoinInfo = CoinManagementModel.objects.filter(user = UserToGet)
+        if CoinManagementModel.objects.filter(user = UserToGet).exists() == False:
+            return Response("There is No Data for this User", status=status.HTTP_404_NOT_FOUND)
+        CoinInfo = CoinManagementModel.objects.get(user = UserToGet)
+        print(CoinInfo)
         serializer = CoinSerializer(CoinInfo)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -262,7 +273,7 @@ class GetUserCoinWithId(APIView):
         if Member.objects.filter(id=pk).exists() == False:
             return Response("This User Does NOT exist!", status=status.HTTP_404_NOT_FOUND)
         UserToGet = Member.objects.get(id=pk)
-        CoinInfo = CoinManagementModel.objects.filter(user = UserToGet)
+        CoinInfo = CoinManagementModel.objects.get(user = UserToGet)
         serializer = CoinSerializer(CoinInfo)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
