@@ -16,6 +16,7 @@ from Users.serializers import UserSerializer
 
 @api_view(['GET'])
 def apiOverview(request):
+    """See All Specialist API"""
     api_urls = {
         '(post) Register A User (*email,*username,*firstname,*lastname,*password)':'/register/',
         '(get) Get All Specialists Primary Info':'/all-primary/',
