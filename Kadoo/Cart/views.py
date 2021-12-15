@@ -2,7 +2,7 @@ from django.db.models import ProtectedError
 from rest_framework.decorators import api_view
 
 from django.shortcuts import render
-from rest_framework import response, status
+from rest_framework import generics, response, status
 from rest_framework.views import APIView
 from Backend.models import Plant, Tool
 from Cart.models import OrderModel, PlantCartModel, ToolCartModel
@@ -42,8 +42,13 @@ def apiOverview(request):
 ###############
 
 #Create Plant
-class AddPlantToCart(APIView):
+class AddPlantToCart(generics.GenericAPIView):
+ serializer_class = CartItemSerializer
  def post(self, request, format='json'):
+  """
+    Add A Plnat To Cart (*id,count=1,decription)
+  """
+  
   serializer = CartItemSerializer(data=request.data)
   if serializer.is_valid():
     #Get All Data
