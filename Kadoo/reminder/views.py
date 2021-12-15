@@ -55,8 +55,8 @@ def reminder(request):
             _user.calendarID = calendar['id']
             _user.save()
         
-        event = service.events().insert(calendarId=calendar['id'], body=data.data).execute()
-
+        event = service.events().insert(calendarId=_user.calendarID, body=data.data).execute()
+        
         return Response(data.data)
     
     return Response(data.errors)
