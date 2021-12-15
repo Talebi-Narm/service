@@ -2,6 +2,7 @@ from django.db.models.deletion import ProtectedError
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
@@ -37,9 +38,11 @@ def apiOverview(request):
 ###############
 
 #Create Specialists
-class CustomSpecialistCreate(APIView):
+class CustomSpecialistCreate(generics.GenericAPIView):
+    serializer_class = CustomSpecialistSerializer
     permission_classes = [AllowAny]
     def post(self, request, format='json'):
+        """Register A User (*email,*username,*firstname,*lastname,*password)"""
         serializer = CustomSpecialistSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -54,22 +57,28 @@ class CustomSpecialistCreate(APIView):
 ###############
 
 #Get All Specialists Primary Info
-class GetAllSpecialistPrimaryInfo(APIView):
+class GetAllSpecialistPrimaryInfo(generics.GenericAPIView):
+ serializer_class = UserSerializer
  def get(self, request, format='json'):
+   """Get All Specialists Primary Info"""
    Specialists = Specialist.objects.filter(type=NewUser.Types.SPECIALIST)
    serializer = UserSerializer(Specialists, many=True)
    return Response(serializer.data)
 
 #Get All Specialists Secondary Info
-class GetAllSpecialistSecondaryInfo(APIView):
+class GetAllSpecialistSecondaryInfo(generics.GenericAPIView):
+ serializer_class = SpecialistCompeleteInfoSerializer
  def get(self, request, format='json'):
+   """Get All Specialists Secondary Info"""
    Specialists = SpecilistFields.objects.all()
    serializer = SpecialistCompeleteInfoSerializer(Specialists, many=True)
    return Response(serializer.data)
 
 #Get This Specialists Primary Info
-class GetThisSpecialistPrimaryInfo(APIView):
+class GetThisSpecialistPrimaryInfo(generics.GenericAPIView):
+ serializer_class = UserSerializer
  def get(self, request, format='json'):
+   """Get This Specialist Primary Info"""
    if request.user.is_anonymous:
     return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
    if request.user.type == NewUser.Types.MEMBER:
@@ -80,8 +89,10 @@ class GetThisSpecialistPrimaryInfo(APIView):
    return Response(serializer.data)
 
 #Get This Specialists Secondary Info
-class GetThisSpecialistPrimaryInfo(APIView):
+class GetThisSpecialistPrimaryInfo(generics.GenericAPIView):
+ serializer_class = SpecialistCompeleteInfoSerializer
  def get(self, request, format='json'):
+   """Get This Specialist Secondary Info"""
    if request.user.is_anonymous:
     return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
    if request.user.type == NewUser.Types.MEMBER:
@@ -92,8 +103,10 @@ class GetThisSpecialistPrimaryInfo(APIView):
    return Response(serializer.data)
 
 #Get Specialists Secondary Info By Id
-class GetSpecialistIdPrimaryInfo(APIView):
+class GetSpecialistIdPrimaryInfo(generics.GenericAPIView):
+ serializer_class = SpecialistCompeleteInfoSerializer
  def post(self, request, pk):
+   """Get Specialist Secondary Info By Id"""
    if request.user.type == NewUser.Types.MEMBER:
     return Response("You Cant Get Info!", status=status.HTTP_401_UNAUTHORIZED)
    SpecialistToGet = NewUser.objects.get(id=pk)
@@ -106,8 +119,10 @@ class GetSpecialistIdPrimaryInfo(APIView):
 ###############
 
 #Create or Secondary Info
-class UpdateSpecialistInfo(APIView):
+class UpdateSpecialistInfo(generics.GenericAPIView):
+    serializer_class = SpecialistCompeleteInfoSerializer
     def post(self, request, format='json'):
+        """Update this User Secondary Info (id_code, birth_date, degree, major, phone_number, about,address,is_online, rate)"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         if request.user.type == NewUser.Types.MEMBER:
@@ -132,8 +147,10 @@ class UpdateSpecialistInfo(APIView):
 
 #------- DELETE
 ###############
-class RemoveSpecialist(APIView):
+class RemoveSpecialist(generics.GenericAPIView):
+ serializer_class = SpecialistIdSerializer
  def delete(self, request, format='json'):
+  """Delete Specialist By Id (*id)"""
   serializer = SpecialistIdSerializer(data=request.data)
   if serializer.is_valid():
    if request.user.type == NewUser.Types.MEMBER:
