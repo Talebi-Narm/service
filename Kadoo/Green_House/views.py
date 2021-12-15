@@ -25,6 +25,7 @@ def GH_Overview():
 
 @api_view(['GET'])
 def allOfMyPlant(request):
+    """see green house plants"""
     if request.user.is_anonymous:
         return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
     _user = request.user
@@ -34,6 +35,7 @@ def allOfMyPlant(request):
 
 @api_view(['GET'])
 def allOfMyArchivedPlant(request):
+    """see green archived house plants"""
     if request.user.is_anonymous:
         return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
     _user = request.user
@@ -43,6 +45,7 @@ def allOfMyArchivedPlant(request):
 
 @api_view(['POST'])
 def addPlantToMyGreenHouse(request):
+    """add to green house plants"""
     serializer = addPlantSerializer(data=request.data)
     if serializer.is_valid():
         if request.user.is_anonymous:
@@ -66,6 +69,7 @@ def addPlantToMyGreenHouse(request):
 
 @api_view(['GET'])
 def getPlant(request, pk):
+    """get a plant information"""
     if request.user.is_anonymous:
         return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
     _myPlant = get_object_or_404(myPlant, id=pk)
@@ -74,6 +78,7 @@ def getPlant(request, pk):
 
 @api_view(['POST'])
 def updatePlantInMyGreenHouse(request, pk):
+    """update plant in green house"""
     _myPlant = get_object_or_404(myPlant, id=pk)
     serializer = myPlantSerializer(instance =_myPlant, data=request.data)
     if serializer.is_valid():
