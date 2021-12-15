@@ -11,6 +11,7 @@ from Green_House.views import GH_Overview
 
 @api_view(['GET'])
 def ProductsAPIOverview(request):
+    """See All General API"""
     api_urls = {
         'how to use':'firstly add /api/ after that use the API address you want ;) ',
         'plants List':'/plantsList/',
@@ -59,18 +60,21 @@ def ProductsAPIOverview(request):
 # Plant
 @api_view(['GET'])
 def plantList(request):
+    """Get All Plants"""
     plants = Plant.objects.all()
     serializer = PlantSerializer(plants, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def plantDetail(request, pk):
+    """Get a Plant Detail"""
     plants = get_object_or_404(Plant, id=pk)
     serializer = PlantSerializer(plants, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def createPlant(request):
+    """Create a New Plant"""
     album = Album.objects.create(name=request.data['name'])
     request.data['album'] = album.id
     serializer = PlantSerializer(data = request.data)
@@ -82,6 +86,7 @@ def createPlant(request):
 
 @api_view(['POST'])
 def updatePlant(request, pk):
+    """Update an Exisiting Plant"""
     plant = get_object_or_404(Plant, id=pk)
     serializer = PlantSerializer(instance = plant, data = request.data)
 
@@ -92,6 +97,7 @@ def updatePlant(request, pk):
 
 @api_view(['DELETE'])
 def deletePlant(request, pk):
+    """Delete A Plant"""
     plant = get_object_or_404(Plant, id=pk)
     plant.delete()
     return Response('Item successfully deleted !')
@@ -99,18 +105,21 @@ def deletePlant(request, pk):
 # Tool
 @api_view(['GET'])
 def toolList(request):
+    """See All Tools List"""
     tools = Tool.objects.all()
     serializer = ToolSerializer(tools, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def toolDetail(request, pk):
+    """Get this Tool Detail"""
     tools = get_object_or_404(Tool, id=pk)
     serializer = ToolSerializer(tools, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def createTool(request):
+    """Create New Tool"""
     album = Album.objects.create(name=request.data['name'])
     request.data['album'] = album.id
     serializer = ToolSerializer(data = request.data)
@@ -122,6 +131,7 @@ def createTool(request):
 
 @api_view(['POST'])
 def updateTool(request, pk):
+    """Update an Existing Tool"""
     tool = get_object_or_404(Tool, id=pk)
     serializer = ToolSerializer(instance = tool, data = request.data)
 
@@ -132,6 +142,7 @@ def updateTool(request, pk):
 
 @api_view(['DELETE'])
 def deleteTool(request, pk):
+    """Delete a Tool"""
     tool = get_object_or_404(Tool, id=pk)
     tool.delete()
     return Response('Item successfully deleted !')
@@ -139,18 +150,21 @@ def deleteTool(request, pk):
 # Tag
 @api_view(['GET'])
 def tagList(request):
+    """See All Tags List"""
     tags = Tag.objects.all()
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def tagDetail(request, pk):
+    """Get a Tag Details"""
     tags = get_object_or_404(Tag, id=pk)
     serializer = TagSerializer(tags, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def createTag(request):
+    """Create a New Tag"""
     serializer = TagSerializer(data = request.data)
 
     if serializer.is_valid():
@@ -160,6 +174,7 @@ def createTag(request):
 
 @api_view(['POST'])
 def updateTag(request, pk):
+    """Update A Tag"""
     tag = get_object_or_404(Tag, id=pk)
     serializer = TagSerializer(instance = tag, data = request.data)
 
@@ -170,24 +185,28 @@ def updateTag(request, pk):
 
 @api_view(['DELETE'])
 def deleteTag(request, pk):
+    """Delete A Tag"""
     tag = get_object_or_404(Tag, id=pk)
     tag.delete()
     return Response('Item successfully deleted !')
 
 @api_view(['GET'])
 def plantsTags(request):
+    """Get All Plants Tag"""
     tags = Tag.objects.all().filter(usage='Plants')
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
   
 @api_view(['GET'])
 def toolsTags(request):
+    """Get All Tools Tag"""
     tags = Tag.objects.all().filter(usage='Tools')
     serializer = TagSerializer(tags, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def plantsWithSpecificTag(request, pk):
+    """Get Plants with Specific Tag"""
     tag = get_object_or_404(Tag, id=pk)
     plants = tag.plant_set.all()
     serializer = PlantSerializer(plants, many=True)
@@ -195,6 +214,7 @@ def plantsWithSpecificTag(request, pk):
 
 @api_view(['GET'])
 def toolsWithSpecificTag(request, pk):
+    """Get Tools With Specific Tag"""
     tag = get_object_or_404(Tag, id=pk)
     tools = tag.tool_set.all()
     serializer = ToolSerializer(tools, many=True)
@@ -203,18 +223,21 @@ def toolsWithSpecificTag(request, pk):
 # Album
 @api_view(['GET'])
 def albumList(request):
+    """Get Album List"""
     albums = Album.objects.all()
     serializer = AlbumSerializer(albums, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def albumDetail(request, pk):
+    """Get an Album Detail"""
     albums = get_object_or_404(Album, id=pk)
     serializer = AlbumSerializer(albums, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def createAlbum(request):
+    """Create a New Album"""
     serializer = AlbumSerializer(data = request.data)
 
     if serializer.is_valid():
@@ -224,6 +247,7 @@ def createAlbum(request):
 
 @api_view(['POST'])
 def updateAlbum(request, pk):
+    """Update an Existing Album"""
     album = get_object_or_404(Album, id=pk)
     serializer = AlbumSerializer(instance = album, data = request.data)
 
@@ -234,12 +258,14 @@ def updateAlbum(request, pk):
 
 @api_view(['DELETE'])
 def deleteAlbum(request, pk):
+    """Delete an Album"""
     album = get_object_or_404(Album, id=pk)
     album.delete()
     return Response('Item successfully deleted !')
 
 @api_view(['GET'])
 def getPlantsAlbumImages(request, pk):
+    """Get Plants Images"""
     plantAlbum = get_object_or_404(Plant, id=pk)
     album = get_object_or_404(Album, name=plantAlbum)
     images = album.image_set.all()
@@ -250,6 +276,7 @@ def getPlantsAlbumImages(request, pk):
 # images
 @api_view(['GET'])
 def getToolsAlbumImages(request, pk):
+    """Get Tools Images"""
     toolAlbum = get_object_or_404(Tool, id=pk)
     album = get_object_or_404(Album, name=toolAlbum)
     images = album.image_set.all()
@@ -259,12 +286,14 @@ def getToolsAlbumImages(request, pk):
 
 @api_view(['GET'])
 def imageList(request):
+    """Get All Images"""
     images = Image.objects.all()
     serializer = ImageSerializer(images, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def createImage(request, pk):
+    """Create a New Image"""
     album = get_object_or_404(Album, id=pk)
     request.data['album'] = pk
     serializer = ImageSerializer(data = request.data)
@@ -277,6 +306,7 @@ def createImage(request, pk):
 # get tags of a product
 @api_view(['GET'])
 def plantTags(request, pk):
+    """Get Tags Of a Plant"""
     tags = get_object_or_404(Plant, id=pk).tags
     if tags.count() == 0:
         return Response('No Tags !')
@@ -285,6 +315,7 @@ def plantTags(request, pk):
 
 @api_view(['GET'])
 def toolTags(request, pk):
+    """Get Tags Of a Tool"""
     tags = get_object_or_404(Tool, id=pk).tags
     if tags.count() == 0:
         return Response('No Tags !')

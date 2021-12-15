@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db.models.deletion import ProtectedError
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
@@ -14,6 +15,7 @@ from Users.models import Member
 
 @api_view(['GET'])
 def apiOverview(request):
+    """See All Coin API"""
     api_urls = {
         '(post) Update Coin Value With New Value (*value)':'/upadte-value/',
         '(post) Update Coin Value With New Value For User With ID (*Id,*value)':'/update-value-Id/',
@@ -44,8 +46,10 @@ def apiOverview(request):
 ###############
 
 #Update This User Coin Value
-class UpdateThisUserCoin(APIView):
+class UpdateThisUserCoin(generics.GenericAPIView):
+    serializer_class = CoinValueSerializer
     def post(self, request, format='json'):
+        """Update Coin Value With New Value (*value)"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToUpdate = request.user
@@ -62,8 +66,10 @@ class UpdateThisUserCoin(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Update User Coin Value With ID
-class UpdateUserCoinWithId(APIView):
+class UpdateUserCoinWithId(generics.GenericAPIView):
+    serializer_class = CoinValueWithIdSerializer
     def post(self, request, format='json'):
+        """Update Coin Value With New Value For User With ID (*Id,*value)"""
         serializer = CoinValueWithIdSerializer(data=request.data)
         if serializer.is_valid():
             if Member.objects.filter(id=serializer.data["id"]).exists() == False:
@@ -79,8 +85,10 @@ class UpdateUserCoinWithId(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Add This User Coin Value
-class AddThisUserCoin(APIView):
+class AddThisUserCoin(generics.GenericAPIView):
+    serializer_class = CoinValueSerializer
     def post(self, request, format='json'):
+        """Add New Value To Coin Value (*value)"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToUpdate = request.user
@@ -97,8 +105,10 @@ class AddThisUserCoin(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Add User Coin Value With ID
-class AddUserCoinWithId(APIView):
+class AddUserCoinWithId(generics.GenericAPIView):
+    serializer_class = CoinValueWithIdSerializer
     def post(self, request, format='json'):
+        """Add New Value To Coin Value For User With ID (*Id,*value)"""
         serializer = CoinValueWithIdSerializer(data=request.data)
         if serializer.is_valid():
             if Member.objects.filter(id=serializer.data["id"]).exists() == False:
@@ -114,8 +124,10 @@ class AddUserCoinWithId(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Reduce This User Coin Value
-class ReduceThisUserCoin(APIView):
+class ReduceThisUserCoin(generics.GenericAPIView):
+    serializer_class = CoinValueSerializer
     def post(self, request, format='json'):
+        """Reduce New Value From Coin Value (*value)"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToUpdate = request.user
@@ -132,8 +144,10 @@ class ReduceThisUserCoin(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Reduce User Coin Value With ID
-class ReduceUserCoinWithId(APIView):
+class ReduceUserCoinWithId(generics.GenericAPIView):
+    serializer_class = CoinValueWithIdSerializer
     def post(self, request, format='json'):
+        """Reduce New Value From Coin Value For User With ID (*Id,*value)"""
         serializer = CoinValueWithIdSerializer(data=request.data)
         if serializer.is_valid():
             if Member.objects.filter(id=serializer.data["id"]).exists() == False:
@@ -154,6 +168,7 @@ class ReduceUserCoinWithId(APIView):
 #Auto Update Login Daily Coin This User
 class DailyUpdateLoginUserCoin(APIView):
     def post(self, request):
+        """Daily Login Update"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToUpdate = request.user
@@ -178,6 +193,7 @@ class DailyUpdateLoginUserCoin(APIView):
 #Auto Update Watering Daily Coin This User
 class DailyUpdateWateringUserCoin(APIView):
     def post(self, request):
+        """Daily Watering Update"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToUpdate = request.user
@@ -200,6 +216,7 @@ class DailyUpdateWateringUserCoin(APIView):
 #Auto Update Login Weekly Coin This User
 class WeeklyUpdateLoginUserCoin(APIView):
     def post(self, request):
+        """Weekly Login Update"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToUpdate = request.user
@@ -223,6 +240,7 @@ class WeeklyUpdateLoginUserCoin(APIView):
 #Auto Update Watering Weekly Coin This User
 class WeeklyUpdateWateringUserCoin(APIView):
     def post(self, request):
+        """Weekly Watering Update"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToUpdate = request.user
@@ -248,15 +266,19 @@ class WeeklyUpdateWateringUserCoin(APIView):
 ###############
 
 #Read All Coin Data
-class GetTAllCoin(APIView):
+class GetTAllCoin(generics.GenericAPIView):
+    serializer_class = CoinSerializer
     def get(self, request, format='json'):
+        """All Coin Data"""
         CoinInfo = CoinManagementModel.objects.all()
         serializer = CoinSerializer(CoinInfo, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read Coin Data For This User
-class GetThisUserCoin(APIView):
+class GetThisUserCoin(generics.GenericAPIView):
+    serializer_class = CoinSerializer
     def get(self, request, format='json'):
+        """This User Coin Data"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserToGet = request.user
@@ -268,8 +290,10 @@ class GetThisUserCoin(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read Coin Data With ID
-class GetUserCoinWithId(APIView):
+class GetUserCoinWithId(generics.GenericAPIView):
+    serializer_class = CoinSerializer
     def get(self, request, pk, format='json'):
+        """Coin Data Of User With Id"""
         if Member.objects.filter(id=pk).exists() == False:
             return Response("This User Does NOT exist!", status=status.HTTP_404_NOT_FOUND)
         UserToGet = Member.objects.get(id=pk)
@@ -286,6 +310,7 @@ class GetUserCoinWithId(APIView):
 #New Login Record
 class AddLogin(APIView):
  def post(self, request):
+    """New Login Record"""
     if request.user.is_anonymous:
       return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
     userToAdd = request.user
@@ -297,6 +322,7 @@ class AddLogin(APIView):
 
 class Addwatering(APIView):
  def post(self, request):
+    """New Watering Record"""
     if request.user.is_anonymous:
       return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
     userToAdd = request.user

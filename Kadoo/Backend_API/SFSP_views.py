@@ -75,6 +75,7 @@ def sorting(myList: list, by , order):
 # filters for plants
 @api_view(['POST'])
 def plantsByName(request):
+    """search in plants by name"""
     getData = nameSerializer(data=request.data)
     if getData.is_valid():
 
@@ -99,6 +100,7 @@ def plantsByName(request):
     
 @api_view(['POST'])
 def plantsByPrice(request):
+    """search in plants by price"""
     getData = priceSerializer(data=request.data)
     if getData.is_valid():
 
@@ -136,6 +138,7 @@ def plantsByPrice(request):
 
 @api_view(['POST'])
 def plantsByEnvironment(request):
+    """search in plants by environment"""
     getData = environmentSerializer(data=request.data)
     if getData.is_valid():
 
@@ -162,6 +165,7 @@ def plantsByEnvironment(request):
 
 @api_view(['POST'])
 def plantsByWater(request):
+    """search in plants by water"""
     getData = waterSerializer(data=request.data)
     if getData.is_valid():
 
@@ -188,6 +192,7 @@ def plantsByWater(request):
 
 @api_view(['POST'])
 def plantsByLight(request):
+    """search in plants by light"""
     getData = lightSerializer(data=request.data)
     if getData.is_valid():
 
@@ -214,6 +219,7 @@ def plantsByLight(request):
 
 @api_view(['POST'])
 def plantsByGrowthRate(request):
+    """search in plants by growth rate"""
     getData = growthRateSerializer(data=request.data)
     if getData.is_valid():
 
@@ -240,6 +246,7 @@ def plantsByGrowthRate(request):
 
 @api_view(['POST'])
 def plantsByTags():
+    """search in plants by tags"""
     getData = tagsSerializer(data=request.data)
     if getData.is_valid():
 
@@ -271,6 +278,7 @@ def plantsByTags():
 # advance
 @api_view(['POST'])
 def plantsAdvanceSearch(request):
+    """advance search in plants"""
     getData = plantAdvanceSerializer(data=request.data)
     if getData.is_valid():
 
@@ -350,6 +358,7 @@ def plantsAdvanceSearch(request):
 # filters for tools
 @api_view(['POST'])
 def toolsByName(request, _name, _paginator, _sorting):
+    """search in tools by name"""
     getData = nameSerializer(data=request.data)
     if getData.is_valid():
 
@@ -376,6 +385,7 @@ def toolsByName(request, _name, _paginator, _sorting):
 
 @api_view(['POST'])
 def toolsByPrice(request, prices:str, _paginator, _sorting):
+    """search in tools by price"""
     getData = priceSerializer(data=request.data)
     if getData.is_valid():
 
@@ -413,6 +423,7 @@ def toolsByPrice(request, prices:str, _paginator, _sorting):
 
 @api_view(['POST'])
 def toolsByTags(request):
+    """search in tools by tags"""
     getData = tagsSerializer(data=request.data)
     if getData.is_valid():
 
@@ -443,6 +454,7 @@ def toolsByTags(request):
 # advance
 @api_view(['POST'])
 def toolsAdvanceSearch(request):
+    """advance search in tools"""
     getData = toolAdvanceSerializer(data=request.data)
     if getData.is_valid():
 
@@ -507,6 +519,7 @@ def toolsAdvanceSearch(request):
 # plants sorting
 @api_view(['POST'])
 def plantsSort(request):
+    """plantsSort"""
     getData = sortSerializer(data=request.data)
     if getData.is_valid():
         plants = Plant.objects.all()
@@ -521,6 +534,7 @@ def plantsSort(request):
 # tools sorting
 @api_view(['POST'])
 def toolsSort(request):
+    """toolsSort"""
     getData = sortSerializer(data=request.data)
     if getData.is_valid():
         tools = Tool.objects.all()
@@ -535,6 +549,7 @@ def toolsSort(request):
 # plants pagination
 @api_view(['POST'])
 def plantsPagination(request):
+    """plantsPagination"""
     getData = paginatorSerializer(data=request.data)
     if getData.is_valid():
         data = {}
@@ -552,6 +567,7 @@ def plantsPagination(request):
 # tools pagination
 @api_view(['POST'])
 def toolsPagination(request):
+    """toolsPagination"""
     getData = paginatorSerializer(data=request.data)
     if getData.is_valid():
         data = {}
@@ -569,6 +585,7 @@ def toolsPagination(request):
 # all products pagination
 @api_view(['POST'])
 def allPagination(request):
+    """allPagination"""
     getData = paginatorSerializer(data=request.data)
     if getData.is_valid():
         data = {}
@@ -590,6 +607,7 @@ def allPagination(request):
 # all products advance search
 @api_view(['POST'])
 def allAdvanceSearch(request):
+    """advance search in all products"""
     getData = toolAdvanceSerializer(data=request.data)
     if getData.is_valid():
 

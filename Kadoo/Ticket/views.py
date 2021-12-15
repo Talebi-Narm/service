@@ -2,6 +2,7 @@ from django.db.models.deletion import ProtectedError
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
@@ -14,6 +15,7 @@ from Users.models import Member, NewUser
 
 @api_view(['GET'])
 def apiOverview(request):
+    """See All Ticket API"""
     api_urls = {
         '(post) New Question Ticket With New Conversation':'/new-question-ticket/',
         '(post) New Question  Ticket With For Giver Conversation By ID':'/new-question-ticket/<str:pk>/',
@@ -40,8 +42,10 @@ def apiOverview(request):
 ###############
 
 #Question Ticket Create For New Conversation
-class QuestionTicketCreateForNewConversation(APIView):
+class QuestionTicketCreateForNewConversation(generics.GenericAPIView):
+    serializer_class = TicketSerializer
     def post(self, request, format='json'):
+        """New Question Ticket With New Conversation"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserOfConversation = request.user
@@ -66,8 +70,10 @@ class QuestionTicketCreateForNewConversation(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Question Ticket Create For Given Conversation With ID
-class QuestionTicketCreateForGivenConversation(APIView):
+class QuestionTicketCreateForGivenConversation(generics.GenericAPIView):
+    serializer_class = TicketSerializer
     def post(self, request, pk, format='json'):
+        """New Question  Ticket With For Giver Conversation By ID"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         if ConversationModel.objects.filter(id=pk).exists() == False:
@@ -89,8 +95,10 @@ class QuestionTicketCreateForGivenConversation(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Answer Ticket Create For Given onversation With ID
-class AnswerTicketCreateForGivenConversation(APIView):
+class AnswerTicketCreateForGivenConversation(generics.GenericAPIView):
+    serializer_class = TicketSerializer
     def post(self, request, pk, format='json'):
+        """New Answer Ticket With For Giver Conversation By ID"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         if request.user.type == NewUser.Types.MEMBER:
@@ -115,22 +123,28 @@ class AnswerTicketCreateForGivenConversation(APIView):
 ###############
 
 #Get All Conversations
-class GetAllConversations(APIView):
+class GetAllConversations(generics.GenericAPIView):
+    serializer_class = ConversationSerializer
     def get(self, request, format='json'):
+        """Get All Conversations"""
         ConversatrionsInfo = ConversationModel.objects.all()
         serializer = ConversationSerializer(ConversatrionsInfo, many=True)
         return Response(serializer.data)
 
 #Get All Tickects
-class GetAllTickects(APIView):
+class GetAllTickects(generics.GenericAPIView):
+    serializer_class = ConversationSerializer
     def get(self, request, format='json'):
+        """Get All Tickets"""
         TicketsInfo = TicketModel.objects.all()
         serializer = ConversationSerializer(TicketsInfo, many=True)
         return Response(serializer.data)
 
 #Get This User Conversations
-class GetThisUserConversations(APIView):
+class GetThisUserConversations(generics.GenericAPIView):
+    serializer_class = ConversationSerializer
     def get(self, request, format='json'):
+        """Get This Member Conversations"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         if request.user.type != NewUser.Types.MEMBER:
@@ -141,8 +155,10 @@ class GetThisUserConversations(APIView):
         return Response(serializer.data)
 
 #Get This Specialist Conversations
-class GetThisSpecialistConversations(APIView):
+class GetThisSpecialistConversations(generics.GenericAPIView):
+    serializer_class = ConversationSerializer
     def get(self, request, format='json'):
+        """Get This Specialist Conversation"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         if request.user.type != NewUser.Types.SPECIALIST:
@@ -153,8 +169,10 @@ class GetThisSpecialistConversations(APIView):
         return Response(serializer.data)
 
 #Get User Conversations With ID
-class GetUserConversations(APIView):
+class GetUserConversations(generics.GenericAPIView):
+    serializer_class = ConversationSerializer
     def get(self, request, pk, format='json'):
+        """Get This Member Conversations"""
         if NewUser.objects.filter(id=pk).exists() == False:
             return Response("This User Does NOT exist!", status=status.HTTP_404_NOT_FOUND)
         UserToGet = NewUser.objects.get(id=pk)
@@ -163,8 +181,10 @@ class GetUserConversations(APIView):
         return Response(serializer.data)
 
 #Get Specialist Converdsations With ID
-class GetSpecialistConversations(APIView):
+class GetSpecialistConversations(generics.GenericAPIView):
+    serializer_class = ConversationSerializer
     def get(self, request, pk, format='json'):
+        """Get This Specialist Conversation"""
         if Specialist.objects.filter(id=pk).exists() == False:
             return Response("This Specialist Does NOT exist!", status=status.HTTP_404_NOT_FOUND)
         SpecialistToGet = NewUser.objects.get(id=pk)
@@ -173,8 +193,10 @@ class GetSpecialistConversations(APIView):
         return Response(serializer.data)
 
 #Get This User Tickets
-class GetThisUserTickets(APIView):
+class GetThisUserTickets(generics.GenericAPIView):
+    serializer_class = TicketSerializer
     def get(self, request, format='json'):
+        """Get This Member Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         if request.user.type != NewUser.Types.MEMBER:
@@ -185,8 +207,10 @@ class GetThisUserTickets(APIView):
         return Response(serializer.data)
 
 #Get This Specialist Tickets
-class GetThisSpecialistTickets(APIView):
+class GetThisSpecialistTickets(generics.GenericAPIView):
+    serializer_class = TicketSerializer
     def get(self, request, format='json'):
+        """Get This Specialist Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         if request.user.type != NewUser.Types.SPECIALIST:
@@ -197,8 +221,10 @@ class GetThisSpecialistTickets(APIView):
         return Response(serializer.data)
 
 #Get User Tickets With ID
-class GetUserTickets(APIView):
+class GetUserTickets(generics.GenericAPIView):
+    serializer_class = TicketSerializer
     def get(self, request, pk, format='json'):
+        """Get Member Tickets With ID"""
         if NewUser.objects.filter(id=pk).exists() == False:
             return Response("This User Does NOT exist!", status=status.HTTP_404_NOT_FOUND)
         UserToGet = NewUser.objects.get(id=pk)
@@ -207,8 +233,10 @@ class GetUserTickets(APIView):
         return Response(serializer.data)
 
 #Get Specialist Tickets With ID
-class GetSpecialistTickets(APIView):
+class GetSpecialistTickets(generics.GenericAPIView):
+    serializer_class = TicketSerializer
     def get(self, request, pk, format='json'):
+        """Get Specialist Tickets With ID"""
         if Specialist.objects.filter(id=pk).exists() == False:
             return Response("This Specialist Does NOT exist!", status=status.HTTP_404_NOT_FOUND)
         SpecialistToGet = NewUser.objects.get(id=pk)
@@ -221,8 +249,10 @@ class GetSpecialistTickets(APIView):
 ###############
 
 #Done Specialist Tickets With ID
-class DoneTheConverstion(APIView):
+class DoneTheConverstion(generics.GenericAPIView):
+    serializer_class = RateSerializer
     def post(self, request, format='json'):
+        """Done Specialist Tickets With ID"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         UserOfConversation = request.user

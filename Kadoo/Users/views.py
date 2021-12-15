@@ -1,16 +1,18 @@
 from rest_framework import status
 from rest_framework import response
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.views import APIView
 from Users.models import MemberFields
 from .serializers import CustomMemberSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view
+from rest_framework import generics
 
 @api_view(['GET'])
 def apiOverview(request):
+    """See All User API"""
     api_urls = {
         '(post) Register A User (*email,*username,*firstname,*lastname,*password)':'/register/',
         '(post) Login (get tokens)  (*email,*password)':'/token/',
@@ -21,9 +23,11 @@ def apiOverview(request):
     }
     return response.Response(api_urls)
 
-class CurrentUserView(APIView):
+class CurrentUserView(generics.GenericAPIView):
     #GET CURRENT USER
     #HTTP_401 : No Login
+    """Get Logedin User Information"""
+    serializer_class = UserSerializer
     def get(self, request):
         if request.user.is_anonymous:
             return Response("Anonymous User: You should login first.", status=status.HTTP_401_UNAUTHORIZED)
@@ -33,6 +37,7 @@ class CurrentUserView(APIView):
 class BlacklistUpdate(APIView):
     #USER LOGIUT (PUT TOKEN TO BLACK LIST)
     #HTTP_400 : Bad request caused by wrong token
+    """Logout"""
     permission_classes = [AllowAny]
     authentication_classes = ()
     def post(self, request):
@@ -44,7 +49,9 @@ class BlacklistUpdate(APIView):
         except Exception as e:
             return Response("Somthing went wrong! Token is Not Valid! You may not have login yet.", status=status.HTTP_400_BAD_REQUEST)
 
-class CustomMemberCreate(APIView):
+class CustomMemberCreate(generics.GenericAPIView):
+    """Register A User (*email,*username,*firstname,*lastname,*password)"""
+    serializer_class = CustomMemberSerializer
     permission_classes = [AllowAny]
     def post(self, request, format='json'):
         serializer = CustomMemberSerializer(data=request.data)
@@ -56,6 +63,7 @@ class CustomMemberCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateCredit(APIView):
+    """Update Credit Of User"""
     @csrf_exempt
     #UPDATE CREDIT
     #HTTP_401 : No Login
