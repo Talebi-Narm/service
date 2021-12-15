@@ -12,6 +12,7 @@ from Cart.serializers import CartItemIdSerializer, CartItemSerializer, PlantCart
 
 @api_view(['GET'])
 def apiOverview(request):
+    """See All Cart API"""
     api_urls = {
         '(post) Add A Plnat To Cart (*id,count=1,decription)':'/add-plant-to-cart/',
         '(post) Add A Tool To Cart (*id,count=1,decription)':'/add-tool-to-cart/',
