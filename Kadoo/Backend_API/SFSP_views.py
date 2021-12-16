@@ -88,8 +88,8 @@ def plantsByName(request):
             plants = sorting(plants, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            plants = paginator(plants, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(plants.count()/pagination['count'])
+            plants = paginator(plants, pagination['count'], pagination['page'])
             
         serializer = PlantSerializer(plants, many=True)
 
@@ -126,8 +126,8 @@ def plantsByPrice(request):
             plants = sorting(plants, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            plants = paginator(plants, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(plants.count()/pagination['count'])
+            plants = paginator(plants, pagination['count'], pagination['page'])
             
         serializer = PlantSerializer(plants, many=True)
 
@@ -153,8 +153,8 @@ def plantsByEnvironment(request):
             plants = sorting(plants, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            plants = paginator(plants, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(plants.count()/pagination['count'])
+            plants = paginator(plants, pagination['count'], pagination['page'])
             
         serializer = PlantSerializer(plants, many=True)
 
@@ -180,8 +180,8 @@ def plantsByWater(request):
             plants = sorting(plants, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            plants = paginator(plants, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(plants.count()/pagination['count'])
+            plants = paginator(plants, pagination['count'], pagination['page'])
             
         serializer = PlantSerializer(plants, many=True)
 
@@ -207,8 +207,8 @@ def plantsByLight(request):
             plants = sorting(plants, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            plants = paginator(plants, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(plants.count()/pagination['count'])
+            plants = paginator(plants, pagination['count'], pagination['page'])
             
         serializer = PlantSerializer(plants, many=True)
 
@@ -234,8 +234,8 @@ def plantsByGrowthRate(request):
             plants = sorting(plants, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            plants = paginator(plants, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(plants.count()/pagination['count'])
+            plants = paginator(plants, pagination['count'], pagination['page'])
             
         serializer = PlantSerializer(plants, many=True)
 
@@ -265,8 +265,8 @@ def plantsByTags():
             plants = sorting(plants, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            plants = paginator(plants, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(plants.count()/pagination['count'])
+            plants = paginator(plants, pagination['count'], pagination['page'])
             
         serializer = PlantSerializer(plants, many=True)
 
@@ -347,8 +347,8 @@ def plantsAdvanceSearch(request):
 
         if(pagination is not None):
             if (pagination['count'] is not None and pagination['page'] is not None):
-                li = paginator(li, pagination['count'], pagination['page'])
                 data['pageCount'] = ceil(len(li)/pagination['count'])
+                li = paginator(li, pagination['count'], pagination['page'])
             
         data['data'] = li
 
@@ -373,8 +373,8 @@ def toolsByName(request, _name, _paginator, _sorting):
             tools = sorting(tools, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            tools = paginator(tools, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(tools.count()/pagination['count'])
+            tools = paginator(tools, pagination['count'], pagination['page'])
             
         serializer = ToolSerializer(tools, many=True)
 
@@ -411,8 +411,8 @@ def toolsByPrice(request, prices:str, _paginator, _sorting):
             tools = sorting(tools, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            tools = paginator(tools, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(tools.count()/pagination['count'])
+            tools = paginator(tools, pagination['count'], pagination['page'])
             
         serializer = ToolSerializer(tools, many=True)
 
@@ -442,8 +442,8 @@ def toolsByTags(request):
             tools = sorting(tools, sort['kind'], sort['order'])
 
         if(pagination is not None):
-            tools = paginator(tools, pagination['count'], pagination['page'])
             data['pageCount'] = ceil(tools.count()/pagination['count'])
+            tools = paginator(tools, pagination['count'], pagination['page'])
             
         serializer = ToolSerializer(tools, many=True)
 
@@ -508,8 +508,8 @@ def toolsAdvanceSearch(request):
 
         if(pagination is not None):
             if (pagination['count'] is not None and pagination['page'] is not None):
-                li = paginator(li, pagination['count'], pagination['page'])
                 data['pageCount'] = ceil(len(li)/pagination['count'])
+                li = paginator(li, pagination['count'], pagination['page'])
 
         data['data'] = li
 
@@ -661,10 +661,11 @@ def allAdvanceSearch(request):
 
         if(pagination is not None):
             if (pagination['count'] is not None and pagination['page'] is not None):
-                li = paginator(li, pagination['count'], pagination['page'])
                 data['pageCount'] = ceil(len(li)/pagination['count'])
+                li = paginator(li, pagination['count'], pagination['page'])
 
         data['data'] = li
 
         return Response(data)
+    return Response(getData.errors)
     return Response(getData.errors)
