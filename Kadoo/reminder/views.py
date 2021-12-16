@@ -49,7 +49,10 @@ def reminder(request):
         }
         
         try:
-            calendar = service.calendarList().get(calendarId=_user.calendarID).execute()
+            if (_user.calendarID != ''):
+                calendar = service.calendarList().get(calendarId=_user.calendarID).execute()
+            else:
+                raise Exception('Invalid calendar')
         except:
             calendar = service.calendars().insert(body=_calendar).execute()
             _user.calendarID = calendar['id']
