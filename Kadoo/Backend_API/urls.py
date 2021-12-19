@@ -73,6 +73,7 @@ urlpatterns=[
 # advance search
     path('plantsAdvanceSearch/', sfsp_view.plantsAdvanceSearch, name='plantsAdvanceSearch'),
     path('toolsAdvanceSearch/', sfsp_view.toolsAdvanceSearch, name='toolsAdvanceSearch'),
+    path('allAdvanceSearch/', sfsp_view.allAdvanceSearch, name='allAdvanceSearch'),
 
 # category API
     path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag, name='plantsWithTag'),

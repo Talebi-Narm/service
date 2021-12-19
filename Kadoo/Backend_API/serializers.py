@@ -111,3 +111,10 @@ class toolAdvanceSerializer(serializers.Serializer):
     onlyAvailables = serializers.BooleanField(required=False, default=False, allow_null=True)
     pagination = paginatorSerializer(required=False, default=None, allow_null=True)
     sort = sortSerializer(required=False, default=None, allow_null=True)
+
+class allAdvanceSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False, default=None, allow_null=True)
+    price = priceSerializer(required=False, default=None, allow_null=True,)
+    onlyAvailables = serializers.BooleanField(required=False, default=False, allow_null=True)
+    pagination = paginatorSerializer(required=False, default=None, allow_null=True)
+    sort = sortSerializer(required=False, default=None, allow_null=True)

@@ -2,8 +2,9 @@ from django.db.models import ProtectedError
 from rest_framework.decorators import api_view
 
 from django.shortcuts import render
-from rest_framework import response, status
+from rest_framework import generics, response, status
 from rest_framework.views import APIView
+from rest_framework import generics
 from Backend.models import Plant, Tool
 from Cart.models import OrderModel, PlantCartModel, ToolCartModel
 
@@ -11,6 +12,7 @@ from Cart.serializers import CartItemIdSerializer, CartItemSerializer, PlantCart
 
 @api_view(['GET'])
 def apiOverview(request):
+    """See All Cart API"""
     api_urls = {
         '(post) Add A Plnat To Cart (*id,count=1,decription)':'/add-plant-to-cart/',
         '(post) Add A Tool To Cart (*id,count=1,decription)':'/add-tool-to-cart/',
@@ -42,8 +44,11 @@ def apiOverview(request):
 ###############
 
 #Create Plant
-class AddPlantToCart(APIView):
+class AddPlantToCart(generics.GenericAPIView):
+ serializer_class = CartItemSerializer
  def post(self, request, format='json'):
+  """Add A Plnat To Cart (*id,count=1,decription)"""
+  
   serializer = CartItemSerializer(data=request.data)
   if serializer.is_valid():
     #Get All Data
@@ -69,8 +74,10 @@ class AddPlantToCart(APIView):
   return response.Response("Data is Not Valid!", status=status.HTTP_400_BAD_REQUEST)
 
 #Create Tool
-class AddToolToCart(APIView):
+class AddToolToCart(generics.GenericAPIView):
+ serializer_class = CartItemSerializer
  def post(self, request, format='json'):
+  """Add A Tool To Cart (*id,count=1,decription)"""
   serializer = CartItemSerializer(data=request.data)
   if serializer.is_valid():
    #Get All Data
@@ -99,8 +106,10 @@ class AddToolToCart(APIView):
 ###############
 
 #Read ALL Plants
-class GetAllPlantsCart(APIView):
+class GetAllPlantsCart(generics.GenericAPIView):
+ serializer_class = PlantCartSerializer
  def get(self, request, format='json'):
+  """Get All Plants of User"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
@@ -111,8 +120,10 @@ class GetAllPlantsCart(APIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read All Tools
-class GetAllToolsCart(APIView):
+class GetAllToolsCart(generics.GenericAPIView):
+ serializer_class = ToolCartSerializer
  def get(self, request, format='json'):
+  """Get All Tools of User"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
@@ -123,8 +134,10 @@ class GetAllToolsCart(APIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read ALL Unapproved Plants
-class GetUnapprovedPlantsCart(APIView):
+class GetUnapprovedPlantsCart(generics.GenericAPIView):
+ serializer_class = PlantCartSerializer
  def get(self, request, format='json'):
+  """Get All Unapproved Plants of User (in Cart)"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
@@ -135,8 +148,10 @@ class GetUnapprovedPlantsCart(APIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read All Unapproved Tools
-class GetUnapprovedToolsCart(APIView):
+class GetUnapprovedToolsCart(generics.GenericAPIView):
+ serializer_class = ToolCartSerializer
  def get(self, request, format='json'):
+  """Get All Unapproved Tools of User (in Cart)"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
@@ -147,8 +162,10 @@ class GetUnapprovedToolsCart(APIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read ALL Unapproved Plants Plant Format
-class GetUnapprovedPlantsCartWithCount(APIView):
+class GetUnapprovedPlantsCartWithCount(generics.GenericAPIView):
+ serializer_class = PlantWithCountCartSerializer
  def get(self, request, format='json'):
+  """Get All Unapproved Plants of User with Count (in Cart)"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
@@ -167,8 +184,10 @@ class GetUnapprovedPlantsCartWithCount(APIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read All Unapproved Tools Tool Format
-class GetUnapprovedToolsCartWithCount(APIView):
+class GetUnapprovedToolsCartWithCount(generics.GenericAPIView):
+ ToolWithCountCartSerializer = CartItemSerializer
  def get(self, request, format='json'):
+  """Get All Unapproved Tools of User with Count (in Cart)"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
@@ -188,8 +207,10 @@ class GetUnapprovedToolsCartWithCount(APIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read ALL Approved Plants
-class GetApprovedPlantsCart(APIView):
+class GetApprovedPlantsCart(generics.GenericAPIView):
+ serializer_class = PlantCartSerializer
  def get(self, request, format='json'):
+  """Get All Approved Plants of User"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
@@ -200,8 +221,10 @@ class GetApprovedPlantsCart(APIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read All Approved Tools
-class GetApprovedToolsCart(APIView):
+class GetApprovedToolsCart(generics.GenericAPIView):
+ serializer_class = ToolCartSerializer
  def get(self, request, format='json'):
+  """Get All Approved Tools of User"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   userToGetCart = request.user
@@ -214,6 +237,7 @@ class GetApprovedToolsCart(APIView):
 #Raed The Price
 class GetPriceCart(APIView):
  def get(self, request, format='json'):
+  """Get Price Of The Cart"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   price = 0
@@ -235,6 +259,7 @@ class GetPriceCart(APIView):
 #Raed The Count
 class GetCountCart(APIView):
  def get(self, request, format='json'):
+  """Get Count Of Items In The Cart"""
   if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
   count = 0
@@ -247,8 +272,10 @@ class GetCountCart(APIView):
 ###############
 
 #Update Plant
-class UpdatePlantToCart(APIView):
+class UpdatePlantToCart(generics.GenericAPIView):
+ serializer_class = CartItemSerializer
  def post(self, request, format='json'):
+  """Update A Plant in Cart (*id,count=1,decription)"""
   serializer = CartItemSerializer(data=request.data)
   if serializer.is_valid():
    #Get All Data
@@ -275,8 +302,10 @@ class UpdatePlantToCart(APIView):
   return response.Response("Data is Not Valid!", status=status.HTTP_400_BAD_REQUEST)
 
 #Update Tool
-class UpdateToolToCart(APIView):
+class UpdateToolToCart(generics.GenericAPIView):
+ serializer_class = CartItemSerializer
  def post(self, request, format='json'):
+  """Update A Tool in Cart (*id,count=1,decription)"""
   serializer = CartItemSerializer(data=request.data)
   if serializer.is_valid():
    #Get All Data
@@ -306,8 +335,10 @@ class UpdateToolToCart(APIView):
 ###############
 
 #Delete Plant
-class RemovePlantFromCart(APIView):
+class RemovePlantFromCart(generics.GenericAPIView):
+ serializer_class = CartItemIdSerializer
  def delete(self, request, format='json'):
+  """Delete A Plant in Cart (*id)"""
   serializer = CartItemIdSerializer(data=request.data)
   if serializer.is_valid():
    #Get Plant Data
@@ -326,8 +357,10 @@ class RemovePlantFromCart(APIView):
   return response.Response("Data is Not Valid!", status=status.HTTP_400_BAD_REQUEST)
 
 #Delete Tool
-class RemoveToolFromCart(APIView):
+class RemoveToolFromCart(generics.GenericAPIView):
+ serializer_class = CartItemIdSerializer
  def delete(self, request, format='json'):
+  """Delete A Tool in Cart (*id)"""
   serializer = CartItemIdSerializer(data=request.data)
   if serializer.is_valid():
    #Get Plant Data
@@ -348,6 +381,7 @@ class RemoveToolFromCart(APIView):
 #Delte All Plants
 class RemoveAllPlantsFromCart(APIView):
  def delete(self, request, format='json'):
+   """Delete All Plants in Cart"""
    if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
    UserToDeleteItem = request.user
@@ -361,6 +395,7 @@ class RemoveAllPlantsFromCart(APIView):
 #Delete All Tools
 class RemoveAllToolsFromCart(APIView):
  def delete(self, request, format='json'):
+   """Delete All Tools in Cart"""
    if request.user.is_anonymous:
     return response.Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
    UserToDeleteItem = request.user
@@ -372,8 +407,10 @@ class RemoveAllToolsFromCart(APIView):
    return response.Response("Tools Removed",  status=status.HTTP_200_OK)
 
 #Checkout Plant Cart
-class ApproveAllInCart(APIView):
+class ApproveAllInCart(generics.GenericAPIView):
+ serializer_class = DesicriptionSerializer
  def post(self, request, format='json'):
+   """Approve All in Cart"""
    serializer = DesicriptionSerializer(data=request.data)
    if serializer.is_valid():
     if request.user.is_anonymous:

@@ -49,16 +49,17 @@ def reminder(request):
         }
         
         try:
-            calendar = service.calendarList().get(calendarId=_user.calendarID).execute()
+            if (_user.calendarID != ''):
+                calendar = service.calendarList().get(calendarId=_user.calendarID).execute()
+            else:
+                raise Exception('Invalid calendar')
         except:
             calendar = service.calendars().insert(body=_calendar).execute()
             _user.calendarID = calendar['id']
             _user.save()
         
-        print(_user.calendarID)
-        print(calendar['id'])
-        event = service.events().insert(calendarId=calendar['id'], body=data.data).execute()
-
+        event = service.events().insert(calendarId=_user.calendarID, body=data.data).execute()
+        
         return Response(data.data)
     
     return Response(data.errors)
@@ -71,7 +72,7 @@ def deleteCreds(request):
     _user = request.user
     _user.creds = None
     _user.save()
-    return Response("delted successfully !")
+    return Response("Email disconnected successfully !")
 
 @api_view(['GET'])
 def deleteCalendar(request):
@@ -82,4 +83,4 @@ def deleteCalendar(request):
         return Response("you have no calendar !")
     _user.calendarID = None
     _user.save()
-    return Response("delted successfully !")
+    return Response("Calendar deleted successfully !")
