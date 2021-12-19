@@ -357,7 +357,7 @@ def plantsAdvanceSearch(request):
 
 # filters for tools
 @api_view(['POST'])
-def toolsByName(request, _name, _paginator, _sorting):
+def toolsByName(request):
     """search in tools by name"""
     getData = nameSerializer(data=request.data)
     if getData.is_valid():
@@ -384,7 +384,7 @@ def toolsByName(request, _name, _paginator, _sorting):
     return Response(getData.errors)
 
 @api_view(['POST'])
-def toolsByPrice(request, prices:str, _paginator, _sorting):
+def toolsByPrice(request):
     """search in tools by price"""
     getData = priceSerializer(data=request.data)
     if getData.is_valid():
