@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -56,269 +57,276 @@ def ProductsAPIOverview(request):
     api_urls.update(GH_Overview())
     return Response(api_urls)
 
+# plant
+class plants(APIView):
+    """
+    List of Plant objects or create one
+    """
+    def get(self, request, format=None):
+        """Get All Plants"""
+        plants = Plant.objects.all()
+        serializer = PlantSerializer(plants, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, format=None):
+        """Create a New Plant"""
+        album = Album.objects.create(name=request.data['name'])
+        request.data['album'] = album.id
+        request.data['kind'] = "Plant"
+        serializer = PlantSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()  
+        return Response(serializer.data)
 
-# Plant
-@api_view(['GET'])
-def plantList(request):
-    """Get All Plants"""
-    plants = Plant.objects.all()
-    serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
+class plantsRUD(APIView):
+    """
+    Retrieve, update or delete a plant instance.
+    """
+    def get_object(self, pk):
+        return get_object_or_404(Plant, id=pk)
+    
+    def get(self, request, pk, format=None):
+        """Get a Plant Detail"""
+        plant = self.get_object(pk)
+        serializer = PlantSerializer(plant, many=False)
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def plantDetail(request, pk):
-    """Get a Plant Detail"""
-    plants = get_object_or_404(Plant, id=pk)
-    serializer = PlantSerializer(plants, many=False)
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def createPlant(request):
-    """Create a New Plant"""
-    album = Album.objects.create(name=request.data['name'])
-    request.data['album'] = album.id
-    serializer = PlantSerializer(data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def updatePlant(request, pk):
-    """Update an Exisiting Plant"""
-    plant = get_object_or_404(Plant, id=pk)
-    serializer = PlantSerializer(instance = plant, data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['DELETE'])
-def deletePlant(request, pk):
-    """Delete A Plant"""
-    plant = get_object_or_404(Plant, id=pk)
-    plant.delete()
-    return Response('Item successfully deleted !')
+    def put(self, request, pk, format=None):
+        """Update an Existing Plant"""
+        plant = self.get_object(pk)
+        serializer = PlantSerializer(instance = plant, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+    
+    def delete(self, request, pk, format=None):
+        """Delete A Plant"""
+        plant = self.get_object(pk)
+        plant.delete()
+        return Response('Item successfully deleted !')
 
 # Tool
-@api_view(['GET'])
-def toolList(request):
-    """See All Tools List"""
-    tools = Tool.objects.all()
-    serializer = ToolSerializer(tools, many=True)
-    return Response(serializer.data)
+class tools(APIView):
+    """
+    List of Tool objects or create one
+    """
+    def get(self, request, format=None):
+        """Get All Tools"""
+        tools = Tool.objects.all()
+        serializer = ToolSerializer(tools, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, format=None):
+        """Create a New Tool"""
+        album = Album.objects.create(name=request.data['name'])
+        request.data['album'] = album.id
+        request.data['kind'] = "Tool"
+        serializer = ToolSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()  
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def toolDetail(request, pk):
-    """Get this Tool Detail"""
-    tools = get_object_or_404(Tool, id=pk)
-    serializer = ToolSerializer(tools, many=False)
-    return Response(serializer.data)
+class toolsRUD(APIView):
+    """
+    Retrieve, update or delete a tool instance.
+    """
+    def get_object(self, pk):
+        return get_object_or_404(Tool, id=pk)
+    
+    def get(self, request, pk, format=None):
+        """Get a Tool Detail"""
+        tool = self.get_object(pk)
+        serializer = ToolSerializer(tool, many=False)
+        return Response(serializer.data)
 
-@api_view(['POST'])
-def createTool(request):
-    """Create New Tool"""
-    album = Album.objects.create(name=request.data['name'])
-    request.data['album'] = album.id
-    serializer = ToolSerializer(data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def updateTool(request, pk):
-    """Update an Existing Tool"""
-    tool = get_object_or_404(Tool, id=pk)
-    serializer = ToolSerializer(instance = tool, data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['DELETE'])
-def deleteTool(request, pk):
-    """Delete a Tool"""
-    tool = get_object_or_404(Tool, id=pk)
-    tool.delete()
-    return Response('Item successfully deleted !')
+    def put(self, request, pk, format=None):
+        """Update an Existing Tool"""
+        tool = self.get_object(pk)
+        serializer = ToolSerializer(instance = tool, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+    
+    def delete(self, request, pk, format=None):
+        """Delete A Tool"""
+        tool = self.get_object(pk)
+        tool.delete()
+        return Response('Item successfully deleted !')
 
 # Tag
-@api_view(['GET'])
-def tagList(request):
-    """See All Tags List"""
-    tags = Tag.objects.all()
-    serializer = TagSerializer(tags, many=True)
-    return Response(serializer.data)
+class tags(APIView):
+    """
+    List of Tag objects or create one
+    """
+    def get(self, request, format=None):
+        """Get All Tags"""
+        tags = Tag.objects.all()
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, format=None):
+        """Create a New Tag"""
+        serializer = TagSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()  
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def tagDetail(request, pk):
-    """Get a Tag Details"""
-    tags = get_object_or_404(Tag, id=pk)
-    serializer = TagSerializer(tags, many=False)
-    return Response(serializer.data)
+class tagsRUD(APIView):
+    """
+    Retrieve, update or delete a tag instance.
+    """
+    def get_object(self, pk):
+        return get_object_or_404(Tag, id=pk)
+    
+    def get(self, request, pk, format=None):
+        """Get a Tag Detail"""
+        tag = self.get_object(pk)
+        serializer = TagSerializer(tag, many=False)
+        return Response(serializer.data)
 
-@api_view(['POST'])
-def createTag(request):
-    """Create a New Tag"""
-    serializer = TagSerializer(data = request.data)
+    def put(self, request, pk, format=None):
+        """Update an Existing Tag"""
+        tag = self.get_object(pk)
+        serializer = TagSerializer(instance = tag, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+    
+    def delete(self, request, pk, format=None):
+        """Delete A Tag"""
+        tag = self.get_object(pk)
+        tag.delete()
+        return Response('Item successfully deleted !')
 
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def updateTag(request, pk):
-    """Update A Tag"""
-    tag = get_object_or_404(Tag, id=pk)
-    serializer = TagSerializer(instance = tag, data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['DELETE'])
-def deleteTag(request, pk):
-    """Delete A Tag"""
-    tag = get_object_or_404(Tag, id=pk)
-    tag.delete()
-    return Response('Item successfully deleted !')
-
-@api_view(['GET'])
-def plantsTags(request):
-    """Get All Plants Tag"""
-    tags = Tag.objects.all().filter(usage='Plants')
-    serializer = TagSerializer(tags, many=True)
-    return Response(serializer.data)
+class plantsTags(APIView):
+    def get(self, request, format=None):
+        """Get All Plants Tag"""
+        tags = Tag.objects.all().filter(usage='Plants')
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
   
-@api_view(['GET'])
-def toolsTags(request):
-    """Get All Tools Tag"""
-    tags = Tag.objects.all().filter(usage='Tools')
-    serializer = TagSerializer(tags, many=True)
-    return Response(serializer.data)
+class toolsTags(APIView):
+    def get(self, request, format=None):
+        """Get All Tools Tag"""
+        tags = Tag.objects.all().filter(usage='Tools')
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def plantsWithSpecificTag(request, pk):
-    """Get Plants with Specific Tag"""
-    tag = get_object_or_404(Tag, id=pk)
-    plants = tag.plant_set.all()
-    serializer = PlantSerializer(plants, many=True)
-    return Response(serializer.data)
+class plantsWithSpecificTag(APIView):
+    def get(self, request, pk, format=None):
+        """Get Plants with Specific Tag"""
+        tag = get_object_or_404(Tag, id=pk)
+        plants = tag.plant_set.all()
+        serializer = PlantSerializer(plants, many=True)
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def toolsWithSpecificTag(request, pk):
-    """Get Tools With Specific Tag"""
-    tag = get_object_or_404(Tag, id=pk)
-    tools = tag.tool_set.all()
-    serializer = ToolSerializer(tools, many=True)
-    return Response(serializer.data)
+class toolsWithSpecificTag(APIView):
+    def get(self, request, pk, format=None):
+        """Get Tools With Specific Tag"""
+        tag = get_object_or_404(Tag, id=pk)
+        tools = tag.tool_set.all()
+        serializer = ToolSerializer(tools, many=True)
+        return Response(serializer.data)
 
 # Album
-@api_view(['GET'])
-def albumList(request):
-    """Get Album List"""
-    albums = Album.objects.all()
-    serializer = AlbumSerializer(albums, many=True)
-    return Response(serializer.data)
+class albums(APIView):
+    """
+    List of Album objects or create one
+    """
+    def get(self, request, format=None):
+        """Get All Albums"""
+        albums = Album.objects.all()
+        serializer = AlbumSerializer(albums, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, format=None):
+        """Create a New Album"""
+        album = Album.objects.create(name=request.data['name'])
+        request.data['album'] = album.id
+        request.data['kind'] = "Album"
+        serializer = AlbumSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()  
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def albumDetail(request, pk):
-    """Get an Album Detail"""
-    albums = get_object_or_404(Album, id=pk)
-    serializer = AlbumSerializer(albums, many=False)
-    return Response(serializer.data)
+class albumsRUD(APIView):
+    """
+    Retrieve, update or delete a album instance.
+    """
+    def get_object(self, pk):
+        return get_object_or_404(Album, id=pk)
+    
+    def get(self, request, pk, format=None):
+        """Get a Album Detail"""
+        album = self.get_object(pk)
+        serializer = AlbumSerializer(album, many=False)
+        return Response(serializer.data)
 
-@api_view(['POST'])
-def createAlbum(request):
-    """Create a New Album"""
-    serializer = AlbumSerializer(data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def updateAlbum(request, pk):
-    """Update an Existing Album"""
-    album = get_object_or_404(Album, id=pk)
-    serializer = AlbumSerializer(instance = album, data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['DELETE'])
-def deleteAlbum(request, pk):
-    """Delete an Album"""
-    album = get_object_or_404(Album, id=pk)
-    album.delete()
-    return Response('Item successfully deleted !')
-
-@api_view(['GET'])
-def getPlantsAlbumImages(request, pk):
-    """Get Plants Images"""
-    plantAlbum = get_object_or_404(Plant, id=pk)
-    album = get_object_or_404(Album, name=plantAlbum)
-    images = album.image_set.all()
-    serializer = ImageSerializer(images, many=True)
-
-    return Response(serializer.data)
+    def put(self, request, pk, format=None):
+        """Update an Existing Album"""
+        album = self.get_object(pk)
+        serializer = AlbumSerializer(instance = album, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+    
+    def delete(self, request, pk, format=None):
+        """Delete A Album"""
+        album = self.get_object(pk)
+        album.delete()
+        return Response('Item successfully deleted !')
 
 # images
-@api_view(['GET'])
-def getToolsAlbumImages(request, pk):
-    """Get Tools Images"""
-    toolAlbum = get_object_or_404(Tool, id=pk)
-    album = get_object_or_404(Album, name=toolAlbum)
-    images = album.image_set.all()
-    serializer = ImageSerializer(images, many=True)
+class getPlantsAlbumImages(APIView):
+    def get(self, request, pk, format=None):
+        """Get Plants Images"""
+        plantAlbum = get_object_or_404(Plant, id=pk)
+        album = get_object_or_404(Album, name=plantAlbum)
+        images = album.image_set.all()
+        serializer = ImageSerializer(images, many=True)
+        return Response(serializer.data)
 
-    return Response(serializer.data)
+class getToolsAlbumImages(APIView):
+    def get(self, request, pk, format=None):
+        """Get Tools Images"""
+        toolAlbum = get_object_or_404(Tool, id=pk)
+        album = get_object_or_404(Album, name=toolAlbum)
+        images = album.image_set.all()
+        serializer = ImageSerializer(images, many=True)
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def imageList(request):
-    """Get All Images"""
-    images = Image.objects.all()
-    serializer = ImageSerializer(images, many=True)
-    return Response(serializer.data)
+class images(APIView):
+    def get(self, request, format=None):
+        """Get All Images"""
+        images = Image.objects.all()
+        serializer = ImageSerializer(images, many=True)
+        return Response(serializer.data)
 
-@api_view(['POST'])
-def createImage(request, pk):
-    """Create a New Image"""
-    album = get_object_or_404(Album, id=pk)
-    request.data['album'] = pk
-    serializer = ImageSerializer(data = request.data)
-    
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
+class addImageToAlbum(APIView):
+    def post(self, request, pk, format=None):
+        """Create a New Image"""
+        album = get_object_or_404(Album, id=pk)
+        request.data['album'] = pk
+        serializer = ImageSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
 
 # get tags of a product
-@api_view(['GET'])
-def plantTags(request, pk):
-    """Get Tags Of a Plant"""
-    tags = get_object_or_404(Plant, id=pk).tags
-    if tags.count() == 0:
-        return Response('No Tags !')
-    serializer = TagSerializer(tags, many=True)
-    return Response(serializer.data)
+class plantTags(APIView):
+    def get(self, request, pk, format=None):
+        """Get Tags Of a Plant"""
+        tags = get_object_or_404(Plant, id=pk).tags
+        if tags.count() == 0:
+            return Response('No Tags !')
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def toolTags(request, pk):
-    """Get Tags Of a Tool"""
-    tags = get_object_or_404(Tool, id=pk).tags
-    if tags.count() == 0:
-        return Response('No Tags !')
-    serializer = TagSerializer(tags, many=True)
-    return Response(serializer.data)
-    return Response(serializer.data)
+class toolTags(APIView):
+    def get(self, request, pk, format=None):
+        """Get Tags Of a Tool"""
+        tags = get_object_or_404(Tool, id=pk).tags
+        if tags.count() == 0:
+            return Response('No Tags !')
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)

@@ -6,46 +6,34 @@ urlpatterns=[
     path('', views.ProductsAPIOverview, name='api'),
 
 # Plant API
-    path('plantsList/', views.plantList, name='plantsList'),
-    path('plantDetail/<str:pk>/', views.plantDetail, name='plantDetail'),
-    path('createPlant/', views.createPlant, name='createPlant'),
-    path('updatePlant/<str:pk>/', views.updatePlant, name='updatePlant'),
-    path('deletePlant/<str:pk>/', views.deletePlant, name='deletePlant'),
+    path('plants/', views.plants.as_view(), name='plants'),
+    path('plantsRUD/<str:pk>/', views.plantsRUD.as_view(), name='plantsRUD'),
 
 # Tool API
-    path('toolsList/', views.toolList, name='toolsList'),
-    path('toolDetail/<str:pk>/', views.toolDetail, name='toolDetail'),
-    path('createTool/', views.createTool, name='createTool'),
-    path('updateTool/<str:pk>/', views.updateTool, name='updateTool'),
-    path('deleteTool/<str:pk>/', views.deleteTool, name='deleteTool'),
+    path('tools/', views.tools.as_view(), name='tools'),
+    path('toolsRUD/<str:pk>/', views.toolsRUD.as_view(), name='toolsRUD'),
 
 # Tag API
-    path('tagsList/', views.tagList, name='tagsList'),
-    path('tagDetail/<str:pk>/', views.tagDetail, name='tagDetail'),
-    path('createTag/', views.createTag, name='createTag'),
-    path('updateTag/<str:pk>/', views.updateTag, name='updateTag'),
-    path('deleteTag/<str:pk>/', views.deleteTag, name='deleteTag'),
+    path('tags/', views.tags.as_view(), name='tags'),
+    path('tagsRUD/<str:pk>/', views.tagsRUD.as_view(), name='tagsRUD'),
 
 # Album API
-    path('albumsList/', views.albumList, name='albumsList'),
-    path('albumDetail/<str:pk>/', views.albumDetail, name='albumDetail'),
-    path('createAlbum/', views.createAlbum, name='createAlbum'),
-    path('updateAlbum/<str:pk>/', views.updateAlbum, name='updateAlbum'),
-    path('deleteAlbum/<str:pk>/', views.deleteAlbum, name='deleteAlbum'),
+    path('albums/', views.albums.as_view(), name='albums'),
+    path('albumsRUD/<str:pk>/', views.albumsRUD.as_view(), name='albumsRUD'),
 
 # Get Tag Groups
-    path('plantsTags/', views.plantsTags, name='plantsTags'),
-    path('toolsTags/', views.toolsTags, name='toolssTags'),
+    path('plantsTags/', views.plantsTags.as_view(), name='plantsTags'),
+    path('toolsTags/', views.toolsTags.as_view(), name='toolssTags'),
 
 # Category API
-    path('plantsWithTag/<str:pk>/', views.plantsWithSpecificTag, name='plantsWithTag'),
-    path('toolsWithTag/<str:pk>/', views.toolsWithSpecificTag, name='toolsWithTag'),
+    path('plantsWithTag/<str:pk>/', views.plantsWithSpecificTag.as_view(), name='plantsWithTag'),
+    path('toolsWithTag/<str:pk>/', views.toolsWithSpecificTag.as_view(), name='toolsWithTag'),
 
 # Album Images API
-    path('imageList/', views.imageList, name='imageList'),
-    path('plantAlbumImages/<str:pk>/', views.getPlantsAlbumImages, name='plantAlbumImages'),
-    path('toolAlbumImages/<str:pk>/', views.getToolsAlbumImages, name='toolAlbumImages'),
-    path('addImageToAlbum/<str:pk>/', views.createImage, name='addImageToAlbum'),
+    path('imageList/', views.images.as_view(), name='imageList'),
+    path('plantAlbumImages/<str:pk>/', views.getPlantsAlbumImages.as_view(), name='plantAlbumImages'),
+    path('toolAlbumImages/<str:pk>/', views.getToolsAlbumImages.as_view(), name='toolAlbumImages'),
+    path('addImageToAlbum/<str:pk>/', views.addImageToAlbum.as_view(), name='addImageToAlbum'),
 
 # searching and filtering for plants
     path('plantsByName/', sfsp_view.plantsByName, name='plantsByName'),
@@ -76,11 +64,11 @@ urlpatterns=[
     path('allAdvanceSearch/', sfsp_view.allAdvanceSearch, name='allAdvanceSearch'),
 
 # category API
-    path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag, name='plantsWithTag'),
-    path('toolsWithTag/<str:tag_name>/', views.toolsWithSpecificTag, name='toolsWithTag'),
+    path('plantsWithTag/<str:tag_name>/', views.plantsWithSpecificTag.as_view(), name='plantsWithTag'),
+    path('toolsWithTag/<str:tag_name>/', views.toolsWithSpecificTag.as_view(), name='toolsWithTag'),
 
 # get plant and tool, tags
-    path('plantTags/<str:pk>/', views.plantTags, name='plantsTag'),
-    path('toolTags/<str:pk>/', views.toolTags, name='toolsTag'),
+    path('plantTags/<str:pk>/', views.plantTags.as_view(), name='plantsTag'),
+    path('toolTags/<str:pk>/', views.toolTags.as_view(), name='toolsTag'),
 
 ]
