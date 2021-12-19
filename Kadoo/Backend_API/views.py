@@ -15,43 +15,44 @@ def ProductsAPIOverview(request):
     """See All General API"""
     api_urls = {
         'how to use':'firstly add /api/ after that use the API address you want ;) ',
-        'plants List':'/plantsList/',
-        'plant Detail':'/plantDetail/<str:pk>/',
-        'create Plant':'/createPlant/',
-        'update Plant':'/updatePlant/<str:pk>/',
-        'delete Plant':'/deletePlant/<str:pk>/',
 
-        'tools List':'/toolsList/',
-        'too lDetail':'/toolDetail/<str:pk>/',
-        'create Tool':'/createTool/',
-        'update Tool':'/updateTool/<str:pk>/',
-        'delete Tool':'/deleteTool/<str:pk>/',
+        '"GET" plants List':'/plants/',
+        '"GET" plant Detail':'/plantsRUD/<str:pk>/',
+        '"POST" create plant':'/plants/',
+        '"PUT" update plant':'/plantsRUD/<str:pk>/',
+        '"DELETE" delete plant':'/plantsRUD/<str:pk>/',
 
-        'tags List':'/tagsList/',
-        'tag Detail':'/tagDetail/<str:pk>/',
-        'create Tag':'/createTag/',
-        'update Tag':'/updateTag/<str:pk>/',
-        'delete Tag':'/deleteTag/<str:pk>/',
+        '"GET" tools List':'/tools/',
+        '"GET" tool Detail':'/toolsRUD/<str:pk>/',
+        '"POST" create tool':'/tools/',
+        '"PUT" update tool':'/toolsRUD/<str:pk>/',
+        '"DELETE" delete tool':'/toolsRUD/<str:pk>/',
 
-        'albums List':'/albumsList/',
-        'album Detail':'/albumDetail/<str:pk>/',
-        'create Album':'/createAlbum/',
-        'update Album':'/updateAlbum/<str:pk>/',
-        'delete Album':'/deleteAlbum/<str:pk>/',
+        '"GET" tags List':'/tags/',
+        '"GET" tag Detail':'/tagsRUD/<str:pk>/',
+        '"POST" create tag':'/tags/',
+        '"PUT" update tag':'/tagsRUD/<str:pk>/',
+        '"DELETE" delete tag':'/tagsRUD/<str:pk>/',
 
-        'plants Tags' : '/plantsTags/',
-        'tools Tags' : '/toolsTags',
+        '"GET" albums List':'/albums/',
+        '"GET" album Detail':'/albumsRUD/<str:pk>/',
+        '"POST" create album':'/albums/',
+        '"PUT" update album':'/albumsRUD/<str:pk>/',
+        '"DELETE" delete album':'/albumsRUD/<str:pk>/',
 
-        'plants With Specific Tag':'/plantsWithTag/<str:tag>/',
-        'tools With Specific Tag':'/toolsWithTag/<str:tag>/',
+        '"GET" plants Tags' : '/plantsTags/',
+        '"GET" tools Tags' : '/toolsTags',
 
-        'get a plant tags':'/plantTags/<str:pk>/',
-        'get a tool tags':'/toolTags/<str:pk>/',
+        '"GET" plants With Specific Tag':'/plantsWithTag/<str:tag_name>/',
+        '"GET" tools With Specific Tag':'/toolsWithTag/<str:tag_name>/',
 
-        'images List':'/imagesList/',
-        'Specific plant album Images':'/plantAlbumImages/<str:pk>/',
-        'Specific tool album Images':'/toolAlbumImages/<str:pk>/',
-        'add image to a specific Album':'/addImageToAlbum/<str:pk>/'
+        '"GET" get a plant tags':'/plantTags/<str:pk>/',
+        '"GET" get a tool tags':'/toolTags/<str:pk>/',
+
+        '"GET" images List':'/imageList/',
+        '"GET" Specific plant album Images':'/plantAlbumImages/<str:pk>/',
+        '"GET" Specific tool album Images':'/toolAlbumImages/<str:pk>/',
+        '"GET" add image to a specific Album':'/addImageToAlbum/<str:pk>/'
     }
     api_urls.update(SFSP_Overview())
     api_urls.update(GH_Overview())
