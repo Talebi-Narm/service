@@ -14,34 +14,34 @@ import random
 def SFSP_Overview():
     api_urls = {
         # plants filter and search
-        'search in plants by name':'/plantsByName/',
-        'search in plants by price':'/plantsByPrice/',
-        'search in plants by environment':'/plantsByEnvironment/',
-        'search in plants by water':'/plantsByWater/',
-        'search in plants by light':'/plantsByLight/',
-        'search in plants by growth rate':'/plantsByGrowthRate/',
-        'search in plants by tags':'/plantsByTags/',
+        '"POST" search in plants by name':'/plantsByName/',
+        '"POST" search in plants by price':'/plantsByPrice/',
+        '"POST" search in plants by environment':'/plantsByEnvironment/',
+        '"POST" search in plants by water':'/plantsByWater/',
+        '"POST" search in plants by light':'/plantsByLight/',
+        '"POST" search in plants by growth rate':'/plantsByGrowthRate/',
+        '"POST" search in plants by tags':'/plantsByTags/',
 
         # tools filter and search
-        'search in tools by name':'/toolsByName/',
-        'search in tools by price':'/toolsByPrice/',
-        'search in tools by tags':'/toolsByTags/',
+        '"POST" search in tools by name':'/toolsByName/',
+        '"POST" search in tools by price':'/toolsByPrice/',
+        '"POST" search in tools by tags':'/toolsByTags/',
 
         # note :
         '--------note for sorting ------':'------(kind = "ASC" for ascending and "DES" for descending)----',
         # sorting
-        'sorting plants':'/plantsSort/',
-        'sorting tools':'/toolsSort/',
+        '"POST" sorting plants':'/plantsSort/',
+        '"POST" sorting tools':'/toolsSort/',
 
         # pagination
-        'pagination plants':'/plantsPagination/',
-        'pagination tools':'/toolsPagination/',
-        'pagination all':'/allPagination/',
+        '"POST" pagination plants':'/plantsPagination/',
+        '"POST" pagination tools':'/toolsPagination/',
+        '"POST" pagination all':'/allPagination/',
 
         # advance search
-        'advance search in plants':'/plantsAdvanceSearch/',
-        'advance search in tools':'/toolsAdvanceSearch/',
-        'advance search in all products':'/allAdvanceSearch/',
+        '"POST" advance search in plants':'/plantsAdvanceSearch/',
+        '"POST" advance search in tools':'/toolsAdvanceSearch/',
+        '"POST" advance search in all products':'/allAdvanceSearch/',
         }
     return api_urls
 
