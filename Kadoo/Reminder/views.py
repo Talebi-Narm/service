@@ -3,7 +3,7 @@ from __future__ import print_function
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status
-
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -18,6 +18,14 @@ from google.oauth2.credentials import Credentials
 
 from django.utils import timezone
 import json
+
+def Reminder_Overview():
+    api_urls = {
+        '"POST" create a new reminder':'/reminder/',
+        '"DELETE" delete credentials for user':'/deleteCreds/',
+        '"DELETE" delete calendar ID for user':'/deleteCalendar/'
+    }
+    return api_urls
 
 class reminder(APIView):
     def post(self, request, format=None):
@@ -64,7 +72,7 @@ class reminder(APIView):
         return Response(data.errors, status=400)
 
 class deleteCreds(APIView):
-    def get(self, request, format=None):
+    def delete(self, request, format=None):
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
 
@@ -73,13 +81,28 @@ class deleteCreds(APIView):
         _user.save()
         return Response("Email disconnected successfully !")
 
-class deleteCalendar(APIView):
-    def get(self, request, format=None):
+class deleteCalendarID(APIView):
+    def delete(self, request, format=None):
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         _user = request.user
         if not _user.calendarID:
             return Response("you have no calendar !")
+        else :
+            creds = None
+            if _user.creds:
+                creds = Credentials.from_authorized_user_info(json.loads(_user.creds), SCOPES)
+            if not creds or not creds.valid:
+                if creds and creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+                else:
+                    flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+                    creds = flow.run_local_server(port=0)
+                _user.creds = creds.to_json()
+                _user.save()
+
+            service = build('calendar', 'v3', credentials=creds)
+            service.calendarList().delete(calendarId='calendarId').execute()
         _user.calendarID = None
         _user.save()
         return Response("Calendar deleted successfully !")

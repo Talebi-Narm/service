@@ -9,54 +9,56 @@ from Backend.models import Plant, Tool, Tag,Image, Album
 
 from .SFSP_views import SFSP_Overview
 from Green_House.views import GH_Overview
+from Reminder.views import Reminder_Overview
 
-@api_view(['GET'])
-def ProductsAPIOverview(request):
-    """See All General API"""
-    api_urls = {
-        'how to use':'firstly add /api/ after that use the API address you want ;) ',
+class ProductsAPIOverview(APIView):
+    def get(self, request, format=None):
+        """See All General API"""
+        api_urls = {
+            'how to use':'firstly add /api/ after that use the API address you want ;) ',
 
-        '"GET" plants List':'/plants/',
-        '"GET" plant Detail':'/plantsRUD/<str:pk>/',
-        '"POST" create plant':'/plants/',
-        '"PUT" update plant':'/plantsRUD/<str:pk>/',
-        '"DELETE" delete plant':'/plantsRUD/<str:pk>/',
+            '"GET" plants List':'/plants/',
+            '"GET" plant Detail':'/plantsRUD/<str:pk>/',
+            '"POST" create plant':'/plants/',
+            '"PUT" update plant':'/plantsRUD/<str:pk>/',
+            '"DELETE" delete plant':'/plantsRUD/<str:pk>/',
 
-        '"GET" tools List':'/tools/',
-        '"GET" tool Detail':'/toolsRUD/<str:pk>/',
-        '"POST" create tool':'/tools/',
-        '"PUT" update tool':'/toolsRUD/<str:pk>/',
-        '"DELETE" delete tool':'/toolsRUD/<str:pk>/',
+            '"GET" tools List':'/tools/',
+            '"GET" tool Detail':'/toolsRUD/<str:pk>/',
+            '"POST" create tool':'/tools/',
+            '"PUT" update tool':'/toolsRUD/<str:pk>/',
+            '"DELETE" delete tool':'/toolsRUD/<str:pk>/',
 
-        '"GET" tags List':'/tags/',
-        '"GET" tag Detail':'/tagsRUD/<str:pk>/',
-        '"POST" create tag':'/tags/',
-        '"PUT" update tag':'/tagsRUD/<str:pk>/',
-        '"DELETE" delete tag':'/tagsRUD/<str:pk>/',
+            '"GET" tags List':'/tags/',
+            '"GET" tag Detail':'/tagsRUD/<str:pk>/',
+            '"POST" create tag':'/tags/',
+            '"PUT" update tag':'/tagsRUD/<str:pk>/',
+            '"DELETE" delete tag':'/tagsRUD/<str:pk>/',
 
-        '"GET" albums List':'/albums/',
-        '"GET" album Detail':'/albumsRUD/<str:pk>/',
-        '"POST" create album':'/albums/',
-        '"PUT" update album':'/albumsRUD/<str:pk>/',
-        '"DELETE" delete album':'/albumsRUD/<str:pk>/',
+            '"GET" albums List':'/albums/',
+            '"GET" album Detail':'/albumsRUD/<str:pk>/',
+            '"POST" create album':'/albums/',
+            '"PUT" update album':'/albumsRUD/<str:pk>/',
+            '"DELETE" delete album':'/albumsRUD/<str:pk>/',
 
-        '"GET" plants Tags' : '/plantsTags/',
-        '"GET" tools Tags' : '/toolsTags',
+            '"GET" plants Tags' : '/plantsTags/',
+            '"GET" tools Tags' : '/toolsTags',
 
-        '"GET" plants With Specific Tag':'/plantsWithTag/<str:tag_name>/',
-        '"GET" tools With Specific Tag':'/toolsWithTag/<str:tag_name>/',
+            '"GET" plants With Specific Tag':'/plantsWithTag/<str:tag_name>/',
+            '"GET" tools With Specific Tag':'/toolsWithTag/<str:tag_name>/',
 
-        '"GET" get a plant tags':'/plantTags/<str:pk>/',
-        '"GET" get a tool tags':'/toolTags/<str:pk>/',
+            '"GET" get a plant tags':'/plantTags/<str:pk>/',
+            '"GET" get a tool tags':'/toolTags/<str:pk>/',
 
-        '"GET" images List':'/imageList/',
-        '"GET" Specific plant album Images':'/plantAlbumImages/<str:pk>/',
-        '"GET" Specific tool album Images':'/toolAlbumImages/<str:pk>/',
-        '"GET" add image to a specific Album':'/addImageToAlbum/<str:pk>/'
-    }
-    api_urls.update(SFSP_Overview())
-    api_urls.update(GH_Overview())
-    return Response(api_urls)
+            '"GET" images List':'/imageList/',
+            '"GET" Specific plant album Images':'/plantAlbumImages/<str:pk>/',
+            '"GET" Specific tool album Images':'/toolAlbumImages/<str:pk>/',
+            '"GET" add image to a specific Album':'/addImageToAlbum/<str:pk>/'
+        }
+        api_urls.update(SFSP_Overview())
+        api_urls.update(GH_Overview())
+        api_urls.update(Reminder_Overview())
+        return Response(api_urls)
 
 # plant
 class plants(APIView):

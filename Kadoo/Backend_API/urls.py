@@ -3,7 +3,7 @@ from . import views
 from . import SFSP_views as sfsp_view
 
 urlpatterns=[
-    path('', views.ProductsAPIOverview, name='api'),
+    path('', views.ProductsAPIOverview.as_view(), name='api'),
 
 # Plant API
     path('plants/', views.plants.as_view(), name='plants'),
