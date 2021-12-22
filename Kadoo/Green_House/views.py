@@ -15,11 +15,11 @@ import uuid
 
 def GH_Overview():
     api_urls = {
-        'see green house plants':'/myPlants/',
-        'see green house plants':'/myArchivedPlants/',
-        'add to green house plants':'/addToMyPlants/',
-        'get a plant information':'/getMyPlant/<str:pk>/',
-        'update plant in green house':'/updateInMyPlants/<str:pk>/',
+        '"GET" see green house plants':'/myPlants/',
+        '"GET" see green house plants':'/myArchivedPlants/',
+        '"POST" add to green house plants':'/addToMyPlants/',
+        '"GET" get a plant information':'/myPlants/<str:pk>/',
+        '"POST" update plant in green house':'/myPlants/<str:pk>/',
     }
     return api_urls
 
