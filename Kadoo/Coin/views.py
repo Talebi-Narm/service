@@ -266,7 +266,7 @@ class WeeklyUpdateWateringUserCoin(APIView):
 ###############
 
 #Read All Coin Data
-class GetTAllCoin(generics.GenericAPIView):
+class GetTAllCoin(APIView):
     serializer_class = CoinSerializer
     def get(self, request, format='json'):
         """All Coin Data"""
@@ -275,7 +275,7 @@ class GetTAllCoin(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read Coin Data For This User
-class GetThisUserCoin(generics.GenericAPIView):
+class GetThisUserCoin(APIView):
     serializer_class = CoinSerializer
     def get(self, request, format='json'):
         """This User Coin Data"""
@@ -290,7 +290,7 @@ class GetThisUserCoin(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read Coin Data With ID
-class GetUserCoinWithId(generics.GenericAPIView):
+class GetUserCoinWithId(APIView):
     serializer_class = CoinSerializer
     def get(self, request, pk, format='json'):
         """Coin Data Of User With Id"""
