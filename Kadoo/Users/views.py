@@ -23,7 +23,7 @@ def apiOverview(request):
     }
     return response.Response(api_urls)
 
-class CurrentUserView(generics.GenericAPIView):
+class CurrentUserView(APIView):
     #GET CURRENT USER
     #HTTP_401 : No Login
     """Get Logedin User Information"""
@@ -34,7 +34,7 @@ class CurrentUserView(generics.GenericAPIView):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
-class BlacklistUpdate(APIView):
+class BlacklistUpdate(generics.GenericAPIView):
     #USER LOGIUT (PUT TOKEN TO BLACK LIST)
     #HTTP_400 : Bad request caused by wrong token
     """Logout"""
@@ -62,7 +62,7 @@ class CustomMemberCreate(generics.GenericAPIView):
                 return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UpdateCredit(APIView):
+class UpdateCredit(generics.GenericAPIView):
     """Update Credit Of User"""
     @csrf_exempt
     #UPDATE CREDIT

@@ -193,7 +193,7 @@ class QuestionTicketCreateForNewConversation(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #Question Ticket Create For Given Conversation With ID
-class QuestionTicketCreateForGivenConversation(APIView):
+class QuestionTicketCreateForGivenConversation(generics.GenericAPIView):
     serializer_class = TicketSerializer
     def post(self, request, pk, format='json'):
         """New Question  Ticket With For Giver Conversation By ID"""
