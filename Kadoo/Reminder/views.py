@@ -21,6 +21,7 @@ import json
 
 def Reminder_Overview():
     api_urls = {
+        '"GET" to connect user email to google calendar' : '/reminder/',
         '"POST" create a new reminder':'/reminder/',
         '"DELETE" delete credentials for user':'/deleteCreds/',
         '"DELETE" delete calendar ID for user':'/deleteCalendar/'
@@ -28,6 +29,28 @@ def Reminder_Overview():
     return api_urls
 
 class reminder(APIView):
+    def get(self, request, format=None):
+        if request.user.is_anonymous:
+            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+
+        _user = request.user
+
+        SCOPES = ['https://www.googleapis.com/auth/calendar']
+        creds = None
+        if _user.creds:
+            creds = Credentials.from_authorized_user_info(json.loads(_user.creds), SCOPES)
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+                creds = flow.run_local_server(port=0)
+            _user.creds = creds.to_json()
+            _user.save()
+        service = build('calendar', 'v3', credentials=creds)
+
+        return Response("Auth completed !")
+        
     def post(self, request, format=None):
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
