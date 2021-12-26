@@ -62,7 +62,8 @@ class SupportTicketModel(models.Model):
     ticket_specialist = models.ForeignKey('Specialist.Specialist', null = True, related_name="ticket_specialist", blank = True, on_delete = models.CASCADE)
     Category = models.CharField(max_length = 50, choices = category_quantifiers, default='General', null = True, blank = True)
     ticket_status = models.CharField(max_length = 50, choices = status_quantifiers, default='Sent', null = True, blank = True)
-    body = models.TextField(null = True, blank = True)
+    rate = models.IntegerField(blank = True, default=0)
+    body = models.TextField()
     created = models.DateTimeField(auto_now_add = True)
     modified = models.DateField(auto_now = True)
 
