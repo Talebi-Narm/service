@@ -58,7 +58,7 @@ class CustomSpecialistCreate(generics.GenericAPIView):
 ###############
 
 #Get All Specialists Primary Info
-class GetAllSpecialistPrimaryInfo(generics.GenericAPIView):
+class GetAllSpecialistPrimaryInfo(APIView):
  serializer_class = UserSerializer
  def get(self, request, format='json'):
    """Get All Specialists Primary Info"""
@@ -67,7 +67,7 @@ class GetAllSpecialistPrimaryInfo(generics.GenericAPIView):
    return Response(serializer.data)
 
 #Get All Specialists Secondary Info
-class GetAllSpecialistSecondaryInfo(generics.GenericAPIView):
+class GetAllSpecialistSecondaryInfo(APIView):
  serializer_class = SpecialistCompeleteInfoSerializer
  def get(self, request, format='json'):
    """Get All Specialists Secondary Info"""
@@ -76,7 +76,7 @@ class GetAllSpecialistSecondaryInfo(generics.GenericAPIView):
    return Response(serializer.data)
 
 #Get This Specialists Primary Info
-class GetThisSpecialistPrimaryInfo(generics.GenericAPIView):
+class GetThisSpecialistPrimaryInfo(APIView):
  serializer_class = UserSerializer
  def get(self, request, format='json'):
    """Get This Specialist Primary Info"""
@@ -90,7 +90,7 @@ class GetThisSpecialistPrimaryInfo(generics.GenericAPIView):
    return Response(serializer.data)
 
 #Get This Specialists Secondary Info
-class GetThisSpecialistPrimaryInfo(generics.GenericAPIView):
+class GetThisSpecialistPrimaryInfo(APIView):
  serializer_class = SpecialistCompeleteInfoSerializer
  def get(self, request, format='json'):
    """Get This Specialist Secondary Info"""

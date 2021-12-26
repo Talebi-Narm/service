@@ -20,4 +20,13 @@ urlpatterns=[
     path('member-tickets/<str:pk>/', views.GetUserTickets.as_view(), name='member-tickets'),
     path('specialist-tickets/<str:pk>/', views.GetSpecialistTickets.as_view(), name='specialist-tickets'),
     path('rate-conversation/<str:pk>/', views.DoneTheConverstion.as_view(), name='rate-conversation'),
+
+    path('create-support-ticket/', views.SupportTicketCreate.as_view(), name='create-support-ticket'),
+    path('inprogress-tickets/', views.AllInProgressSupportTickets.as_view(), name='inprogress-tickets'),
+    path('specialist-inprogress-tickets/', views.SpecialistAllInProgressSupportTickets.as_view(), name='specialist-accepted-tickets'),
+    path('specialist-accepted-tickets/', views.SpecialistAllAcceptedSupportTickets.as_view(), name='specialist-accepted-tickets'),
+    path('member-support-tickets/', views.MemberAllSupportTickets.as_view(), name='member-support-tickets'),
+    path('member-inprogress-tickets/', views.MemberAllInProgressSupportTickets.as_view(), name='member-inprogress-tickets'),
+    path('member-accepted-tickets/', views.MemberAllAcceptedSupportTickets.as_view(), name='member-accepted-tickets'),
+
 ]
