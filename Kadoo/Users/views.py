@@ -34,7 +34,7 @@ class CurrentUserView(APIView):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
-class BlacklistUpdate(generics.GenericAPIView):
+class BlacklistUpdate(APIView):
     #USER LOGIUT (PUT TOKEN TO BLACK LIST)
     #HTTP_400 : Bad request caused by wrong token
     """Logout"""
@@ -62,7 +62,7 @@ class CustomMemberCreate(generics.GenericAPIView):
                 return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UpdateCredit(generics.GenericAPIView):
+class UpdateCredit(APIView):
     """Update Credit Of User"""
     @csrf_exempt
     #UPDATE CREDIT
