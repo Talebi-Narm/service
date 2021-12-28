@@ -43,18 +43,26 @@ class allOfMyPlant(APIView):
             if Plant.objects.filter(id=getData.data["plant"]).exists() == False:
                 return Response("This plant does NOT Exist!", status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             _user = request.user
-            _plant = Plant.objects.get(id=getData.data['plant'])
+
+            _name = getData.data['name']
+
             try :
-                _location = location=getData.data['location']
+                _des = getData.data['description']
+            except:
+                _des = None
+
+            try :
+                _location = getData.data['location']
             except:
                 _location = None
-            _myPlant = myPlant.objects.create(user=_user, plant=_plant, location=getData.data['location'])
+
+            _myPlant = myPlant.objects.create(user=_user, name=_name, description=_des, location=_location)
             _myPlant.save()
-            # if _myPlant:
-            #     CoinData = CoinManagementModel.objects.get(user=_user)
-            #     CoinData.coin_value -= 50
-            #     CoinData.used_plant_count += 1
-            #     CoinData.save()
+            if _myPlant:
+                CoinData = CoinManagementModel.objects.get(user=_user)
+                CoinData.coin_value -= 50
+                CoinData.used_plant_count += 1
+                CoinData.save()
             return Response(getData.data)
         return Response(getData.errors, status=400)
 
@@ -101,7 +109,8 @@ class myPlantsRUD(APIView):
         _myPlant = get_object_or_404(myPlant, id=pk)
         request.data['isArchived'] = True
         request.data['user'] = request.user.id
-        request.data['plant'] = _myPlant.plant.id
+        if not request.data['name']:
+            request.data['name'] = _myPlant.name
         serializer = myPlantSerializer(instance =_myPlant, data=request.data)
         if serializer.is_valid():
             serializer.save()
