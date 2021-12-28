@@ -34,4 +34,4 @@ class CustomMemberSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewUser
-        fields = ('email', 'user_name', 'first_name', 'last_name')
+        fields = ('id','email', 'user_name', 'first_name', 'last_name')

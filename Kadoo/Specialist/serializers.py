@@ -38,6 +38,11 @@ class SpecialistCompeleteInfoSerializer(serializers.ModelSerializer):
         model = SpecilistFields
         fields = '__all__'
 
+class SpecialistCompeleteInfoSerializerPost(serializers.ModelSerializer):
+    class Meta:
+        model = SpecilistFields
+        fields = ('id_code', 'birth_date', 'degree', 'major', 'phone_number', 'about','address','is_online', 'rate')
+
 
 class SpecialistIdSerializer(serializers.Serializer):
- id = serializers.UUIDField(required=True)
+ id = serializers.IntegerField(required=True)
