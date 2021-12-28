@@ -13,7 +13,7 @@ class addPlantSerializer(serializers.Serializer):
     image = serializers.ImageField(required=False , default=None)
 
 class updatePlantSerializer(serializers.Serializer):
-    name = serializers.CharField(required=False, Default=None)
+    name = serializers.CharField(required=False, default=None)
     description = serializers.CharField(required=False, default = None)
     location = serializers.CharField(required=False, default=None)
     image = serializers.ImageField(required=False , default=None)
