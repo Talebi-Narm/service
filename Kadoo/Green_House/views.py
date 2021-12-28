@@ -90,6 +90,7 @@ class myPlantsRUD(APIView):
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         _myPlant = get_object_or_404(myPlant, id=pk)
+        request.data['user'] = request.user
         serializer = myPlantSerializer(instance =_myPlant, data=request.data)
         if serializer.is_valid():
             serializer.save()
