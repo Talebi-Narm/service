@@ -33,12 +33,18 @@ def apiOverview(request):
         '(post) Done Specialist Tickets With ID':'/rate-conversation/<str:pk>/',
         '##################################':'',
         '(post) Create New Support Ticket':'/create-support-ticket/',
+        '(post) Accept Ticket By This Specialist With Ticket ID':'/accept-ticket/<str:pk>',
+        '(post) Done Ticket By This Specialist With Ticket ID':'/done-ticket-specialist/<str:pk>',
+        '(post) Done Ticket By This Member With (*id,*rate)':'/done-ticket-member/',
+        '(post) Rate Ticket By This Member With (*id,*rate)':'/rate-ticket-member/',
         '(get) Get All In Progress Tickets':'/inprogress-tickets/',
+        '(get) Get This Specialist All Tickets':'/specialist-support-tickets/',
         '(get) Get This Specialist In Progress Tickets':'/specialist-inprogress-tickets/',
         '(get) Get This Specialist Accepted Tickets':'/specialist-accepted-tickets/',
         '(get) Get This Member All Tickets':'/member-support-tickets/',
-        '(get) Get This Member In progress Tickets':'/member-support-tickets/',
-        '(get) Get This Member Accepted Tickets':'/member-support-tickets/',
+        '(get) Get This Member In progress Tickets':'/member-inprogress-tickets/',
+        '(get) Get This Member Accepted Tickets':'/member-accepted-tickets/',
+        '(get) Get This Member Done Tickets':'/member-done-tickets/',
         
         
     }
@@ -83,6 +89,20 @@ class AllInProgressSupportTickets(APIView):
         Tickets = SupportTicketModel.objects.filter(ticket_status= 'In progress')
         serializer = GetSupportTicketSerializer(Tickets, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+#Read All This Specialist Support Tickets
+class SpecialistAllSupportTickets(APIView):
+    serializer_class = GetSupportTicketSerializer
+    def get(self, request, format='json'):
+        """Read All This Specialist Support Tickets"""
+        if request.user.is_anonymous:
+            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.type != NewUser.Types.SPECIALIST:
+            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
+        SpecialistToGet = request.user
+        Tickets = SupportTicketModel.objects.filter(ticket_specialist=SpecialistToGet)
+        serializer = GetSupportTicketSerializer(Tickets, many=True)
+        return Response(serializer.data)
 
 #Read All This Specialist In progress Support Tickets
 class SpecialistAllInProgressSupportTickets(APIView):
@@ -140,7 +160,7 @@ class MemberAllInProgressSupportTickets(APIView):
         serializer = GetSupportTicketSerializer(Tickets, many=True)
         return Response(serializer.data)
 
-#Read All This Specialist Accepted Support Tickets
+#Read All This Member Accepted Support Tickets
 class MemberAllAcceptedSupportTickets(APIView):
     serializer_class = GetSupportTicketSerializer
     def get(self, request, format='json'):
@@ -154,7 +174,135 @@ class MemberAllAcceptedSupportTickets(APIView):
         serializer = GetSupportTicketSerializer(Tickets, many=True)
         return Response(serializer.data)
 
+#Read All This Member Done Support Tickets
+class MemberAllDoneSupportTickets(APIView):
+    serializer_class = GetSupportTicketSerializer
+    def get(self, request, format='json'):
+        """Read All This Member Done Support Tickets"""
+        if request.user.is_anonymous:
+            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.type != NewUser.Types.MEMBER:
+            return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
+        SpecialistToGet = request.user
+        Tickets = SupportTicketModel.objects.filter(ticket_status= 'Done', ticket_author=SpecialistToGet)
+        serializer = GetSupportTicketSerializer(Tickets, many=True)
+        return Response(serializer.data)
 
+#------- Update
+###############
+
+#Accept Ticket By This Specialist With Ticket ID
+class AcceptSupportTicket(APIView):
+    def post(self, request, pk, format='json'):
+        """Accept Ticket By This Specialist With Ticket ID"""
+        if request.user.is_anonymous:
+            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.type != NewUser.Types.SPECIALIST:
+            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
+        if SupportTicketModel.objects.filter(id=pk).exists() == False:
+            return Response("No Ticket Found For The Given ID!", status=status.HTTP_404_NOT_FOUND)
+        if SpecilistFields.objects.filter(user=request.user).exists() == False:
+            return Response("You Can't Accept Ticket Because You Are NOT Fully Hired!", status=status.HTTP_403_FORBIDDEN)
+        SpecialistToGet = request.user
+        TicketToSign = SupportTicketModel.objects.get(id=pk)
+        TicketToSign.ticket_specialist = SpecialistToGet
+        TicketToSign.ticket_status = 'Accepted'
+        TicketToSign.save()
+        if TicketToSign:
+            return Response("Ticket Successfully Accepted By This Specialist", status=status.HTTP_200_OK)
+        return Response("OOPS! Somthing Went Wrong", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#Done Ticket By This Member With Ticket ID
+class DoneSupportTicketByMember(generics.GenericAPIView):
+    serializer_class = RateSerializer
+    def post(self, request, format='json'):
+        """Done Ticket By This Member With Ticket ID And Rate"""
+        serializer = RateSerializer(data=request.data)
+        if serializer.is_valid():
+            if request.user.is_anonymous:
+                return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+            if request.user.type != NewUser.Types.MEMBER:
+                return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
+            if SupportTicketModel.objects.filter(id=serializer.data['id']).exists() == False:
+                return Response("No Ticket Found For The Given ID!", status=status.HTTP_404_NOT_FOUND)
+            if SupportTicketModel.objects.get(id=serializer.data['id']).ticket_status != 'Accepted':
+                return Response("This Ticket Is Not Already Accepted!", status=status.HTTP_403_FORBIDDEN)
+            if SupportTicketModel.objects.get(id=serializer.data['id']).ticket_author != request.user:
+                return Response("You Are Not The Author Of This Ticket!", status=status.HTTP_403_FORBIDDEN)
+            
+            
+            TicketToSign = SupportTicketModel.objects.get(id=serializer.data['id'])
+            SpecialistToGet = TicketToSign.ticket_specialist
+            TicketToSign.ticket_status = 'Done'
+            TicketToSign.save()
+            if TicketToSign:
+                CountSpecialist = SupportTicketModel.objects.filter(ticket_specialist=SpecialistToGet,ticket_status='Done').count()
+                SpecialistInfo = SpecilistFields.objects.get(user=SpecialistToGet)
+                oldrate = SpecialistInfo.rate
+                newrate = ((oldrate * CountSpecialist) + serializer.data['rate'])/(CountSpecialist + 1)
+                SpecialistInfo.rate = newrate
+                SpecialistInfo.save()
+                if SpecialistInfo:
+                    return Response("Ticket Successfully Done By This Member", status=status.HTTP_200_OK)
+                return Response("OOPS! Somthing Went Wrong", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response("OOPS! Somthing Went Wrong", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#Done Ticket By This Specialist With Ticket ID
+class DoneSupportTicketBySpecialist(APIView):
+    def post(self, request, pk, format='json'):
+        """Done Ticket By This Specialist With Ticket ID"""
+        if request.user.is_anonymous:
+            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.type != NewUser.Types.SPECIALIST:
+            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
+        if SupportTicketModel.objects.filter(id=pk).exists() == False:
+            return Response("No Ticket Found For The Given ID!", status=status.HTTP_404_NOT_FOUND)
+        if SupportTicketModel.objects.get(id=pk).ticket_status != 'Accepted':
+            return Response("This Ticket Is Not Already Accepted!", status=status.HTTP_403_FORBIDDEN)
+        if SupportTicketModel.objects.get(id=pk).ticket_specialist != request.user:
+            return Response("You Are Not The Specialist Of This Ticket!", status=status.HTTP_403_FORBIDDEN)
+            
+            
+        TicketToSign = SupportTicketModel.objects.get(id=pk)
+        SpecialistToGet = TicketToSign.ticket_specialist
+        TicketToSign.ticket_status = 'Done'
+        TicketToSign.save()
+        if TicketToSign:
+            return Response("Ticket Successfully Done By This Specialist", status=status.HTTP_200_OK)
+        return Response("OOPS! Somthing Went Wrong", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#Rate Ticket Specialist By This Member With Ticket ID
+class RateSupportTicketByMember(generics.GenericAPIView):
+    serializer_class = RateSerializer
+    def post(self, request, format='json'):
+        """Rate Ticket Specialist By This Member With Ticket ID"""
+        serializer = RateSerializer(data=request.data)
+        if serializer.is_valid():
+            if request.user.is_anonymous:
+                return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+            if request.user.type != NewUser.Types.MEMBER:
+                return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
+            if SupportTicketModel.objects.filter(id=serializer.data['id']).exists() == False:
+                return Response("No Ticket Found For The Given ID!", status=status.HTTP_404_NOT_FOUND)
+            if SupportTicketModel.objects.get(id=serializer.data['id']).ticket_status != 'Done':
+                return Response("This Ticket Is Not Already Done!", status=status.HTTP_403_FORBIDDEN)
+            if SupportTicketModel.objects.get(id=serializer.data['id']).ticket_author != request.user:
+                return Response("You Are Not The Author Of This Ticket!", status=status.HTTP_403_FORBIDDEN)
+            
+            
+            TicketToSign = SupportTicketModel.objects.get(id=serializer.data['id'])
+            SpecialistToGet = TicketToSign.ticket_specialist
+            CountSpecialist = SupportTicketModel.objects.filter(ticket_specialist=SpecialistToGet,ticket_status='Done').count()
+            SpecialistInfo = SpecilistFields.objects.get(user=SpecialistToGet)
+            oldrate = SpecialistInfo.rate
+            newrate = ((oldrate * (CountSpecialist-1)) + serializer.data['rate'])/(CountSpecialist)
+            SpecialistInfo.rate = newrate
+            SpecialistInfo.save()
+            if SpecialistInfo:
+                return Response("Successfully Rated", status=status.HTTP_200_OK)
+            return Response("OOPS! Somthing Went Wrong", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 #######################
