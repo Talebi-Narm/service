@@ -16,7 +16,7 @@ class CustomSpecialistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Specialist
-        fields = ('type','is_staff' ,'email', 'user_name', 'first_name', 'last_name', 'password')
+        fields = ('id','type','is_staff' ,'email', 'user_name', 'first_name', 'last_name', 'password')
         extra_kwargs = {
             'password': {'write_only': True},
             'type': {'Read_only': True},
