@@ -16,3 +16,11 @@ class myPlant(models.Model):
 
     def __str__(self):
         return  "{0} {1}".format(self. name, self.user)
+
+    @property
+    def image_url(self):
+        try :
+            img = self.image.url
+        except :
+            img = ''
+        return img
