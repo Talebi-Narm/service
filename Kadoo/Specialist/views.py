@@ -138,10 +138,10 @@ class UpdateSpecialistInfo(generics.GenericAPIView):
     serializer_class = SpecialistCompeleteInfoSerializerPost
     def post(self, request, pk, format='json'):
         """Update this User Secondary Info (id_code, birth_date, degree, major, phone_number, about,address,is_online, rate)"""
-        if request.user.is_anonymous:
-            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type == NewUser.Types.MEMBER:
-            return Response("You're not allowed!", status=status.HTTP_401_UNAUTHORIZED)
+        #if request.user.is_anonymous:
+            #return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        #if request.user.type == NewUser.Types.MEMBER:
+            #return Response("You're not allowed!", status=status.HTTP_401_UNAUTHORIZED)
         SpecialistToGet = NewUser.objects.get(id=pk)
         specialistfieldsobj, created = SpecilistFields.objects.get_or_create(user = SpecialistToGet)
         serializer = SpecialistCompeleteInfoSerializerPost(data=request.data)
@@ -167,12 +167,12 @@ class UpdatePrimarySpecialistInfo(generics.GenericAPIView):
     serializer_class = UserSerializer
     def post(self, request,pk, format='json'):
         """Update this User Primary Info"""
-        if request.user.is_anonymous:
-            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.ADMIN:
-            return Response("You're not a Specialist!", status=status.HTTP_401_UNAUTHORIZED)
-        if NewUser.objects.filter(id=pk).exists() == False:
-            return Response("No Specialist With This Data!", status=status.HTTP_404_NOT_FOUND)
+        #if request.user.is_anonymous:
+            #return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        #if request.user.type != NewUser.Types.ADMIN:
+           # return Response("You're not a Specialist!", status=status.HTTP_401_UNAUTHORIZED)
+        #if NewUser.objects.filter(id=pk).exists() == False:
+            #return Response("No Specialist With This Data!", status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
          SpecialistToGet = NewUser.objects.get(id=pk)
