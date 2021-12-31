@@ -36,27 +36,17 @@ class allOfMyPlant(APIView):
     
     def post(self, request, format=None):
         """add to green house plants"""
-        getData = addPlantSerializer(data=request.data)
+        
+        if request.user.is_anonymous:
+            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        _user = request.user
+        request.data['user'] = _user.id
+
+        getData = myPlantSerializer(data=request.data)
         if getData.is_valid():
-            if request.user.is_anonymous:
-                return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-            _user = request.user
+            getData.save()
 
-            _name = getData.data['name']
-
-            try :
-                _des = getData.data['description']
-            except:
-                _des = None
-
-            try :
-                _location = getData.data['location']
-            except:
-                _location = None
-
-            _myPlant = myPlant.objects.create(user=_user, name=_name, description=_des, location=_location)
-            _myPlant.save()
-            if _myPlant:
+            if getData:
                 CoinData = CoinManagementModel.objects.get(user=_user)
                 CoinData.coin_value -= 50
                 CoinData.used_plant_count += 1
@@ -87,8 +77,13 @@ class myPlantsRUD(APIView):
         """update plant in green house"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        _user = request.user
         _myPlant = get_object_or_404(myPlant, id=pk)
-        request.data['user'] = request.user
+        if "name" not in request.data:
+            request.data['name'] = _myPlant.name
+
+        request.data['user'] = _user.id
+
         serializer = myPlantSerializer(instance =_myPlant, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -113,4 +108,8 @@ class myPlantsRUD(APIView):
         serializer = myPlantSerializer(instance =_myPlant, data=request.data)
         if serializer.is_valid():
             serializer.save()
+        CoinData = CoinManagementModel.objects.get(user=request.user)
+        CoinData.coin_value += 50
+        CoinData.used_plant_count -= 1
+        CoinData.save()
         return Response(serializer.errors)
