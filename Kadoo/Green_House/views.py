@@ -40,8 +40,6 @@ class allOfMyPlant(APIView):
         if getData.is_valid():
             if request.user.is_anonymous:
                 return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-            if Plant.objects.filter(id=getData.data["plant"]).exists() == False:
-                return Response("This plant does NOT Exist!", status=status.HTTP_422_UNPROCESSABLE_ENTITY)
             _user = request.user
 
             _name = getData.data['name']
@@ -110,7 +108,7 @@ class myPlantsRUD(APIView):
         _myPlant = get_object_or_404(myPlant, id=pk)
         request.data['isArchived'] = True
         request.data['user'] = request.user.id
-        if not request.data['name']:
+        if "name" not in request.data:
             request.data['name'] = _myPlant.name
         serializer = myPlantSerializer(instance =_myPlant, data=request.data)
         if serializer.is_valid():
