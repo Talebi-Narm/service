@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
-from Users.models import MemberFields
+from Users.models import MemberFields, NewUser
 from .serializers import CustomMemberSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view
@@ -19,6 +19,7 @@ def apiOverview(request):
         '(post) Get Token with Refresh':'/token/refresh/',
         '(post) logout':'/logout/',
         '(get) Get Logedin User Information':'/userinfo/',
+        '(get) Get Logedin User Information':'/userinfo/<int:pk>/',
         '(post) Update Credit of User':'/updatecredit/<int:amount>/',
     }
     return response.Response(api_urls)
@@ -31,6 +32,18 @@ class CurrentUserView(APIView):
     def get(self, request):
         if request.user.is_anonymous:
             return Response("Anonymous User: You should login first.", status=status.HTTP_401_UNAUTHORIZED)
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+class IDUserView(APIView):
+    #GET CURRENT USER
+    #HTTP_401 : No Login
+    """Get User Information By ID"""
+    serializer_class = UserSerializer
+    def get(self, request, pk):
+        if NewUser.objects.filter(id=pk).exists() == False:
+            return Response("Anonymous User: You should login first.", status=status.HTTP_404_NOT_FOUND)
+        UserToGet = NewUser.objects.get(id=pk)
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
