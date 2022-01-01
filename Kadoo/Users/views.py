@@ -44,7 +44,7 @@ class IDUserView(APIView):
         if NewUser.objects.filter(id=pk).exists() == False:
             return Response("Anonymous User: You should login first.", status=status.HTTP_404_NOT_FOUND)
         UserToGet = NewUser.objects.get(id=pk)
-        serializer = UserSerializer(request.user)
+        serializer = UserSerializer(UserToGet)
         return Response(serializer.data)
 
 class BlacklistUpdate(APIView):
