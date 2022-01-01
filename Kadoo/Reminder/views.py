@@ -47,7 +47,23 @@ class reminder(APIView):
                 creds = flow.run_local_server(port=0)
             _user.creds = creds.to_json()
             _user.save()
+
         service = build('calendar', 'v3', credentials=creds)
+        
+        _calendar = {
+                'summary': 'Plants',
+                'timeZone': 'Asia/Tehran'
+            }
+            
+            try:
+                if (_user.calendarID != ''):
+                    calendar = service.calendarList().get(calendarId=_user.calendarID).execute()
+                else:
+                    raise Exception('Invalid calendar')
+            except:
+                calendar = service.calendars().insert(body=_calendar).execute()
+                _user.calendarID = calendar['id']
+                _user.save()
 
         return Response("Auth completed !")
         
