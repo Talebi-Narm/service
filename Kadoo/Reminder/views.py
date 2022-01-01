@@ -55,15 +55,15 @@ class reminder(APIView):
                 'timeZone': 'Asia/Tehran'
             }
             
-            try:
-                if (_user.calendarID != ''):
-                    calendar = service.calendarList().get(calendarId=_user.calendarID).execute()
-                else:
-                    raise Exception('Invalid calendar')
-            except:
-                calendar = service.calendars().insert(body=_calendar).execute()
-                _user.calendarID = calendar['id']
-                _user.save()
+        try:
+            if (_user.calendarID != ''):
+                calendar = service.calendarList().get(calendarId=_user.calendarID).execute()
+            else:
+                raise Exception('Invalid calendar')
+        except:
+            calendar = service.calendars().insert(body=_calendar).execute()
+            _user.calendarID = calendar['id']
+            _user.save()
 
         return Response("Auth completed !")
         
