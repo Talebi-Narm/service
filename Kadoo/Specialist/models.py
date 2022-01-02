@@ -57,7 +57,7 @@ class SpecilistFields(models.Model):
     id_code = models.CharField('id_code', max_length=150, blank=True)
     birth_date = models.DateField('birth_date', blank=True, null=True)
     degree = models.CharField('degree', max_length=50, choices=Degrees.choices, null=True, blank=True)
-    major = models.CharField('id_code', max_length=150, blank=True) 
+    major = models.CharField('major', max_length=150, blank=True) 
     phone_regex = RegexValidator(regex=r'^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$', message="Phone number must be entered in the format: '+## ### ### ####'. Up to 10 digits allowed.")
     phone_number = models.CharField('phone_number', validators=[phone_regex], max_length=17, blank=True)
     about = models.TextField('about', max_length=500, blank=True)

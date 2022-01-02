@@ -1,6 +1,6 @@
 from django import urls
 from django.urls import path
-from .views import CustomMemberCreate, BlacklistUpdate, CurrentUserView, UpdateCredit
+from .views import CustomMemberCreate, BlacklistUpdate, CurrentUserView, UpdateCredit, IDUserView
 from . import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -18,4 +18,5 @@ urlpatterns = [
     path('updatecredit/<int:amount>/', UpdateCredit.as_view(), name='update_credit'),
     path('logout/', BlacklistUpdate.as_view(), name='blacklist'),
     path('userinfo/', CurrentUserView.as_view(), name='user_info'),
+    path('userinfo/<int:pk>/', IDUserView.as_view(), name='user_info_id'),
 ]

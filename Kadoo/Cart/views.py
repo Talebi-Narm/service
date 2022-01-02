@@ -106,7 +106,7 @@ class AddToolToCart(generics.GenericAPIView):
 ###############
 
 #Read ALL Plants
-class GetAllPlantsCart(generics.GenericAPIView):
+class GetAllPlantsCart(APIView):
  serializer_class = PlantCartSerializer
  def get(self, request, format='json'):
   """Get All Plants of User"""
@@ -120,7 +120,7 @@ class GetAllPlantsCart(generics.GenericAPIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read All Tools
-class GetAllToolsCart(generics.GenericAPIView):
+class GetAllToolsCart(APIView):
  serializer_class = ToolCartSerializer
  def get(self, request, format='json'):
   """Get All Tools of User"""
@@ -134,7 +134,7 @@ class GetAllToolsCart(generics.GenericAPIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read ALL Unapproved Plants
-class GetUnapprovedPlantsCart(generics.GenericAPIView):
+class GetUnapprovedPlantsCart(APIView):
  serializer_class = PlantCartSerializer
  def get(self, request, format='json'):
   """Get All Unapproved Plants of User (in Cart)"""
@@ -148,7 +148,7 @@ class GetUnapprovedPlantsCart(generics.GenericAPIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read All Unapproved Tools
-class GetUnapprovedToolsCart(generics.GenericAPIView):
+class GetUnapprovedToolsCart(APIView):
  serializer_class = ToolCartSerializer
  def get(self, request, format='json'):
   """Get All Unapproved Tools of User (in Cart)"""
@@ -162,7 +162,7 @@ class GetUnapprovedToolsCart(generics.GenericAPIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read ALL Unapproved Plants Plant Format
-class GetUnapprovedPlantsCartWithCount(generics.GenericAPIView):
+class GetUnapprovedPlantsCartWithCount(APIView):
  serializer_class = PlantWithCountCartSerializer
  def get(self, request, format='json'):
   """Get All Unapproved Plants of User with Count (in Cart)"""
@@ -184,7 +184,7 @@ class GetUnapprovedPlantsCartWithCount(generics.GenericAPIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read All Unapproved Tools Tool Format
-class GetUnapprovedToolsCartWithCount(generics.GenericAPIView):
+class GetUnapprovedToolsCartWithCount(APIView):
  ToolWithCountCartSerializer = CartItemSerializer
  def get(self, request, format='json'):
   """Get All Unapproved Tools of User with Count (in Cart)"""
@@ -207,7 +207,7 @@ class GetUnapprovedToolsCartWithCount(generics.GenericAPIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read ALL Approved Plants
-class GetApprovedPlantsCart(generics.GenericAPIView):
+class GetApprovedPlantsCart(APIView):
  serializer_class = PlantCartSerializer
  def get(self, request, format='json'):
   """Get All Approved Plants of User"""
@@ -221,7 +221,7 @@ class GetApprovedPlantsCart(generics.GenericAPIView):
   return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 #Read All Approved Tools
-class GetApprovedToolsCart(generics.GenericAPIView):
+class GetApprovedToolsCart(APIView):
  serializer_class = ToolCartSerializer
  def get(self, request, format='json'):
   """Get All Approved Tools of User"""

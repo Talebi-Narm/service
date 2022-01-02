@@ -16,7 +16,7 @@ class CustomSpecialistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Specialist
-        fields = ('type','is_staff' ,'email', 'user_name', 'first_name', 'last_name', 'password')
+        fields = ('id','type','is_staff' ,'email', 'user_name', 'first_name', 'last_name', 'password')
         extra_kwargs = {
             'password': {'write_only': True},
             'type': {'Read_only': True},
@@ -38,6 +38,11 @@ class SpecialistCompeleteInfoSerializer(serializers.ModelSerializer):
         model = SpecilistFields
         fields = '__all__'
 
+class SpecialistCompeleteInfoSerializerPost(serializers.ModelSerializer):
+    class Meta:
+        model = SpecilistFields
+        fields = ('id_code', 'birth_date', 'degree', 'major', 'phone_number', 'about','address','is_online', 'rate')
+
 
 class SpecialistIdSerializer(serializers.Serializer):
- id = serializers.UUIDField(required=True)
+ id = serializers.IntegerField(required=True)
