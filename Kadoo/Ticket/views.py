@@ -134,8 +134,6 @@ class MemberAllSupportTickets(APIView):
         """Read All This Member In progress Support Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.MEMBER:
-            return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         Tickets = SupportTicketModel.objects.filter(ticket_author=SpecialistToGet)
         serializer = GetSupportTicketSerializer(Tickets, many=True)
@@ -186,12 +184,8 @@ class AcceptSupportTicket(APIView):
         """Accept Ticket By This Specialist With Ticket ID"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.SPECIALIST:
-            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
         if SupportTicketModel.objects.filter(id=pk).exists() == False:
             return Response("No Ticket Found For The Given ID!", status=status.HTTP_404_NOT_FOUND)
-        if SpecilistFields.objects.filter(user=request.user).exists() == False:
-            return Response("You Can't Accept Ticket Because You Are NOT Fully Hired!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         TicketToSign = SupportTicketModel.objects.get(id=pk)
         TicketToSign.ticket_specialist = SpecialistToGet
@@ -210,14 +204,8 @@ class DoneSupportTicketByMember(generics.GenericAPIView):
         if serializer.is_valid():
             if request.user.is_anonymous:
                 return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-            if request.user.type != NewUser.Types.MEMBER:
-                return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
             if SupportTicketModel.objects.filter(id=serializer.data['id']).exists() == False:
                 return Response("No Ticket Found For The Given ID!", status=status.HTTP_404_NOT_FOUND)
-            if SupportTicketModel.objects.get(id=serializer.data['id']).ticket_status != 'Accepted':
-                return Response("This Ticket Is Not Already Accepted!", status=status.HTTP_403_FORBIDDEN)
-            if SupportTicketModel.objects.get(id=serializer.data['id']).ticket_author != request.user:
-                return Response("You Are Not The Author Of This Ticket!", status=status.HTTP_403_FORBIDDEN)
             
             
             TicketToSign = SupportTicketModel.objects.get(id=serializer.data['id'])
@@ -243,14 +231,9 @@ class DoneSupportTicketBySpecialist(APIView):
         """Done Ticket By This Specialist With Ticket ID"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.SPECIALIST:
-            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
         if SupportTicketModel.objects.filter(id=pk).exists() == False:
             return Response("No Ticket Found For The Given ID!", status=status.HTTP_404_NOT_FOUND)
-        if SupportTicketModel.objects.get(id=pk).ticket_status != 'Accepted':
-            return Response("This Ticket Is Not Already Accepted!", status=status.HTTP_403_FORBIDDEN)
-        if SupportTicketModel.objects.get(id=pk).ticket_specialist != request.user:
-            return Response("You Are Not The Specialist Of This Ticket!", status=status.HTTP_403_FORBIDDEN)
+
             
             
         TicketToSign = SupportTicketModel.objects.get(id=pk)
@@ -270,14 +253,10 @@ class RateSupportTicketByMember(generics.GenericAPIView):
         if serializer.is_valid():
             if request.user.is_anonymous:
                 return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-            if request.user.type != NewUser.Types.MEMBER:
-                return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
+
             if SupportTicketModel.objects.filter(id=serializer.data['id']).exists() == False:
                 return Response("No Ticket Found For The Given ID!", status=status.HTTP_404_NOT_FOUND)
-            if SupportTicketModel.objects.get(id=serializer.data['id']).ticket_status != 'Done':
-                return Response("This Ticket Is Not Already Done!", status=status.HTTP_403_FORBIDDEN)
-            if SupportTicketModel.objects.get(id=serializer.data['id']).ticket_author != request.user:
-                return Response("You Are Not The Author Of This Ticket!", status=status.HTTP_403_FORBIDDEN)
+
             
             
             TicketToSign = SupportTicketModel.objects.get(id=serializer.data['id'])
@@ -340,8 +319,7 @@ class QuestionTicketCreateForGivenConversation(generics.GenericAPIView):
             return Response("No Conversation With This Id Found!", status=status.HTTP_404_NOT_FOUND)
         UserOfConversation = request.user
         thisConversation = ConversationModel.objects.get(id = pk)
-        if thisConversation.member != UserOfConversation:
-            return Response("Access Denied! This is NOT Your Conversation!", status=status.HTTP_403_FORBIDDEN)
+
         serializer = TicketSerializer(data=request.data)
         if serializer.is_valid():
             ticket = serializer.save()
@@ -361,8 +339,6 @@ class AnswerTicketCreateForGivenConversation(generics.GenericAPIView):
         """New Answer Ticket With For Giver Conversation By ID"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type == NewUser.Types.MEMBER:
-            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
         if ConversationModel.objects.filter(id = pk).exists() == False:
             return Response("No Conversation With This Id Found!", status=status.HTTP_404_NOT_FOUND)
         UserOfConversation = request.user
@@ -407,8 +383,6 @@ class GetThisUserConversations(APIView):
         """Get This Member Conversations"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.MEMBER:
-            return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
         UserToGet = request.user
         ConversatrionsInfo = ConversationModel.objects.filter(member = UserToGet)
         serializer = ConversationSerializer(ConversatrionsInfo, many=True)
@@ -421,8 +395,6 @@ class GetThisSpecialistConversations(APIView):
         """Get This Specialist Conversation"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.SPECIALIST:
-            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         ConversatrionsInfo = ConversationModel.objects.filter(specialist = SpecialistToGet)
         serializer = ConversationSerializer(ConversatrionsInfo, many=True)
@@ -459,8 +431,6 @@ class GetThisUserTickets(APIView):
         """Get This Member Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.MEMBER:
-            return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
         UserToGet = request.user
         TicketsInfo = TicketModel.objects.filter(author = UserToGet)
         serializer = TicketSerializer(TicketsInfo, many=True)
@@ -473,8 +443,6 @@ class GetThisSpecialistTickets(APIView):
         """Get This Specialist Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.SPECIALIST:
-            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         TicketsInfo = TicketModel.objects.filter(author = SpecialistToGet)
         serializer = TicketSerializer(TicketsInfo, many=True)
@@ -521,8 +489,6 @@ class DoneTheConverstion(generics.GenericAPIView):
             if ConversationModel.objects.filter(id = serializer.data['id']).exists() == False:
                 return Response("No Conversation With This Id Found!", status=status.HTTP_404_NOT_FOUND)
             thisConversation = ConversationModel.objects.get(id = serializer.data['id'])
-            if thisConversation.member != UserOfConversation:
-                return Response("Access Denied! This is NOT Your Conversation!", status=status.HTTP_403_FORBIDDEN)
             thisConversation.rate = serializer.data['rate']
             ThisConversationSpecialist = Specialist.objects.get(id=thisConversation.specialist)
             CountSpecialist = ConversationModel.objects.filter(specialist=ThisConversationSpecialist,done=True).count()
