@@ -97,8 +97,7 @@ class SpecialistAllSupportTickets(APIView):
         """Read All This Specialist Support Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.SPECIALIST:
-            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
+
         SpecialistToGet = request.user
         Tickets = SupportTicketModel.objects.filter(ticket_specialist=SpecialistToGet)
         serializer = GetSupportTicketSerializer(Tickets, many=True)
@@ -111,8 +110,6 @@ class SpecialistAllInProgressSupportTickets(APIView):
         """Read All This Specialist In progress Support Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.SPECIALIST:
-            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         Tickets = SupportTicketModel.objects.filter(ticket_status= 'In progress', ticket_specialist=SpecialistToGet)
         serializer = GetSupportTicketSerializer(Tickets, many=True)
@@ -125,8 +122,6 @@ class SpecialistAllAcceptedSupportTickets(APIView):
         """Read All This Specialist Accepted Support Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.SPECIALIST:
-            return Response("You're not a Specialist!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         Tickets = SupportTicketModel.objects.filter(ticket_status= 'Accepted', ticket_specialist=SpecialistToGet)
         serializer = GetSupportTicketSerializer(Tickets, many=True)
@@ -153,8 +148,6 @@ class MemberAllInProgressSupportTickets(APIView):
         """Read All This Member In progress Support Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.MEMBER:
-            return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         Tickets = SupportTicketModel.objects.filter(ticket_status= 'In progress', ticket_author=SpecialistToGet)
         serializer = GetSupportTicketSerializer(Tickets, many=True)
@@ -167,8 +160,6 @@ class MemberAllAcceptedSupportTickets(APIView):
         """Read All This Member Accepted Support Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.MEMBER:
-            return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         Tickets = SupportTicketModel.objects.filter(ticket_status= 'Accepted', ticket_author=SpecialistToGet)
         serializer = GetSupportTicketSerializer(Tickets, many=True)
@@ -181,8 +172,6 @@ class MemberAllDoneSupportTickets(APIView):
         """Read All This Member Done Support Tickets"""
         if request.user.is_anonymous:
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.type != NewUser.Types.MEMBER:
-            return Response("You're not a Member!", status=status.HTTP_403_FORBIDDEN)
         SpecialistToGet = request.user
         Tickets = SupportTicketModel.objects.filter(ticket_status= 'Done', ticket_author=SpecialistToGet)
         serializer = GetSupportTicketSerializer(Tickets, many=True)
