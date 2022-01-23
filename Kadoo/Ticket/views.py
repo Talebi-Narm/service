@@ -261,12 +261,15 @@ class RateSupportTicketByMember(generics.GenericAPIView):
             
             TicketToSign = SupportTicketModel.objects.get(id=serializer.data['id'])
             SpecialistToGet = TicketToSign.ticket_specialist
+            print(SpecialistToGet)
             CountSpecialist = SupportTicketModel.objects.filter(ticket_specialist=SpecialistToGet,ticket_status='Done').count()
-            SpecialistInfo = SpecilistFields.objects.get(user=SpecialistToGet)
+            SpecialistInfo , created = SpecilistFields.objects.get_or_create(user=SpecialistToGet)
             oldrate = SpecialistInfo.rate
             newrate = ((oldrate * (CountSpecialist-1)) + serializer.data['rate'])/(CountSpecialist)
             SpecialistInfo.rate = newrate
+            TicketToSign.rate = serializer.data['rate'];
             SpecialistInfo.save()
+            TicketToSign.save()
             if SpecialistInfo:
                 return Response("Successfully Rated", status=status.HTTP_200_OK)
             return Response("OOPS! Somthing Went Wrong", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
