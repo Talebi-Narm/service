@@ -176,11 +176,10 @@ class UpdatePrimarySpecialistInfo(generics.GenericAPIView):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
          SpecialistToGet = NewUser.objects.get(id=pk)
-         SpecialistToGet.email = serializer.data["email"]
-         SpecialistToGet.user_name = serializer.data["user_name"]
-         SpecialistToGet.first_name = serializer.data["first_name"]
-         SpecialistToGet.last_name = serializer.data["last_name"]
-         SpecialistToGet.save()
+         SpecialistToGet.update(email=serializer.data["email"])
+         SpecialistToGet.update(user_name = serializer.data["user_name"])
+         SpecialistToGet.update(first_name = serializer.data["first_name"])
+         SpecialistToGet.update(last_name = serializer.data["last_name"])
          if SpecialistToGet:
              return Response("Specialist Info has been updated!", status=status.HTTP_200_OK)
          return Response("OOOPS! Somthing went wrong!", status=status.HTTP_400_BAD_REQUEST)

@@ -16,7 +16,7 @@ class CreateSupportTicketSerializer(serializers.ModelSerializer):
 class GetSupportTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = SupportTicketModel
-        fields = ['id','ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified']
+        fields = ['id','ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified', 'rate']
 
 class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
