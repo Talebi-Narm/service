@@ -32,6 +32,7 @@ class haveCalendarTrue(APIView):
             return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
         _myPlant = get_object_or_404(myPlant, id=pk)
         _myPlant.haveCalendar = True
+        _myPlant.save()
         serializer = myPlantSerializer(_myPlant, many=False)
         return Response(serializer.data)
 
