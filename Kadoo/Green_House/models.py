@@ -11,6 +11,7 @@ class myPlant(models.Model):
     image = models.ImageField(null = True, blank = True)
     location = models.CharField(max_length=50, null=True, blank=True)
     isArchived = models.BooleanField(default=False)
+    haveCalendar = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add = True, blank=True)
     modified = models.DateField(auto_now = True, blank=True)
 

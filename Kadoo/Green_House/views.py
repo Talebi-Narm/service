@@ -15,6 +15,7 @@ import uuid
 
 def GH_Overview():
     api_urls = {
+        '"GET" set plant\'s have calendar to true':'/makeHaveCalendarTrue/',
         '"GET" see green house plants':'/myPlants/',
         '"POST" add to green house plants':'/myPlants/',
         '"GET" see green house plants':'/myArchivedPlants/',
@@ -23,6 +24,17 @@ def GH_Overview():
         '"DELETE" delete plant in green house':'/myPlantsRUD/<str:pk>/',
     }
     return api_urls
+
+class haveCalendarTrue(APIView):
+    def get(self, request, pk, format=None):
+        """set plant's have calendar to true"""
+        if request.user.is_anonymous:
+            return Response("Anonymous User: You should first login.", status=status.HTTP_401_UNAUTHORIZED)
+        _myPlant = get_object_or_404(myPlant, id=pk)
+        _myPlant.haveCalendar = True
+        _myPlant.save()
+        serializer = myPlantSerializer(_myPlant, many=False)
+        return Response(serializer.data)
 
 class allOfMyPlant(APIView):
     def get(self, request, format=None):

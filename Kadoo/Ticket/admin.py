@@ -26,12 +26,12 @@ class TicketAdminConfig(admin.ModelAdmin):
 
 class SupportTicketAdminConfig(admin.ModelAdmin):
     model = SupportTicketModel
-    search_fields = ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified')
-    list_filter = ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified')
+    search_fields = ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified', 'rate')
+    list_filter = ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified', 'rate')
     ordering = ('-created',)
-    list_display = ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified')
+    list_display = ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified', 'rate')
     fieldsets = (
-        (None, {'fields': ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category')}),
+        (None, {'fields': ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'rate')}),
         ('Personal', {'fields': ('body',)}),
     )
     formfield_overrides = {
@@ -40,7 +40,7 @@ class SupportTicketAdminConfig(admin.ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified')}
+            'fields': ('ticket_author', 'ticket_specialist', 'ticket_status', 'Category', 'body', 'created', 'modified', 'rate')}
          ),
     )
 

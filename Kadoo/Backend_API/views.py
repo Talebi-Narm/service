@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import PlantSerializer, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer
+from .serializers import PlantSerializer, PlantSerializerCU, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer, ToolSerializerCU
 from Backend.models import Plant, Tool, Tag,Image, Album
 
 from .SFSP_views import SFSP_Overview
@@ -76,7 +76,7 @@ class plants(APIView):
         album = Album.objects.create(name=request.data['name'])
         request.data['album'] = album.id
         request.data['kind'] = "Plant"
-        serializer = PlantSerializer(data = request.data)
+        serializer = PlantSerializerCU(data = request.data)
         if serializer.is_valid():
             serializer.save()  
         return Response(serializer.data)
@@ -97,7 +97,7 @@ class plantsRUD(APIView):
     def put(self, request, pk, format=None):
         """Update an Existing Plant"""
         plant = self.get_object(pk)
-        serializer = PlantSerializer(instance = plant, data = request.data)
+        serializer = PlantSerializerCU(instance = plant, data = request.data)
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data)
@@ -106,6 +106,7 @@ class plantsRUD(APIView):
         """Delete A Plant"""
         plant = self.get_object(pk)
         plant.delete()
+        plant.save()
         return Response('Item successfully deleted !')
 
 # Tool
@@ -124,7 +125,7 @@ class tools(APIView):
         album = Album.objects.create(name=request.data['name'])
         request.data['album'] = album.id
         request.data['kind'] = "Tool"
-        serializer = ToolSerializer(data = request.data)
+        serializer = ToolSerializerCU(data = request.data)
         if serializer.is_valid():
             serializer.save()  
         return Response(serializer.data)
@@ -145,7 +146,7 @@ class toolsRUD(APIView):
     def put(self, request, pk, format=None):
         """Update an Existing Tool"""
         tool = self.get_object(pk)
-        serializer = ToolSerializer(instance = tool, data = request.data)
+        serializer = ToolSerializerCU(instance = tool, data = request.data)
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data)
@@ -320,8 +321,6 @@ class plantTags(APIView):
     def get(self, request, pk, format=None):
         """Get Tags Of a Plant"""
         tags = get_object_or_404(Plant, id=pk).tags
-        if tags.count() == 0:
-            return Response('No Tags !')
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
@@ -329,7 +328,5 @@ class toolTags(APIView):
     def get(self, request, pk, format=None):
         """Get Tags Of a Tool"""
         tags = get_object_or_404(Tool, id=pk).tags
-        if tags.count() == 0:
-            return Response('No Tags !')
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
