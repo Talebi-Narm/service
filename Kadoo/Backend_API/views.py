@@ -320,8 +320,6 @@ class plantTags(APIView):
     def get(self, request, pk, format=None):
         """Get Tags Of a Plant"""
         tags = get_object_or_404(Plant, id=pk).tags
-        if tags.count() == 0:
-            return Response('No Tags !')
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
@@ -329,7 +327,5 @@ class toolTags(APIView):
     def get(self, request, pk, format=None):
         """Get Tags Of a Tool"""
         tags = get_object_or_404(Tool, id=pk).tags
-        if tags.count() == 0:
-            return Response('No Tags !')
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
