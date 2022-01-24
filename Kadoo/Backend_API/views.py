@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import PlantSerializer, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer
+from .serializers import PlantSerializer, PlantSerializerCU, ToolSerializer, TagSerializer, ImageSerializer, AlbumSerializer, ToolSerializerCU
 from Backend.models import Plant, Tool, Tag,Image, Album
 
 from .SFSP_views import SFSP_Overview
@@ -106,6 +106,7 @@ class plantsRUD(APIView):
         """Delete A Plant"""
         plant = self.get_object(pk)
         plant.delete()
+        plant.save()
         return Response('Item successfully deleted !')
 
 # Tool
