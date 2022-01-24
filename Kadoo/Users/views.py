@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
+from Coin.models import CoinManagementModel
 from Users.models import MemberFields, NewUser
 from .serializers import CustomMemberSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -71,6 +72,8 @@ class CustomMemberCreate(generics.GenericAPIView):
         if serializer.is_valid():
             user = serializer.save()
             if user:
+                Coin = CoinManagementModel.objects.create(user=user)
+                Coin.save()
                 json = serializer.data
                 return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
