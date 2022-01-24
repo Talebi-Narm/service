@@ -8,7 +8,6 @@ class PlantSerializer(serializers.ModelSerializer):
 class PlantSerializerCU(serializers.ModelSerializer):
     class Meta:
         model = Plant
-        fields = '__all__'
         exclude = ['album', 'tags']
 
 class ToolSerializer(serializers.ModelSerializer):
@@ -19,7 +18,6 @@ class ToolSerializer(serializers.ModelSerializer):
 class ToolSerializerCU(serializers.ModelSerializer):
     class Meta:
         model = Tool
-        fields = '__all__'
         exclude = ['album', 'tags']
 
 class TagSerializer(serializers.ModelSerializer):
