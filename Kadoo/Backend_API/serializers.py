@@ -5,10 +5,22 @@ class PlantSerializer(serializers.ModelSerializer):
         model = Plant
         fields = '__all__'
 
+class PlantSerializerCU(serializers.ModelSerializer):
+    class Meta:
+        model = Plant
+        fields = '__all__'
+        exclude = ['album', 'tags']
+
 class ToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tool
         fields = '__all__'
+
+class ToolSerializerCU(serializers.ModelSerializer):
+    class Meta:
+        model = Tool
+        fields = '__all__'
+        exclude = ['album', 'tags']
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:

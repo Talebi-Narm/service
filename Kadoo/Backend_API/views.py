@@ -76,7 +76,7 @@ class plants(APIView):
         album = Album.objects.create(name=request.data['name'])
         request.data['album'] = album.id
         request.data['kind'] = "Plant"
-        serializer = PlantSerializer(data = request.data)
+        serializer = PlantSerializerCU(data = request.data)
         if serializer.is_valid():
             serializer.save()  
         return Response(serializer.data)
@@ -97,7 +97,7 @@ class plantsRUD(APIView):
     def put(self, request, pk, format=None):
         """Update an Existing Plant"""
         plant = self.get_object(pk)
-        serializer = PlantSerializer(instance = plant, data = request.data)
+        serializer = PlantSerializerCU(instance = plant, data = request.data)
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data)
@@ -124,7 +124,7 @@ class tools(APIView):
         album = Album.objects.create(name=request.data['name'])
         request.data['album'] = album.id
         request.data['kind'] = "Tool"
-        serializer = ToolSerializer(data = request.data)
+        serializer = ToolSerializerCU(data = request.data)
         if serializer.is_valid():
             serializer.save()  
         return Response(serializer.data)
@@ -145,7 +145,7 @@ class toolsRUD(APIView):
     def put(self, request, pk, format=None):
         """Update an Existing Tool"""
         tool = self.get_object(pk)
-        serializer = ToolSerializer(instance = tool, data = request.data)
+        serializer = ToolSerializerCU(instance = tool, data = request.data)
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data)
