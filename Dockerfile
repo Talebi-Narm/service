@@ -1,4 +1,4 @@
-FROM python:3.10.10-slim-buster
+FROM python:3.11.1-slim-buster
 
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONUNBUFFERED=1 \
@@ -19,7 +19,7 @@ RUN pip install poetry && pip install gunicorn[gthread]
 WORKDIR /usr/src/app
 
 COPY poetry.lock pyproject.toml ./
-RUN poetry install
+RUN poetry install --no-interaction --no-ansi -vvv
 
 COPY ./ ./
 
