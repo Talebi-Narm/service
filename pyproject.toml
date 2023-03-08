@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "talebi-service"
+version = "0.1.0"
+description = ""
+authors = ["Hamed Feizabadi <hamedfz19@gmail.com>"]
+readme = "README.md"
+packages = [{include = "talebi_service"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+djangorestframework = "^3.14.0"
+django-cors-headers = "^3.14.0"
+djangorestframework-simplejwt = "^5.2.2"
+coreapi = "^2.3.3"
+google-api-python-client = "^2.80.0"
+google-auth-oauthlib = "^1.0.0"
+Pillow = "^9.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
