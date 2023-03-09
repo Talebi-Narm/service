@@ -3,7 +3,7 @@ import uuid
 
 
 from Users.models import NewUser
-from Backend.models import Plant, Tool
+from core.models import Plant, Tool
 
 class PlantCartModel(models.Model):
 

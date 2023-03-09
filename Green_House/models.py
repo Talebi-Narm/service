@@ -1,5 +1,5 @@
 from django.db import models
-from Backend.models import Plant
+from core.models import Plant
 from Users.models import NewUser
 import uuid
 
