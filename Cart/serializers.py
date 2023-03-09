@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Backend.models import Plant, Tool
+from core.models import Plant, Tool
 
 from Cart.models import PlantCartModel, ToolCartModel
 

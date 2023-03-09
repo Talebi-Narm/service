@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Backend.models import Plant, Tool, Tag, Image, Album
+from core.models import *
 class PlantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plant

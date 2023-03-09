@@ -1,6 +1,6 @@
 from django.db.models.enums import Choices
 from rest_framework import serializers
-from Backend.models import Plant
+from core.models import Plant
 from Specialist.models import SpecialistFieldsManager
 from Users.models import Member, MemberFields, NewUser
 from rest_framework.validators import UniqueValidator

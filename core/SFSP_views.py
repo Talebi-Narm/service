@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import *
-from Backend.models import Plant, Tool, Tag,Image, Album
+from core.models import Plant, Tool, Tag,Image, Album
 
 from math import ceil
 import random

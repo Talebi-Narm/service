@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from Coin.models import CoinManagementModel
 
 from .models import myPlant
-from Backend.models import Plant
+from core.models import Plant
 from .serializers import *
 
 import uuid

@@ -9,7 +9,7 @@ class PlantCartModel(models.Model):
 
     id = models.UUIDField(default = uuid.uuid4, unique = True, primary_key = True, editable = False)
     user = models.ForeignKey('Users.NewUser', on_delete=models.CASCADE)
-    plant_item = models.ForeignKey('Backend.Plant', on_delete=models.CASCADE)
+    plant_item = models.ForeignKey('core.Plant', on_delete=models.CASCADE)
     plant_count = models.IntegerField(blank = True, default=0)
     description = models.TextField(null = True, blank = True)
     created = models.DateTimeField(auto_now_add = True)
@@ -25,7 +25,7 @@ class ToolCartModel(models.Model):
 
     id = models.UUIDField(default = uuid.uuid4, unique = True, primary_key = True, editable = False)
     user = models.ForeignKey('Users.NewUser', on_delete=models.CASCADE)
-    tool_item = models.ForeignKey('Backend.Tool', on_delete=models.CASCADE)
+    tool_item = models.ForeignKey('core.Tool', on_delete=models.CASCADE)
     tool_count = models.IntegerField(blank = True, default=0)
     is_approved = models.BooleanField(default=False)
     description = models.TextField(null = True, blank = True)

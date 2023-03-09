@@ -5,7 +5,7 @@ from django.shortcuts import render
 from rest_framework import generics, response, status
 from rest_framework.views import APIView
 from rest_framework import generics
-from Backend.models import Plant, Tool
+from core.models import Plant, Tool
 from Cart.models import OrderModel, PlantCartModel, ToolCartModel
 
 from Cart.serializers import CartItemIdSerializer, CartItemSerializer, PlantCartSerializer, PlantWithCountCartSerializer, ToolCartSerializer, DesicriptionSerializer, ToolWithCountCartSerializer
