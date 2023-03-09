@@ -60,8 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'Backend.apps.BackendConfig',
-    'Backend_API.apps.BackendApiConfig',
+    'core.apps.CoreConfig',
     'Users.apps.UsersConfig',
     'Green_House.apps.GreenHouseConfig',
     'Reminder.apps.ReminderConfig',
