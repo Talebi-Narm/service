@@ -15,6 +15,7 @@ coreapi = "^2.3.3"
 google-api-python-client = "^2.80.0"
 google-auth-oauthlib = "^1.0.0"
 Pillow = "^9.4.0"
+drf-spectacular = {extras = ["sidecar"], version = "^0.26.0"}
 
 
 [build-system]

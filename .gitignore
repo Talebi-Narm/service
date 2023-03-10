@@ -131,3 +131,4 @@ dmypy.json
 # project based
 migrations/
 static/
+.idea/
