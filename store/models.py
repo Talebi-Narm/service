@@ -38,7 +38,7 @@ class Plant(Product):
     environment = models.IntegerField(choices=Condition.choices, null=True, blank=True)
     water = models.IntegerField(choices=Quantifier.choices, null=True, blank=True)
     light = models.IntegerField(choices=Quantifier.choices, null=True, blank=True)
-    growth_rate = models.IntegerField(max_length=50, choices=Quantifier.choices, null=True, blank=True)
+    growth_rate = models.IntegerField(choices=Quantifier.choices, null=True, blank=True)
 
 
 class Tool(Product):

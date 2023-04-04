@@ -9,7 +9,6 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         "username",
         "get_full_name",
-        "type",
         "is_staff",
         "wallet_charge"
     )
@@ -22,7 +21,7 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        ("Personal info", {"fields": ("first_name", "last_name", "email", "type", "wallet_charge")}),
+        ("Personal info", {"fields": ("first_name", "last_name", "email", "wallet_charge")}),
         (
             "Permissions",
             {
