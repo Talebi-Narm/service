@@ -35,3 +35,11 @@ class BaseModel(models.Model):
         self.is_deleted = True
         self.deleted_at = timezone.now()
         self.save()
+
+
+class Tag(BaseModel):
+    name = models.CharField(max_length=50, unique=True)
+    description = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
