@@ -65,7 +65,6 @@ INSTALLED_APPS = [
 
     # 'Backend.apps.BackendConfig',
     # 'Backend_API.apps.BackendApiConfig',
-    # 'Green_House.apps.GreenHouseConfig',
     # 'Reminder.apps.ReminderConfig',
     # 'Cart.apps.CartConfig',
     # 'Specialist.apps.SpecialistConfig',
@@ -75,6 +74,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'common.apps.CommonConfig',
     'store.apps.StoreConfig',
+    'green_house.apps.GreenHouseConfig',
 
     'corsheaders',
     'rest_framework_simplejwt',
