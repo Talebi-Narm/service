@@ -22,7 +22,7 @@ urlpatterns = [
         path('auth/', include('rest_framework.urls', namespace='rest_framework_CHANGE_THIS')),
         path('user/', include('user.urls', namespace='users')),
         path('cart/', include('cart.urls', namespace='cart')),
-        path('specialist/', include('Specialist.urls', namespace='specialist')),
+        path('specialist/', include('specialist.urls', namespace='specialist')),
         path('ticket', include('ticket.urls', namespace='ticket')),
         path('coin', include('coin.urls', namespace='coin')),
         path('token-auth/', AuthTokenView.as_view()),
