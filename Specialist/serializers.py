@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from Specialist.models import Specialist, SpecilistFields
-from Users.models import NewUser
+from user.models import NewUser
 from rest_framework.validators import UniqueValidator
 
 class CustomSpecialistSerializer(serializers.ModelSerializer):
