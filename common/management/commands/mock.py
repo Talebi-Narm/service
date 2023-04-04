@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from faker import Faker
 from store.models import *
 from common.models import Tag
+from user.models import User
 import random
 
 from django.db import transaction
@@ -92,3 +93,17 @@ class Command(BaseCommand):
             count = faker.random_int(0, len(tag_list))
             temp.tags.add(random.choices(tags, k=count))
             temp.save()
+
+        # new users
+        temp = User(
+            username = "Admin",
+            first_name = "Admin",
+            last_name = "Admini",
+            email = "admin@talebi-narm.ir",
+            password = "AdminTalebi",
+            is_active = True,
+            is_staff = True,
+            is_superuser = True
+        )
+        temp.save()
+        
