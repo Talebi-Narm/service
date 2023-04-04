@@ -63,11 +63,6 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'drf_spectacular_sidecar',
 
-    # 'Backend.apps.BackendConfig',
-    # 'Backend_API.apps.BackendApiConfig',
-    # 'Reminder.apps.ReminderConfig',
-    # 'Cart.apps.CartConfig',
-    # 'Specialist.apps.SpecialistConfig',
     # 'Ticket.apps.TicketConfig',
     # 'Coin.apps.CoinConfig',
 
@@ -75,6 +70,8 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
+    'cart.apps.CartConfig',
+    'reminder.apps.ReminderConfig',
 
     'corsheaders',
     'rest_framework_simplejwt',
