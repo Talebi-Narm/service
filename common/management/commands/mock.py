@@ -61,3 +61,34 @@ class Command(BaseCommand):
             count = faker.random_int(0, len(tag_list))
             temp.tags.add(random.choices(tags, k=count))
             temp.save()
+
+        # new tools
+        tool_list = [
+            "Apron",
+            "Axe",
+            "Boots",
+            "Bucket",
+            "Fence",
+            "Fertilizer",
+            "Flowerpot",
+            "Garden hose",
+            "Garden trowel",
+            "Gardening fork",
+            "Gardening gloves",
+            "Hedge shears",
+            "Hoe",
+            "Pruning saw",
+            "Rake"
+        ]
+        Tool.objects.all().delete()
+        for tool in tool_list:
+            temp = Tool(
+                name = tool,
+                description = faker.text(),
+                count = faker.random_int(0, 100),
+                price = faker.random_int(10, 10000) / 100,
+                main_image = faker.image_url()
+            )
+            count = faker.random_int(0, len(tag_list))
+            temp.tags.add(random.choices(tags, k=count))
+            temp.save()
