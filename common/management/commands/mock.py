@@ -95,6 +95,7 @@ class Command(BaseCommand):
             temp.save()
 
         # new users
+        User.objects.all().delete()
         temp = User(
             username = "Admin",
             first_name = "Admin",
