@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from Ticket.models import TicketModel, SupportTicketModel, ConversationModel
-from Users.models import NewUser
+from user.models import NewUser
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:

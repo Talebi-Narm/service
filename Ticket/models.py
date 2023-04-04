@@ -14,7 +14,7 @@ class TicketModel(models.Model):
     )
 
     id = models.UUIDField(default = uuid.uuid4, unique = True, primary_key = True, editable = False)
-    author = models.ForeignKey('Users.NewUser', null = True, blank = True, on_delete=models.CASCADE)
+    author = models.ForeignKey('user.User', null = True, blank = True, on_delete=models.CASCADE)
     Category = models.CharField(max_length = 50, choices = category_quantifiers, default='General', null = True, blank = True)
     body = models.TextField(null = True, blank = True)
     priority = models.IntegerField(blank = True, default=0)
@@ -27,8 +27,8 @@ class TicketModel(models.Model):
 class ConversationModel(models.Model):
 
     id = models.UUIDField(default = uuid.uuid4, unique = True, primary_key = True, editable = False)
-    specialist = models.ForeignKey('Specialist.Specialist', related_name="specialist", on_delete=models.CASCADE)
-    member = models.ForeignKey('Users.Member', related_name="member", on_delete=models.CASCADE)
+    # specialist = models.ForeignKey('Specialist.Specialist', related_name="specialist", on_delete=models.CASCADE)
+    member = models.ForeignKey('user.User', related_name="member", on_delete=models.CASCADE)
     question_tickect = models.ManyToManyField("TicketModel", related_name="question_tickect", blank=True)
     answer_tickect = models.ManyToManyField("TicketModel", related_name="answer_tickect", blank=True)
     rate = models.IntegerField(blank = True, default=0)
@@ -58,8 +58,8 @@ class SupportTicketModel(models.Model):
     )
 
     id = models.UUIDField(default = uuid.uuid4, unique = True, primary_key = True, editable = False)
-    ticket_author = models.ForeignKey('Users.Member', related_name="ticket_author", null = True, blank = True, on_delete = models.CASCADE)
-    ticket_specialist = models.ForeignKey('Specialist.Specialist', null = True, related_name="ticket_specialist", blank = True, on_delete = models.CASCADE)
+    ticket_author = models.ForeignKey('user.User', related_name="ticket_author", null = True, blank = True, on_delete = models.CASCADE)
+    # ticket_specialist = models.ForeignKey('Specialist.Specialist', null = True, related_name="ticket_specialist", blank = True, on_delete = models.CASCADE)
     Category = models.CharField(max_length = 50, choices = category_quantifiers, default='General', null = True, blank = True)
     ticket_status = models.CharField(max_length = 50, choices = status_quantifiers, default='Sent', null = True, blank = True)
     rate = models.IntegerField(blank = True, default=0)

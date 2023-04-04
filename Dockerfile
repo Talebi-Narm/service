@@ -26,4 +26,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind=0.0.0.0:8000", "--worker-tmp-dir=/dev/shm", "--chdir=/usr/src/app", "--log-level='info'", "--log-file=-", "--workers=2", "--threads=4", "--worker-class=gthread", "Kadoo.wsgi:application"]
+CMD ["gunicorn", "--bind=0.0.0.0:8000", "--worker-tmp-dir=/dev/shm", "--chdir=/usr/src/app", "--log-level='info'", "--log-file=-", "--workers=2", "--threads=4", "--worker-class=gthread", "talebi.wsgi:application"]
