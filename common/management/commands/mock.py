@@ -107,4 +107,3 @@ class Command(BaseCommand):
             is_superuser = True
         )
         temp.save()
-        
