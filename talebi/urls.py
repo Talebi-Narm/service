@@ -15,8 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/v1/', include([
-        path('backend', include('Backend.urls')),
-        path('backend_API/', include('Backend_API.urls')),
+        path('store/', include('store.urls')),
         path('green_house/', include('green_house.urls')),
         path('reminder/', include('reminder.urls')),
         path('auth/', include('rest_framework.urls', namespace='rest_framework_CHANGE_THIS')),
