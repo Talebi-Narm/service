@@ -18,6 +18,10 @@
   ```shell
   docker compose up
   ```
+- Create migrations
+  ```shell
+  docker compose run --rm backend python3 manage.py makemigrations user common store green_house cart
+  ```
 - Apply migrations
   ```shell
   docker compose run --rm backend python3 manage.py migrate
