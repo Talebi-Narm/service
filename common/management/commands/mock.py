@@ -32,8 +32,7 @@ class Command(BaseCommand):
             )
             temp.save()
 
-        tags = list(Tag.objects.values_list('id')[0])
-        print(tags)
+        tags = list(Tag.objects.all())
 
         # new plants
         plant_list = [
@@ -61,8 +60,7 @@ class Command(BaseCommand):
                 growth_rate = faker.random_int(0, 2)
             )
             count = faker.random_int(0, len(tag_list))
-            for tag in random.choices(tags, k=count):
-                temp.tags.add(tag)
+            temp.tags.add(random.choices(tags, k=count))
             temp.save()
 
         # new tools
@@ -93,12 +91,11 @@ class Command(BaseCommand):
                 main_image = faker.image_url()
             )
             count = faker.random_int(0, len(tag_list))
-            for tag in random.choices(tags, k=count):
-                temp.tags.add(tag)
+            temp.tags.add(random.choices(tags, k=count))
             temp.save()
 
         # new users
-        # User.objects.all().delete()
+        User.objects.all().delete()
         temp = User(
             username = "Admin",
             first_name = "Admin",
@@ -110,5 +107,3 @@ class Command(BaseCommand):
             is_superuser = True
         )
         temp.save()
-
-        print("DONE!")
