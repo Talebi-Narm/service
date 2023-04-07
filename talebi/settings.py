@@ -2,8 +2,11 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -63,15 +66,15 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'drf_spectacular_sidecar',
 
-    # 'Coin.apps.CoinConfig',
-
     'user.apps.UserConfig',
     'common.apps.CommonConfig',
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
     'cart.apps.CartConfig',
-    'reminder.apps.ReminderConfig',
-    'ticket.apps.TicketConfig',
+
+    # 'Coin.apps.CoinConfig',
+    # 'reminder.apps.ReminderConfig',
+    # 'ticket.apps.TicketConfig',
 
     'corsheaders',
     'rest_framework_simplejwt',
@@ -120,8 +123,12 @@ WSGI_APPLICATION = 'talebi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_NAME'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT')
     }
 }
 
