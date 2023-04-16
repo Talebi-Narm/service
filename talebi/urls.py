@@ -15,6 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/v1/', include([
+        path('store/', include('store.urls')),
         path('green_house/', include('green_house.urls')),
         path('auth/', include('rest_framework.urls', namespace='rest_framework_CHANGE_THIS')),
         path('user/', include('user.urls', namespace='users')),
