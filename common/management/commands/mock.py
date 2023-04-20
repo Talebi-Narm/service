@@ -66,6 +66,7 @@ class Command(BaseCommand):
             for random_tag_id in random_tags_id:
                 temp.tags.add(random_tag_id)
             temp.save()
+        print("plants created.")
 
         # new tools
         tool_list = [
@@ -100,6 +101,7 @@ class Command(BaseCommand):
                 temp.tags.add(random_tag_id)
             temp.save()
             temp.save()
+        print("tools created.")
 
         # new users
         User.objects.all().delete()
@@ -107,10 +109,11 @@ class Command(BaseCommand):
             username="Talebi",
             first_name="Talebi",
             last_name="Admini",
-            email="Talebi@talebi-narm.ir",
-            password="123456",
+            email="hamed@talebi-narm.ir",
             is_active=True,
             is_staff=True,
             is_superuser=True
         )
+        temp.set_password("123456")
         temp.save()
+        print("one admin created.")
