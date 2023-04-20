@@ -8,16 +8,16 @@ from store.apis import product as product_views
 urlpatterns=[
 
 # ----> ADMIN <----
-    path('admin/plants/', admin_views.PlantList.as_view()),
-    path('admin/plants/<uuid:pk>/', admin_views.PlantDetail.as_view()),
-    path('admin/tools/', admin_views.ToolList.as_view()),
-    path('admin/tools/<uuid:pk>/', admin_views.ToolDetail.as_view()),
+    path('admin/plants/', admin_views.PlantList.as_view(), name="admin_plants"),
+    path('admin/plants/<uuid:pk>/', admin_views.PlantDetail.as_view(), name="admin_plants_detail"),
+    path('admin/tools/', admin_views.ToolList.as_view(), name="admin_tools"),
+    path('admin/tools/<uuid:pk>/', admin_views.ToolDetail.as_view(), name="admin_tools_detail"),
 
 # ----> USERS <----
-    path('plants/', product_views.PlantList.as_view()),
-    path('plants/<uuid:pk>/', product_views.PlantDetail.as_view()),
-    path('tools/', product_views.ToolList.as_view()),
-    path('tools/<uuid:pk>/', product_views.ToolDetail.as_view()),
+    path('plants/', product_views.PlantList.as_view(), name="plants"),
+    path('plants/<uuid:pk>/', product_views.PlantDetail.as_view(), name="plants_detail"),
+    path('tools/', product_views.ToolList.as_view(), name="tools"),
+    path('tools/<uuid:pk>/', product_views.ToolDetail.as_view(), name="tools_detail"),
 
 # # Plant API
 #     path('plants/', views.plants.as_view(), name='plants'),
