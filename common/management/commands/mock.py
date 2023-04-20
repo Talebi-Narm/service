@@ -99,7 +99,6 @@ class Command(BaseCommand):
             for random_tag_id in random_tags_id:
                 temp.tags.add(random_tag_id)
             temp.save()
-            temp.save()
 
         # new users
         User.objects.all().delete()
@@ -108,9 +107,9 @@ class Command(BaseCommand):
             first_name="Talebi",
             last_name="Admini",
             email="Talebi@talebi-narm.ir",
-            password="123456",
             is_active=True,
             is_staff=True,
             is_superuser=True
         )
+        temp.set_password("TalebiAdmin1234")
         temp.save()
