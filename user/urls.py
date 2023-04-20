@@ -12,10 +12,5 @@ urlpatterns = [
     path("register", RegisterUserAPIView.as_view(), name="new-user-register"),
     path("addresses", UserAddressList.as_view(), name="user-address-list"),
     path("addresses/<uuid:pk>", UserAddressDetail.as_view(), name="user-address-detail"),
-
-    # path('', views.apiOverview, name='api'),
-    # path('updatecredit/<int:amount>/', UpdateCredit.as_view(), name='update_credit'),
-    # path('logout/', BlacklistUpdate.as_view(), name='blacklist'),
-    # path('userinfo/', CurrentUserView.as_view(), name='user_info'),
-    # path('userinfo/<int:pk>/', IDUserView.as_view(), name='user_info_id'),
+    # path('updatecredit/<int:amount>/', UpdateCredit.as_view(), name='update_credit')
 ]
