@@ -129,5 +129,6 @@ dmypy.json
 .pyre/
 
 # project based
+static/
 staticfiles/
 .idea/
