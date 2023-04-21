@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
-    'cart.apps.CartConfig'
+    'cart.apps.CartConfig',
+    'order.apps.OrderConfig'
 ]
 
 MIDDLEWARE = [
@@ -122,7 +123,10 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
     'SWAGGER_UI_DIST': 'SIDECAR',
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    'REDOC_DIST': 'SIDECAR'
+    'REDOC_DIST': 'SIDECAR',
+    'ENUM_NAME_OVERRIDES': {
+        'QuantifierEnum': 'store.models.Quantifier'
+    }
 }
 
 # Password validation
