@@ -6,4 +6,4 @@ from order.models import Coupon
 class CouponSerializer(ModelSerializer):
     class Meta:
         model = Coupon
-        fields = '__all__'
+        exclude = ('created_at', 'updated_at', 'deleted_at', 'is_deleted', 'is_active')
