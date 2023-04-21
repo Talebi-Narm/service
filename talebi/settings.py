@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
-    'cart.apps.CartConfig'
+    'cart.apps.CartConfig',
+    'order.apps.OrderConfig'
 ]
 
 MIDDLEWARE = [
