@@ -14,8 +14,6 @@ services:
     image: hamedhf/talebi-service:lastest
     ports:
       - "443:8000"
-    volumes:
-      - .:/usr/src/app
     command: sh -c "./wait-for-it.sh db:5432 &&
       python manage.py migrate &&
       python manage.py collectstatic --noinput &&

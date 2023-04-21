@@ -48,6 +48,7 @@ jobs:
             docker compose down
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
+            docker image rm hamedhf/talebi-service:lastest
             docker compose -f server-deploy.yml up -d --build
 
       - name: cleanup
