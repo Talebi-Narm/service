@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'djoser',
+    'django_filters',
     'drf_spectacular',
     'drf_spectacular_sidecar',
 
@@ -37,17 +38,7 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
-    'cart.apps.CartConfig',
-
-    # 'Coin.apps.CoinConfig',
-    # 'reminder.apps.ReminderConfig',
-    # 'ticket.apps.TicketConfig',
-
-    'corsheaders',
-    'rest_framework_simplejwt',
-    'rest_framework',
-    'django_filters',
-    'rest_framework_simplejwt.token_blacklist'
+    'cart.apps.CartConfig'
 ]
 
 MIDDLEWARE = [
