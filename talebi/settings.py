@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'djoser',
+    'django_filters',
     'drf_spectacular',
     'drf_spectacular_sidecar',
 
@@ -36,17 +37,7 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
-    'cart.apps.CartConfig',
-
-    # 'Coin.apps.CoinConfig',
-    # 'reminder.apps.ReminderConfig',
-    # 'ticket.apps.TicketConfig',
-
-    'corsheaders',
-    'rest_framework_simplejwt',
-    'rest_framework',
-    'django_filters',
-    'rest_framework_simplejwt.token_blacklist'
+    'cart.apps.CartConfig'
 ]
 
 MIDDLEWARE = [
@@ -115,8 +106,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(seconds=int(os.getenv('ACCESS_TOKEN_LIFETIME_SECONDS', 3600))),
-    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=int(os.getenv('REFRESH_TOKEN_LIFETIME', 1))),
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=360),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=365),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
