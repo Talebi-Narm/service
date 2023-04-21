@@ -20,3 +20,6 @@ class Coupon(BaseModel):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     count = models.PositiveIntegerField(null=True, blank=True)  # null for infinite
+
+    def __str__(self):
+        return self.title
