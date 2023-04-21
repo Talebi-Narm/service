@@ -1,43 +1,46 @@
-from django.test import TestCase, Client
 import json
-from rest_framework import status
+
+from django.test import TestCase, Client
 from django.urls import reverse
+from rest_framework import status
+
+from store.models import Tool
 from store.serializers.product import *
-from store.models import Tool, Tool
 
 client = Client()
+
 
 class ToolAdminTest(TestCase):
     """Test module for testing all tool admin apis"""
 
     def setUp(self):
         self.test1 = {
-            'name':'test 1',
-            'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'count':5,
-            'price':100,
-            'main_image':'image1'
+            'name': 'test 1',
+            'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'count': 5,
+            'price': 100,
+            'main_image': 'image1'
         }
         self.test2 = {
-            'name':'test 2',
-            'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'count':23,
-            'price':1200,
-            'main_image':'image2'
+            'name': 'test 2',
+            'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'count': 23,
+            'price': 1200,
+            'main_image': 'image2'
         }
         self.test3 = {
-            'name':'test 3',
-            'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'count':41,
-            'price':235,
-            'main_image':'image3'
+            'name': 'test 3',
+            'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'count': 41,
+            'price': 235,
+            'main_image': 'image3'
         }
         self.test4_invalid = {
-            'name':'test 4',
-            'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'count':55,
-            'price':'23',
-            'main_image':'image4'
+            'name': 'test 4',
+            'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'count': 55,
+            'price': '23',
+            'main_image': 'image4'
         }
 
         def test_create_valid_tool(self):
@@ -69,7 +72,7 @@ class ToolAdminTest(TestCase):
                 content_type='application/json'
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        
+
         def test_get_all_tools(self):
             response = client.get(reverse('tools'))
             tools = Tool.objects.all()
