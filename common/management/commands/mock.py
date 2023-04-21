@@ -66,6 +66,7 @@ class Command(BaseCommand):
             for random_tag_id in random_tags_id:
                 temp.tags.add(random_tag_id)
             temp.save()
+        print("plants created.")
 
         # new tools
         tool_list = [
@@ -113,3 +114,4 @@ class Command(BaseCommand):
         )
         temp.set_password("TalebiAdmin1234")
         temp.save()
+        print("one admin created.")
