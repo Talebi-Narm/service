@@ -2,8 +2,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from common.utils.paginator import *
-from store.serializers.product import *
+from common.utils.paginator import ResponsePagination
+from store.models import Plant, Tool
+from store.serializers.product import PlantSerializer, ToolSerializer
 
 
 # ----> PLANT <----

@@ -4,7 +4,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from rest_framework import status
 
-from store.serializers.product import *
+from store.models import Plant
+from store.serializers.product import PlantSerializer
 
 client = Client()
 

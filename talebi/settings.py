@@ -1,6 +1,5 @@
 import datetime
 import os
-from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv

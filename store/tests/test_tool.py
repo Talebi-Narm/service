@@ -5,7 +5,7 @@ from django.urls import reverse
 from rest_framework import status
 
 from store.models import Tool
-from store.serializers.product import *
+from store.serializers.product import ToolSerializer
 
 client = Client()
 
