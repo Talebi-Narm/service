@@ -14,6 +14,8 @@ ENV PYTHONFAULTHANDLER=1 \
 WORKDIR /usr/src/app
 
 RUN apt-get update --fix-missing
+RUN apt-get -y install libpq-dev gcc
+
 RUN pip install --upgrade pip
 RUN pip install poetry gunicorn[gthread]
 

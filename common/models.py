@@ -39,7 +39,7 @@ class BaseModel(models.Model):
 
 class Tag(BaseModel):
     name = models.CharField(max_length=50, unique=True)
-    description = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
