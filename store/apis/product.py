@@ -1,10 +1,11 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from store.serializers.product import *
-from common.utils.paginator import *
+from common.utils.paginator import ResponsePagination
+from store.models import Plant, Tool
+from store.serializers.product import PlantSerializer, ToolSerializer
 
-from django_filters.rest_framework import DjangoFilterBackend
 
 # ----> PLANT <----
 class PlantList(generics.ListAPIView):
@@ -15,11 +16,13 @@ class PlantList(generics.ListAPIView):
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('name', 'count', 'price', 'environment', 'water', 'light', 'growth_rate', 'tags')
 
+
 class PlantDetail(generics.RetrieveAPIView):
     queryset = Plant.objects.all()
     serializer_class = PlantSerializer
     pagination_class = ResponsePagination
     permission_classes = [IsAuthenticated]
+
 
 # ----> TOOL <----
 class ToolList(generics.ListAPIView):
@@ -29,6 +32,7 @@ class ToolList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('name', 'count', 'price', 'tags')
+
 
 class ToolDetail(generics.RetrieveAPIView):
     queryset = Tool.objects.all()
