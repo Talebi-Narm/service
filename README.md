@@ -26,5 +26,9 @@
   ```shell
   docker compose run --rm backend python3 manage.py migrate
   ```
+- Fake data
+  ```shell
+  docker compose run --rm backend python3 manage.py mock
+  ```
 - Modify the files, the web server will reload on your file changes.
 - Happy coding!!

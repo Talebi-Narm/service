@@ -38,6 +38,16 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
     'cart.apps.CartConfig',
+
+    # 'Coin.apps.CoinConfig',
+    # 'reminder.apps.ReminderConfig',
+    # 'ticket.apps.TicketConfig',
+
+    'corsheaders',
+    'rest_framework_simplejwt',
+    'rest_framework',
+    'django_filters',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
@@ -98,7 +108,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication'
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 SIMPLE_JWT = {
