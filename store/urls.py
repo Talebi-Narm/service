@@ -19,8 +19,8 @@ urlpatterns = [
     path('tools/<uuid:pk>/', product_views.ToolDetail.as_view(), name="tools_detail"),
     path('admin/plant-comment-approve/<uuid:pk>/', comment_views.PlantCommentAdminApprove.as_view(), name="plant_admin_comment_approve"),
     path('admin/tool-comment-approve/<uuid:pk>/', comment_views.ToolCommentAdminApprove.as_view(), name="tool_admin_comment_approve"),
-    path('plant-comment-create/', comment_views.PlantCommentCreate.as_view(), name="plant_comment_create"),
-    path('tool-comment-create/', comment_views.ToolCommentCreate.as_view(), name="tool_comment_create"),
+    path('plant-comment/', comment_views.PlantCommentCreate.as_view(), name="plant_comment"),
+    path('tool-comment/', comment_views.ToolCommentCreate.as_view(), name="tool_comment"),
     path('plant-comments/<uuid:pk>/', comment_views.PlantComments.as_view(), name="plant_comments"),
     path('plant-comments/<uuid:pk>/', comment_views.ToolComments.as_view(), name="tool_comments"),
 
