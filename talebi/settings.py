@@ -15,10 +15,16 @@ SECRET_KEY = 'django-insecure--j3l4070ehjlodlb8-$kwi_*m*bt9-739n!gwk5v_=a#az=12=
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://talebi-narm.ir',
+    'https://service.talebi-narm.ir',
+    'https://service-dev.talebi-narm.ir'
+]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,11 +43,13 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
-    'cart.apps.CartConfig'
+    'cart.apps.CartConfig',
+    'order.apps.OrderConfig'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -77,7 +85,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'talebi.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -122,7 +129,10 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
     'SWAGGER_UI_DIST': 'SIDECAR',
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    'REDOC_DIST': 'SIDECAR'
+    'REDOC_DIST': 'SIDECAR',
+    'ENUM_NAME_OVERRIDES': {
+        'QuantifierEnum': 'store.models.Quantifier'
+    }
 }
 
 # Password validation
@@ -157,16 +167,16 @@ USE_L10N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/images/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-MEDIA_ROOT = BASE_DIR / 'static/images'
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'

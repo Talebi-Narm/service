@@ -3,23 +3,27 @@ version: "3.8"
 services:
   db:
     image: postgres:15.2-alpine
+    ports:
+      - "5432:5432"
     volumes:
       - talebi-db-data:/var/lib/postgresql/data
     env_file:
-      - "/root/app/.env"
+      - ".env"
 
   backend:
     depends_on:
       - db
     image: hamedhf/talebi-service:lastest
     ports:
-      - "443:8000"
-    command: sh -c "./wait-for-it.sh db:5432 &&
-      python manage.py migrate &&
+      - "443:80"
+      - "80:80"
+    volumes:
+      - .:/usr/src/app
+    command: sh -c "
       python manage.py collectstatic --noinput &&
-      python manage.py runserver 0.0.0.0:8000"
+      gunicorn talebi.wsgi:application -c ./talebi/gunicorn.conf.py"
     env_file:
-      - "/root/app/.env"
+      - ".env"
 
 volumes:
   talebi-db-data:

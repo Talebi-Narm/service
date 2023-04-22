@@ -11,7 +11,7 @@ class Product(BaseModel):
     count = models.PositiveIntegerField(null=True, blank=True)  # null for infinite
     price = models.IntegerField(null=True, blank=True)
 
-    main_image = models.ImageField(null=True, blank=True)
+    main_image = models.URLField(max_length=500, null=True, blank=True)
     album = models.JSONField(null=True, blank=True)
 
     tags = models.ManyToManyField("common.Tag")
