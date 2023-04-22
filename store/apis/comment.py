@@ -24,16 +24,26 @@ class ToolCommentCreate(generics.CreateAPIView):
 
 
 class PlantComments(GenericAPIView):
+    """get a plant comments"""
+
     def get(self, request, pk):
         plant = get_object_or_404(Plant, id=pk)
-        comments = PlantComment.objects.filter(plant__id=plant.id)
+        comments = PlantComment.objects.filter(plant__id=pk)
         serializer = PlantCommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def get_serializer_class(self):
+        return PlantCommentSerializer
+
 
 class ToolComments(GenericAPIView):
+    """get a tool comments"""
+
     def get(self, request, pk):
-        plant = get_object_or_404(Tool, id=pk)
-        comments = PlantComment.objects.filter(plant__id=plant.id)
+        tool = get_object_or_404(Tool, id=pk)
+        comments = ToolComment.objects.filter(plant__id=pk)
         serializer = ToolCommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_serializer_class(self):
+        return ToolCommentSerializer
