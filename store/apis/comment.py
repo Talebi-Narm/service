@@ -10,6 +10,7 @@ from store.serializers.comment import PlantCommentSerializer, ToolCommentSeriali
 
 
 class PlantCommentCreate(generics.CreateAPIView):
+    swagger_tags = ('comment',)
     queryset = PlantComment.objects.all()
     serializer_class = PlantCommentSerializer
     pagination_class = ResponsePagination
@@ -17,6 +18,7 @@ class PlantCommentCreate(generics.CreateAPIView):
 
 
 class ToolCommentCreate(generics.CreateAPIView):
+    swagger_tags = ('comment',)
     queryset = ToolComment.objects.all()
     serializer_class = ToolCommentSerializer
     pagination_class = ResponsePagination
@@ -25,6 +27,7 @@ class ToolCommentCreate(generics.CreateAPIView):
 
 class PlantComments(GenericAPIView):
     """get a plant comments"""
+    swagger_tags = ('comment',)
 
     def get(self, request, pk):
         plant = get_object_or_404(Plant, id=pk)
@@ -38,6 +41,7 @@ class PlantComments(GenericAPIView):
 
 class ToolComments(GenericAPIView):
     """get a tool comments"""
+    swagger_tags = ('comment',)
 
     def get(self, request, pk):
         tool = get_object_or_404(Tool, id=pk)
