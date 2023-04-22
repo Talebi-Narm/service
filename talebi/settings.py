@@ -15,6 +15,11 @@ SECRET_KEY = 'django-insecure--j3l4070ehjlodlb8-$kwi_*m*bt9-739n!gwk5v_=a#az=12=
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://talebi-narm.ir',
+    'https://service.talebi-narm.ir',
+    'https://service-dev.talebi-narm.ir'
+]
 
 # Application definition
 
