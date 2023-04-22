@@ -17,7 +17,7 @@ class PlantCommentCreate(generics.CreateAPIView):
 
 
 class ToolCommentCreate(generics.CreateAPIView):
-    queryset = PlantComment.objects.all()
+    queryset = ToolComment.objects.all()
     serializer_class = ToolCommentSerializer
     pagination_class = ResponsePagination
     permission_classes = [IsAuthenticated]
