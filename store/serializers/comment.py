@@ -1,9 +1,15 @@
 from rest_framework import serializers
 
-from store.models import Comment
+from store.models import PlantComment, ToolComment
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class PlantCommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = PlantComment
+        fields = '__all__'
+
+
+class ToolCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ToolComment
         fields = '__all__'
