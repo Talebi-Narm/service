@@ -21,7 +21,7 @@ services:
       - .:/usr/src/app
     command: sh -c "
       python manage.py collectstatic --noinput &&
-      gunicorn talebi.wsgi:application -c ./talebi/gunicorn.conf.py
+      gunicorn talebi.wsgi:application -c ./talebi/gunicorn.conf.py"
     env_file:
       - ".env"
 
