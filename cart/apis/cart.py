@@ -24,3 +24,22 @@ class PlantCartDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PlantCartSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = ResponsePagination
+
+
+class ToolCartList(generics.CreateAPIView):
+    queryset = ToolCart.objects.all()
+    serializer_class = ToolCartSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = ResponsePagination
+
+    def list(self, request):
+        queryset = ToolCart.objects.filter(user=request.user, is_active=True, is_deleted=False)
+        serializer = ToolCartSerializer(queryset)
+        return Response(serializer.data)
+
+
+class ToolCartDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ToolCart.objects.all()
+    serializer_class = ToolCartSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = ResponsePagination
