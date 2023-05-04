@@ -43,7 +43,6 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt',
-    'djoser',
     'corsheaders',
     'django_filters',
     'drf_spectacular',
@@ -186,7 +185,12 @@ STORAGES = {
     },
 }
 
-# Default primary key field type
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
+
+# Google OAuth2 settings
+GOOGLE_OAUTH2_CLIENT_ID = os.getenv(
+    'GOOGLE_OAUTH2_CLIENT_ID',
+    '366353975327-hd0rk6pht4full5preapee5gainbh7pb.apps.googleusercontent.com'
+)
+GOOGLE_OAUTH2_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH2_CLIENT_SECRET')
