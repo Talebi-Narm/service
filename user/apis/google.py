@@ -16,26 +16,33 @@ from user.serializers.google import GoogleLoginSerializer
 GOOGLE_ID_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 
 
-def google_validate_id_token(*, id_token: str) -> bool:
+def google_validate_id_token(email: str, id_token: str) -> bool:
     # Reference: https://developers.google.com/identity/sign-in/web/backend-auth#verify-the-integrity-of-the-id-token
     response = requests.get(
         GOOGLE_ID_TOKEN_INFO_URL,
         params={'id_token': id_token}
     )
 
-    if not response.ok:
+    data = response.json()
+
+    if response.status_code != status.HTTP_200_OK:
         raise ValidationError('id_token is invalid.')
 
-    audience = response.json()['aud']
+    audience = data['aud']
 
     if audience != settings.GOOGLE_OAUTH2_CLIENT_ID:
         raise ValidationError('Invalid audience.')
+
+    if data['email'] != email:
+        raise ValidationError('Invalid email.')
 
     return True
 
 
 def user_create(email, password=None, **extra_fields) -> User:
     extra_fields = {
+        'username': email,
+        'is_active': True,
         'is_staff': False,
         'is_superuser': False,
         **extra_fields
@@ -84,7 +91,17 @@ class GoogleLogin(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        # TODO: Validate id_token
+
+        try:
+            google_validate_id_token(
+                email=serializer.validated_data['email'],
+                id_token=serializer.validated_data['id_token']
+            )
+        except ValidationError as e:
+            message = f'Validation failed: {e.message}'
+            return Response({'detail': message}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer.validated_data.pop('id_token')
         user, _ = user_get_or_create(**serializer.validated_data)
 
         tokens = get_tokens_for_user(user)
