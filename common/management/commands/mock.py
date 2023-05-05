@@ -77,8 +77,7 @@ def create_plants(faker: Faker, tags_id: list, seller_id):
         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Canna_sp.jpg/330px-Canna_sp.jpg",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Corylus_avellana_0001.JPG/330px-Corylus_avellana_0001.JPG", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Sanvitalia_procumbens_-_plants_%28aka%29.jpg/330px-Sanvitalia_procumbens_-_plants_%28aka%29.jpg", # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Starr_020925-0070_Scaevola_chamissoniana.jpg/330px-Starr_020925-0070_Scaevola_chamissoniana.jpg",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Starr_020925-0070_Scaevola_chamissoniana.jpg/330px-Starr_020925-0070_Scaevola_chamissoniana.jpg", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Juniperus_osteosperma_1.jpg/330px-Juniperus_osteosperma_1.jpg", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Azalea.750pix.jpg/330px-Azalea.750pix.jpg",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Dahlia_x_hybrida.jpg/330px-Dahlia_x_hybrida.jpg", # noqa
