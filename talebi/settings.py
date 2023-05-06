@@ -34,6 +34,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,7 +54,8 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
     'cart.apps.CartConfig',
-    'order.apps.OrderConfig'
+    'order.apps.OrderConfig',
+    'support.apps.SupportConfig'
 ]
 
 MIDDLEWARE = [
