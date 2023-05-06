@@ -1,4 +1,4 @@
-name: flake8 Lint
+name: drf tests
 
 on:
   pull_request:
@@ -6,9 +6,9 @@ on:
       - main
 
 jobs:
-  flake8-lint:
+  pytest:
     runs-on: ubuntu-latest
-    name: flake8 Lint
+    name: pytest
 
     steps:
       - name: check out source repository
@@ -19,5 +19,5 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: flake8 Lint
-        uses: py-actions/flake8@v2
+      - name: pytest tests
+        uses: cclauss/GitHub-Action-for-pytest@0.5.0
