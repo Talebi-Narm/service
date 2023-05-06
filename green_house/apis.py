@@ -6,6 +6,7 @@ from .serializers import UserPlantSerializer
 
 
 class UserPlantListAPIView(ListCreateAPIView):
+    swagger_tags = ('green house',)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserPlantSerializer
 
@@ -14,6 +15,7 @@ class UserPlantListAPIView(ListCreateAPIView):
 
 
 class UserPlantDetailAPIView(RetrieveUpdateDestroyAPIView):
+    swagger_tags = ('green house',)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserPlantSerializer
 
