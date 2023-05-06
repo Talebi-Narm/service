@@ -1,5 +1,5 @@
 from django.db import models
-import uuid
+
 from common.models import BaseModel
 
 
@@ -29,7 +29,6 @@ class ToolCart(Cart):
 
     class Meta:
         unique_together = ('user', 'tool')
-
 
 # class Order(BaseModel):
 #     status_quantifiers = (
