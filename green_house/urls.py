@@ -1,9 +1,8 @@
 from django.urls import path
-from . import views
 
-urlpatterns=[
-    # path('makeHaveCalendarTrue/<str:pk>/', views.haveCalendarTrue.as_view(), name='makeHaveCalendarTrue'),
-    # path('myPlants/', views.allOfMyPlant.as_view(), name='allOfMyPlants'),
-    # path('myArchivedPlants/', views.allOfMyArchivedPlant.as_view(), name='allOfMyArchivedPlants'),
-    # path('myPlantsRUD/<str:pk>/', views.myPlantsRUD.as_view(), name='getPlant'),
+from . import apis
+
+urlpatterns = [
+    path('user-plants/', apis.UserPlantListAPIView.as_view(), name='user-plants'),
+    path('user-plants/<uuid:pk>/', apis.UserPlantDetailAPIView.as_view(), name='user-plant-detail'),
 ]
