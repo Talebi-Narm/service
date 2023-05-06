@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import User, UserAddress
+from user.models import Seller
 
 
 @admin.register(User)
@@ -50,3 +51,17 @@ class UserAdmin(BaseUserAdmin):
 @admin.register(UserAddress)
 class UserAddressAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Seller)
+class SellerAdmin(admin.ModelAdmin):
+    list_display = (
+        "username",
+        "name",
+        "rate"
+    )
+
+    search_fields = (
+        "username",
+        "name"
+    )

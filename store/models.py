@@ -16,6 +16,8 @@ class Product(BaseModel):
 
     tags = models.ManyToManyField("common.Tag")
 
+    seller = models.ManyToManyField(to='user.Seller')
+
     class Meta:
         abstract = True
 

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.db import models
 
 from common.models import BaseModel, EmailField
@@ -52,6 +52,21 @@ class Specialist(User):
     degree = models.IntegerField(choices=Degree.choices, null=True, blank=True)
     major = models.CharField(max_length=150, blank=True)
     rate = models.IntegerField('rate', default=3)
+
+    def __str__(self):
+        return str(self.username)
+
+
+class Seller(User):
+    is_authorized = models.BooleanField(default=False)
+    rate = models.FloatField(
+        help_text="enter integer between 1 and 5!",
+        validators=[MaxValueValidator(5.0), MinValueValidator(1.0)]
+    )
+
+    @property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
 
     def __str__(self):
         return str(self.username)
