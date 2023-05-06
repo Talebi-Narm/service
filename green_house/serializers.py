@@ -1,7 +1,9 @@
-from rest_framework import serializers
-from .models import myPlant
+from rest_framework.serializers import ModelSerializer
+from .models import UserPlant
 
-class myPlantSerializer(serializers.ModelSerializer):
+
+class UserPlantSerializer(ModelSerializer):
     class Meta:
-        model = myPlant
-        fields = '__all__'
+        model = UserPlant
+        read_only_fields = ('id',)
+        exclude = ('is_deleted', 'deleted_at')
