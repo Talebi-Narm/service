@@ -38,20 +38,3 @@ class UserAddress(BaseModel):
 
     def __str__(self):
         return self.address
-
-
-class Degree(models.IntegerChoices):
-    ASSOCIATE = 0, "Associate"
-    BACHELOR = 1, "Bachelor"
-    MASTER = 2, "Master"
-    DOCTORAL = 3, "Doctoral"
-
-
-class Specialist(User):
-    birth_date = models.DateField(blank=True, null=True)
-    degree = models.IntegerField(choices=Degree.choices, null=True, blank=True)
-    major = models.CharField(max_length=150, blank=True)
-    rate = models.IntegerField('rate', default=3)
-
-    def __str__(self):
-        return str(self.username)
