@@ -15,7 +15,7 @@ class Gender(models.IntegerChoices):
 class User(AbstractUser, BaseModel):
     email = EmailField(max_length=255, unique=True)
 
-    gender = models.IntegerField(choices=Gender.choices)
+    gender = models.IntegerField(choices=Gender.choices, null=True, default=3)
 
     calendar_id = models.CharField(max_length=200, blank=True, null=True)
     calendar_token = models.TextField(max_length=1000, blank=True, null=True)
