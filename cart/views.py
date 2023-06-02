@@ -8,7 +8,9 @@
 # from Backend.models import Plant, Tool
 # from Cart.models import OrderModel, PlantCartModel, ToolCartModel
 #
-# from Cart.serializers import CartItemIdSerializer, CartItemSerializer, PlantCartSerializer, PlantWithCountCartSerializer, ToolCartSerializer, DesicriptionSerializer, ToolWithCountCartSerializer
+# from Cart.serializers import CartItemIdSerializer, CartItemSerializer,
+# PlantCartSerializer, PlantWithCountCartSerializer, ToolCartSerializer, DesicriptionSerializer,
+# ToolWithCountCartSerializer
 #
 # @api_view(['GET'])
 # def apiOverview(request):
@@ -64,7 +66,8 @@
 #     if PlantCartModel.objects.filter(user=userToAdd, plant_item=PlantToAdd, is_approved=False).exists():
 #       return response.Response("This Plant is Alraedy On The Cart", status=status.HTTP_400_BAD_REQUEST)
 #     #Make Cart Plant Item
-#     PlantCartItem = PlantCartModel.objects.create(user=userToAdd, plant_item=PlantToAdd, plant_count=PlantToAddCount, description=PlantToAddDescription)
+#     PlantCartItem = PlantCartModel.objects.create(user=userToAdd,
+#     plant_item=PlantToAdd, plant_count=PlantToAddCount, description=PlantToAddDescription)
 #     #Save Plant Item
 #     PlantCartItem.save()
 #     if PlantCartItem:
@@ -93,7 +96,8 @@
 #    if ToolCartModel.objects.filter(user=userToAdd, tool_item=ToolToAdd, is_approved=False).exists():
 #     return response.Response("This Tool is Alraedy On The Cart", status=status.HTTP_400_BAD_REQUEST)
 #    #Make Cart Plant Item
-#    ToolCartItem = ToolCartModel.objects.create(user=userToAdd, tool_item=ToolToAdd, tool_count=ToolToAddCount, description=ToolToAddDescription)
+#    ToolCartItem = ToolCartModel.objects.create(user=userToAdd, tool_item=ToolToAdd,
+#    tool_count=ToolToAddCount, description=ToolToAddDescription)
 #    #Save Plant Item
 #    ToolCartItem.save()
 #    if ToolCartItem:
@@ -171,7 +175,8 @@
 #   userToGetCart = request.user
 #   PlantsCartItems = PlantCartModel.objects.filter(user=userToGetCart, is_approved=False).values('plant_item')
 #   PlantsItems = Plant.objects.filter(id__in = PlantsCartItems).order_by('name')
-#   PlantsCountItems = PlantCartModel.objects.filter(user=userToGetCart, is_approved=False).order_by('plant_item__name').values('plant_count')
+#   PlantsCountItems = PlantCartModel.objects.filter(user=userToGetCart,
+#   is_approved=False).order_by('plant_item__name').values('plant_count')
 #   index = 0
 #   for PlantItem in PlantsItems:
 #     countitem = PlantsCountItems[index]
@@ -193,7 +198,8 @@
 #   userToGetCart = request.user
 #   ToolsCartItems = ToolCartModel.objects.filter(user=userToGetCart, is_approved=False).values('tool_item')
 #   ToolsItems = Tool.objects.filter(id__in = ToolsCartItems).order_by('name')
-#   ToolsCountItems = ToolCartModel.objects.filter(user=userToGetCart, is_approved=False).order_by('tool_item__name').values('tool_count')
+#   ToolsCountItems = ToolCartModel.objects.filter(user=userToGetCart,
+#   is_approved=False).order_by('tool_item__name').values('tool_count')
 #
 #   index = 0
 #   for ToolItem in ToolsItems:

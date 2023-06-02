@@ -15,6 +15,20 @@ SECRET_KEY = 'django-insecure--j3l4070ehjlodlb8-$kwi_*m*bt9-739n!gwk5v_=a#az=12=
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://talebi-narm.ir',
+    'https://service.talebi-narm.ir',
+    'https://service-dev.talebi-narm.ir',
+    'http://127.0.0.1:3000',
+    'http://localhost:3000'
+]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = False
+CORS_REPLACE_HTTPS_REFERER = True
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
@@ -29,7 +43,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt',
-    'djoser',
+    'corsheaders',
     'django_filters',
     'drf_spectacular',
     'drf_spectacular_sidecar',
@@ -44,14 +58,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'talebi.urls'
@@ -157,8 +171,6 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -171,9 +183,12 @@ STORAGES = {
     },
 }
 
-# Default primary key field type
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 
-CORS_ORIGIN_ALLOW_ALL = True
+# Google OAuth2 settings
+GOOGLE_OAUTH2_CLIENT_ID = os.getenv(
+    'GOOGLE_OAUTH2_CLIENT_ID',
+    '366353975327-hd0rk6pht4full5preapee5gainbh7pb.apps.googleusercontent.com'
+)
+GOOGLE_OAUTH2_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH2_CLIENT_SECRET')

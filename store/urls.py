@@ -2,8 +2,7 @@ from django.urls import path
 
 from store.apis import admin as admin_views
 from store.apis import product as product_views
-
-# from . import views
+from store.apis import comment as comment_views
 
 urlpatterns = [
 
@@ -18,6 +17,10 @@ urlpatterns = [
     path('plants/<uuid:pk>/', product_views.PlantDetail.as_view(), name="plants_detail"),
     path('tools/', product_views.ToolList.as_view(), name="tools"),
     path('tools/<uuid:pk>/', product_views.ToolDetail.as_view(), name="tools_detail"),
+    path('plant-comments/', comment_views.PlantCommentCreate.as_view(), name="plant_comment"),
+    path('tool-comments/', comment_views.ToolCommentCreate.as_view(), name="tool_comment"),
+    path('plants/<uuid:pk>/comments/', comment_views.PlantComments.as_view(), name="plant_comments"),
+    path('plants/<uuid:pk>/comments/', comment_views.ToolComments.as_view(), name="tool_comments"),
 
     # # Plant API
     #     path('plants/', views.plants.as_view(), name='plants'),
