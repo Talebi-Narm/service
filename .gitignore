@@ -130,4 +130,5 @@ dmypy.json
 
 # project based
 static/
+staticfiles/
 .idea/

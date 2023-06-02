@@ -9,10 +9,9 @@ class UserPlant(BaseModel):
     nickname = models.CharField(max_length=50, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
 
-    image = models.ImageField(null=True, blank=True)
-    location = models.CharField(max_length=50, null=True, blank=True)
+    image_url = models.URLField(null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
 
-    is_archived = models.BooleanField(default=False)
     has_calendar = models.BooleanField(default=False)
 
     def __str__(self):

@@ -48,7 +48,12 @@ jobs:
             docker compose down
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
-            docker compose -f server-deploy.yml up -d --build
+            docker image rm hamedhf/talebi-service:lastest
+            docker compose -f server-deploy.yml build
+            docker compose -f server-deploy.yml up db -d
+            ./wait-for-it.sh localhost:5432
+            docker compose -f server-deploy.yml run --rm backend python3 manage.py migrate
+            docker compose -f server-deploy.yml up backend -d
 
       - name: cleanup
         run: rm -rf ~/.ssh
