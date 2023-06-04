@@ -5,8 +5,17 @@ from django.db import models
 from common.models import BaseModel, EmailField
 
 
+class Gender(models.IntegerChoices):
+    MALE = 0, "Male"
+    FEMALE = 1, "Female"
+    NONBINARY = 2, "Non-Binary"
+    RATHERNOTTOSAY = 3, "Rather not to say!"
+
+
 class User(AbstractUser, BaseModel):
     email = EmailField(max_length=255, unique=True)
+
+    gender = models.IntegerField(choices=Gender.choices, null=True, default=3)
 
     calendar_id = models.CharField(max_length=200, blank=True, null=True)
     calendar_token = models.TextField(max_length=1000, blank=True, null=True)
