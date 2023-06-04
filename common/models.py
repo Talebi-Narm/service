@@ -43,3 +43,13 @@ class Tag(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class PlantBookmark(BaseModel):
+    user = models.ForeignKey("user.User", on_delete=models.CASCADE)
+    Plant = models.ForeignKey("store.Plant", on_delete=models.CASCADE)
+
+
+class ToolBookmark(BaseModel):
+    user = models.ForeignKey("user.User", on_delete=models.CASCADE)
+    Tool = models.ForeignKey("store.Tool", on_delete=models.CASCADE)
