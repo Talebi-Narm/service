@@ -17,5 +17,5 @@ urlpatterns = [
     path("addresses/<uuid:pk>", UserAddressDetail.as_view(), name="user-address-detail"),
     # path('updatecredit/<int:amount>/', UpdateCredit.as_view(), name='update_credit'),
     path("me/", UserProfile.as_view(), name="user-profile"),
-    path("change-password/", ChangePassword.as_view(), name="change-password")
+    path("password/", ChangePassword.as_view(), name="change-password")
 ]
