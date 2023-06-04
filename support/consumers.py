@@ -47,7 +47,10 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         if key not in content.keys() or content[key] is None or content[key] == "":
             error_message = f"Missing '{key}' in your JSON!"
             await self.send_json(
-                {"error": error_message}
+                {
+                    "type": "system_message",
+                    "error": error_message
+                }
             )
             return None
         else:
@@ -57,18 +60,31 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         message_type = await self.get_key(content, "type")
 
         if message_type == "new_ticket":
+            # only users can create tickets
             await self.handle_new_ticket(content)
         elif message_type == "close_ticket":
+            # only users can close tickets
             await self.handle_close_ticket()
         elif message_type == "new_message":
             await self.handle_new_message(content)
 
     async def handle_new_ticket(self, content):
-        # check if user already has an active ticket
-        if await database_sync_to_async(Ticket.objects.filter(user=self.user, is_closed=False).exists)():
+        if self.is_specialist:
+            error_message = "You are a specialist and cannot create a ticket!"
+            await self.send_json(
+                {
+                    "type": "system_message",
+                    "error": error_message
+                }
+            )
+            return
+        elif await database_sync_to_async(Ticket.objects.filter(user=self.user, is_closed=False).exists)():
             error_message = "You already have an active ticket!"
             await self.send_json(
-                {"error": error_message}
+                {
+                    "type": "system_message",
+                    "error": error_message
+                }
             )
             return
         else:
@@ -78,12 +94,29 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             ticket = await database_sync_to_async(Ticket.objects.create)(user=self.user, title=title)
             await database_sync_to_async(ticket.save)()
 
+            # success message to the group
+            await self.channel_layer.group_send(self.room_group_name, {
+                "type": "system_message",
+                "message": "Ticket created successfully!"
+            })
+
     async def handle_close_ticket(self):
-        # check if user has an active ticket
-        if not await database_sync_to_async(Ticket.objects.filter(user=self.user, is_closed=False).exists)():
+        if self.is_specialist:
+            error_message = "You are a specialist and cannot close a ticket!"
+            await self.send_json(
+                {
+                    "type": "system_message",
+                    "error": error_message
+                }
+            )
+            return
+        elif not await database_sync_to_async(Ticket.objects.filter(user=self.user, is_closed=False).exists)():
             error_message = "You don't have an active ticket!"
             await self.send_json(
-                {"error": error_message}
+                {
+                    "type": "system_message",
+                    "error": error_message
+                }
             )
             return
         else:
@@ -91,18 +124,31 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             ticket.is_closed = True
             await database_sync_to_async(ticket.save)()
 
+            # success message to the group
+            await self.channel_layer.group_send(self.room_group_name, {
+                "type": "system_message",
+                "message": "Ticket closed successfully!"
+            })
+
     async def handle_new_message(self, content):
         message = await self.get_key(content, "message")
         if message is None:
             return
 
         # Send message to room group
+        send_type = "user_message" if not self.is_specialist else "specialist_message"
         await self.channel_layer.group_send(
             self.room_group_name, {
-                "type": "new_message",  # This is the name of the method that will be called on the consumers
+                "type": send_type,  # This is the name of the method that will be called on the consumers
                 "message": message
             }
         )
 
-    async def new_message(self, event):
+    async def user_message(self, event):
+        await self.send_json(event)
+
+    async def specialist_message(self, event):
+        await self.send_json(event)
+
+    async def system_message(self, event):
         await self.send_json(event)
