@@ -31,7 +31,7 @@ class PlantComments(generics.ListAPIView):
 
     def get(self, request, pk):
         plant = get_object_or_404(Plant, id=pk)
-        comments = PlantComment.objects.filter(plant__id=pk)
+        comments = PlantComment.objects.filter(plant__id=plant.id)
         serializer = PlantCommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -46,7 +46,7 @@ class ToolComments(generics.ListAPIView):
 
     def get(self, request, pk):
         tool = get_object_or_404(Tool, id=pk)
-        comments = ToolComment.objects.filter(plant__id=pk)
+        comments = ToolComment.objects.filter(tool__id=tool.id)
         serializer = ToolCommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
