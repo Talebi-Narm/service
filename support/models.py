@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from common.models import BaseModel
@@ -21,7 +23,8 @@ class Specialist(BaseModel):
         return str(self.user.username)
 
 
-class Ticket(BaseModel):
+class Ticket(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey("user.User", on_delete=models.PROTECT, related_name="tickets")
     specialist = models.ForeignKey("Specialist", on_delete=models.PROTECT, related_name="tickets", null=True)
     title = models.CharField(max_length=255)
