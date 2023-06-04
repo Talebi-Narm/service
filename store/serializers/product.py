@@ -7,24 +7,28 @@ class PlantAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plant
         fields = '__all__'
+        read_only_fields = ['id']
 
 
 class PlantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plant
         exclude = ['is_active', 'created_at', 'updated_at', 'is_deleted', 'deleted_at']
+        read_only_fields = ['id']
 
 
 class ToolAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tool
         fields = '__all__'
+        read_only_fields = ['id']
 
 
 class ToolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tool
         exclude = ['is_active', 'created_at', 'updated_at', 'is_deleted', 'deleted_at']
+        read_only_fields = ['id']
 
 # class TagSerializer(serializers.ModelSerializer):
 #     class Meta:
