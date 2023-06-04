@@ -10,7 +10,8 @@ class UserAdmin(BaseUserAdmin):
         "username",
         "get_full_name",
         "is_staff",
-        "wallet_charge"
+        "wallet_charge",
+        "gender"
     )
 
     search_fields = (
@@ -21,7 +22,7 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        ("Personal info", {"fields": ("first_name", "last_name", "email", "wallet_charge")}),
+        ("Personal info", {"fields": ("first_name", "last_name", "email", "gender", "wallet_charge")}),
         (
             "Permissions",
             {
