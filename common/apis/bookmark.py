@@ -21,7 +21,7 @@ class PlantBookmarkList(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class PlantBookmarkDetail(generics.DestroyAPIView):
+class PlantBookmarkDestroy(generics.DestroyAPIView):
     swagger_tags = ('bookmark',)
     queryset = PlantBookmark.objects.all()
     serializer_class = PlantBookmarkSerializer
@@ -41,7 +41,7 @@ class ToolBookmarkList(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class ToolBookmarkDetail(generics.DestroyAPIView):
+class ToolBookmarkDestroy(generics.DestroyAPIView):
     swagger_tags = ('bookmark',)
     queryset = ToolBookmark.objects.all()
     serializer_class = PlantBookmarkSerializer
