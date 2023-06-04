@@ -39,6 +39,7 @@ def create_album(faker: Faker, count: int) -> dict:
 
 def create_tags(faker: Faker):
     tag_list = [
+        "Discount",
         "Apartment",
         "Home",
         "Drug",
@@ -73,30 +74,19 @@ def create_plants(faker: Faker, tags_id: list):
         "Hedera"
     ]
     plant_images_list = [
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Hampa_Cannabis_sativa_L._%28n%C3%A4rbild%29.jpg/330px-Hampa_Cannabis_sativa_L._%28n%C3%A4rbild%29.jpg",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Opium_pod_cut_to_demonstrate_fluid_extraction1.jpg/330px-Opium_pod_cut_to_demonstrate_fluid_extraction1.jpg",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Stairs_with_weed.jpg/330px-Stairs_with_weed.jpg",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Badamwari_Flower_Series_2.png/330px-Badamwari_Flower_Series_2.png",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Caladium_schomburgkii_changjur-1-yercaud-salem-India.JPG/330px-Caladium_schomburgkii_changjur-1-yercaud-salem-India.JPG",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Hampa_Cannabis_sativa_L._%28n%C3%A4rbild%29.jpg/330px-Hampa_Cannabis_sativa_L._%28n%C3%A4rbild%29.jpg", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Opium_pod_cut_to_demonstrate_fluid_extraction1.jpg/330px-Opium_pod_cut_to_demonstrate_fluid_extraction1.jpg", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Stairs_with_weed.jpg/330px-Stairs_with_weed.jpg", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Badamwari_Flower_Series_2.png/330px-Badamwari_Flower_Series_2.png", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Caladium_schomburgkii_changjur-1-yercaud-salem-India.JPG/330px-Caladium_schomburgkii_changjur-1-yercaud-salem-India.JPG", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Canna_sp.jpg/330px-Canna_sp.jpg",  # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Corylus_avellana_0001.JPG/330px-Corylus_avellana_0001.JPG",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Sanvitalia_procumbens_-_plants_%28aka%29.jpg/330px-Sanvitalia_procumbens_-_plants_%28aka%29.jpg",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Starr_020925-0070_Scaevola_chamissoniana.jpg/330px-Starr_020925-0070_Scaevola_chamissoniana.jpg",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Juniperus_osteosperma_1.jpg/330px-Juniperus_osteosperma_1.jpg",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Corylus_avellana_0001.JPG/330px-Corylus_avellana_0001.JPG", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Sanvitalia_procumbens_-_plants_%28aka%29.jpg/330px-Sanvitalia_procumbens_-_plants_%28aka%29.jpg", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Starr_020925-0070_Scaevola_chamissoniana.jpg/330px-Starr_020925-0070_Scaevola_chamissoniana.jpg", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Juniperus_osteosperma_1.jpg/330px-Juniperus_osteosperma_1.jpg", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Azalea.750pix.jpg/330px-Azalea.750pix.jpg",  # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Dahlia_x_hybrida.jpg/330px-Dahlia_x_hybrida.jpg",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Hedera_algeriensis_kz01.jpg/330px-Hedera_algeriensis_kz01.jpg"
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Dahlia_x_hybrida.jpg/330px-Dahlia_x_hybrida.jpg", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Hedera_algeriensis_kz01.jpg/330px-Hedera_algeriensis_kz01.jpg" # noqa
     ]
 
     for plant in range(len(plants_list)):
@@ -140,20 +130,15 @@ def create_tools(faker: Faker, tags_id: list):
     tool_images_list = [
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Felling_axe.jpg/330px-Felling_axe.jpg",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Cowboy_boots.jpg/300px-Cowboy_boots.jpg",  # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Gotland-Bottarve_Museumshof_07.jpg/375px-Gotland-Bottarve_Museumshof_07.jpg",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Gotland-Bottarve_Museumshof_07.jpg/375px-Gotland-Bottarve_Museumshof_07.jpg", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Westtown.jpg/330px-Westtown.jpg",  # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Manure_spreading_Hlokozi_2007_11_29.jpg/495px-Manure_spreading_Hlokozi_2007_11_29.jpg",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Shelves_of_flower_pots_in_Darwin%27s_laboratory%2C_Down_House_-_geograph.org.uk_-_1200541.jpg/330px-Shelves_of_flower_pots_in_Darwin%27s_laboratory%2C_Down_House_-_geograph.org.uk_-_1200541.jpg",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Manure_spreading_Hlokozi_2007_11_29.jpg/495px-Manure_spreading_Hlokozi_2007_11_29.jpg", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Shelves_of_flower_pots_in_Darwin%27s_laboratory%2C_Down_House_-_geograph.org.uk_-_1200541.jpg/330px-Shelves_of_flower_pots_in_Darwin%27s_laboratory%2C_Down_House_-_geograph.org.uk_-_1200541.jpg", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Garden_hose.jpg/330px-Garden_hose.jpg",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Masons_trowel.jpg/390px-Masons_trowel.jpg",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bar_spade.jpg/255px-Bar_spade.jpg",  # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Centre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG/330px-Centre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Hedge_Trimming_-_Kolkata_2005-08-10_02050.JPG/330px-Hedge_Trimming_-_Kolkata_2005-08-10_02050.JPG",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Centre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG/330px-Centre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Hedge_Trimming_-_Kolkata_2005-08-10_02050.JPG/330px-Hedge_Trimming_-_Kolkata_2005-08-10_02050.JPG", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Chainsaw.JPG/330px-Chainsaw.JPG",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Crosscut_saw.JPG/375px-Crosscut_saw.JPG",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Wooden_rake.jpg/330px-Wooden_rake.jpg"  # noqa
