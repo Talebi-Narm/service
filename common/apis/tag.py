@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from common.models import Tag
 from common.serializers.tag import TagSerializer
-from common.utils.paginator import *
+from common.utils.paginator import ResponsePagination
 
 
 class TagList(generics.ListCreateAPIView):

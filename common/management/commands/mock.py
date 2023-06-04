@@ -130,20 +130,15 @@ def create_tools(faker: Faker, tags_id: list):
     tool_images_list = [
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Felling_axe.jpg/330px-Felling_axe.jpg",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Cowboy_boots.jpg/300px-Cowboy_boots.jpg",  # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Gotland-Bottarve_Museumshof_07.jpg/375px-Gotland-Bottarve_Museumshof_07.jpg",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Gotland-Bottarve_Museumshof_07.jpg/375px-Gotland-Bottarve_Museumshof_07.jpg", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Westtown.jpg/330px-Westtown.jpg",  # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Manure_spreading_Hlokozi_2007_11_29.jpg/495px-Manure_spreading_Hlokozi_2007_11_29.jpg",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Shelves_of_flower_pots_in_Darwin%27s_laboratory%2C_Down_House_-_geograph.org.uk_-_1200541.jpg/330px-Shelves_of_flower_pots_in_Darwin%27s_laboratory%2C_Down_House_-_geograph.org.uk_-_1200541.jpg",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Manure_spreading_Hlokozi_2007_11_29.jpg/495px-Manure_spreading_Hlokozi_2007_11_29.jpg", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Shelves_of_flower_pots_in_Darwin%27s_laboratory%2C_Down_House_-_geograph.org.uk_-_1200541.jpg/330px-Shelves_of_flower_pots_in_Darwin%27s_laboratory%2C_Down_House_-_geograph.org.uk_-_1200541.jpg", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Garden_hose.jpg/330px-Garden_hose.jpg",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Masons_trowel.jpg/390px-Masons_trowel.jpg",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bar_spade.jpg/255px-Bar_spade.jpg",  # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Centre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG/330px-Centre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG",
-        # noqa
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Hedge_Trimming_-_Kolkata_2005-08-10_02050.JPG/330px-Hedge_Trimming_-_Kolkata_2005-08-10_02050.JPG",
-        # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Centre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG/330px-Centre_de_Documentaci%C3%B3_Museu_T%C3%A8xtil_de_Terrassa-_Reserves-_Teixits-_Guants002.JPG", # noqa
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Hedge_Trimming_-_Kolkata_2005-08-10_02050.JPG/330px-Hedge_Trimming_-_Kolkata_2005-08-10_02050.JPG", # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Chainsaw.JPG/330px-Chainsaw.JPG",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Crosscut_saw.JPG/375px-Crosscut_saw.JPG",  # noqa
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Wooden_rake.jpg/330px-Wooden_rake.jpg"  # noqa
