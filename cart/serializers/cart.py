@@ -5,7 +5,7 @@ from cart.models import PlantCart, ToolCart
 
 
 class PlantCartSerializer(serializers.ModelSerializer):
-    plant = serializers.SerializerMethodField("get_plant")
+    plant_detail = serializers.SerializerMethodField("get_plant")
 
     def get_plant(self, obj):
         return model_to_dict(obj.plant)
@@ -13,11 +13,11 @@ class PlantCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlantCart
         exclude = ["is_active", "is_deleted", "deleted_at", "created_at", "updated_at"]
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'plant_detail']
 
 
 class ToolCartSerializer(serializers.ModelSerializer):
-    tool = serializers.SerializerMethodField("get_tool")
+    tool_detail = serializers.SerializerMethodField("get_tool")
 
     def get_tool(self, obj):
         return model_to_dict(obj.tool)
@@ -25,4 +25,4 @@ class ToolCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToolCart
         exclude = ["is_active", "is_deleted", "deleted_at", "created_at", "updated_at"]
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'tool_detail']
