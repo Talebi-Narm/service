@@ -19,5 +19,5 @@ def notify_new_ticket(sender, instance, created, **kwargs):
 
     async_to_sync(channel_layer.group_send)("specialists", {
         'type': 'system_message',
-        'message': data
+        'active_tickets': data
     })

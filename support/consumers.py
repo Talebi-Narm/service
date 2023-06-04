@@ -3,6 +3,7 @@ import json
 from channels.db import database_sync_to_async
 from channels.exceptions import DenyConnection
 from channels.generic.websocket import AsyncJsonWebsocketConsumer, AsyncWebsocketConsumer
+from django.db.models import Q
 
 from .models import Ticket, Specialist
 
@@ -45,7 +46,45 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         })
 
     async def connect_specialist(self):
-        pass
+        await self.accept()
+        if not await database_sync_to_async(Ticket.objects.filter(user__pk=self.room_name, is_closed=False).exists)():
+            error_message = "This user does not have an open ticket!"
+            await self.send_json({
+                "type": "system_message",
+                "error": error_message
+            })
+            await self.close()
+            return
+        elif await database_sync_to_async(
+                Ticket.objects.filter(
+                    ~Q(specialist__user=self.user),
+                    user__pk=self.room_name,
+                    is_closed=False,
+                    specialist__isnull=False
+                ).exists)():
+            error_message = "This user already has a specialist!"
+            await self.send_json({
+                "type": "system_message",
+                "error": error_message
+            })
+            await self.close()
+            return
+        else:
+            # Join room group
+            await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+            specialist = await database_sync_to_async(Specialist.objects.get)(user=self.user)
+            await database_sync_to_async(
+                Ticket.objects.filter(
+                    user__pk=self.room_name,
+                    is_closed=False,
+                    specialist__isnull=True
+                ).update)(specialist=specialist)
+
+            # Because it's new connection, we send a system message to the user not to the group
+            await self.send_json({
+                "type": "system_message",
+                "message": "You have successfully connected to the room as a specialist!"
+            })
 
     async def disconnect(self, close_code):
         # Leave room group
