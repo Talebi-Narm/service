@@ -29,3 +29,6 @@ class Ticket(models.Model):
     specialist = models.ForeignKey("Specialist", on_delete=models.PROTECT, related_name="tickets", null=True)
     title = models.CharField(max_length=255)
     is_closed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'"{self.user.username}" needs help with "{self.title}"'

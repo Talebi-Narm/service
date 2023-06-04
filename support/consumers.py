@@ -1,6 +1,8 @@
+import json
+
 from channels.db import database_sync_to_async
 from channels.exceptions import DenyConnection
-from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer, AsyncWebsocketConsumer
 
 from .models import Ticket, Specialist
 
@@ -35,6 +37,12 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         # self.channel_name is the unique channel name that the connection is identified by
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
+
+        # Because it's new connection, we send a system message to the user not to the group
+        await self.send_json({
+            "type": "system_message",
+            "message": "You have successfully connected to the room as a user!"
+        })
 
     async def connect_specialist(self):
         pass
@@ -91,8 +99,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             title = await self.get_key(content, "title")
             if title is None:
                 return
-            ticket = await database_sync_to_async(Ticket.objects.create)(user=self.user, title=title)
-            await database_sync_to_async(ticket.save)()
+            await database_sync_to_async(Ticket.objects.create)(user=self.user, title=title)
 
             # success message to the group
             await self.channel_layer.group_send(self.room_group_name, {
@@ -152,3 +159,31 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     async def system_message(self, event):
         await self.send_json(event)
+
+
+class NotificationConsumer(AsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.group_name = 'specialists'
+        self.user = None
+
+    async def connect(self):
+        self.user = self.scope['user']
+        is_specialist = await database_sync_to_async(Specialist.objects.filter(user=self.user).exists)()
+
+        if not is_specialist:
+            error_message = "You are not a specialist!"
+            raise DenyConnection(error_message)
+
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.accept()
+        await self.send(text_data=json.dumps({
+            "type": "system_message",
+            "message": "You have successfully connected to the ticket notification group!"
+        }))
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
+
+    async def system_message(self, event):
+        await self.send(text_data=json.dumps(event))
