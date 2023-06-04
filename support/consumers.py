@@ -18,7 +18,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         self.room_group_name = "chat_%s" % self.room_name
 
         self.user = self.scope['user']
-        self.is_specialist = await database_sync_to_async(Specialist.objects.filter(user=user).exists)()
+        self.is_specialist = await database_sync_to_async(Specialist.objects.filter(user=self.user).exists)()
 
         if self.is_specialist:
             await self.connect_specialist()
