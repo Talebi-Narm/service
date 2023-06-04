@@ -20,7 +20,7 @@
   ```
 - Create migrations
   ```shell
-  docker compose run --rm backend python3 manage.py makemigrations user common store green_house cart order
+  docker compose run --rm backend python3 manage.py makemigrations user common store green_house cart order support
   ```
 - Apply migrations
   ```shell
