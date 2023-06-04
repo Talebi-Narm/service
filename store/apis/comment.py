@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -25,9 +24,10 @@ class ToolCommentCreate(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class PlantComments(GenericAPIView):
+class PlantComments(generics.ListAPIView):
     """get a plant comments"""
     swagger_tags = ('comment',)
+    pagination_class = ResponsePagination
 
     def get(self, request, pk):
         plant = get_object_or_404(Plant, id=pk)
@@ -39,9 +39,10 @@ class PlantComments(GenericAPIView):
         return PlantCommentSerializer
 
 
-class ToolComments(GenericAPIView):
+class ToolComments(generics.ListAPIView):
     """get a tool comments"""
     swagger_tags = ('comment',)
+    pagination_class = ResponsePagination
 
     def get(self, request, pk):
         tool = get_object_or_404(Tool, id=pk)
