@@ -1,3 +1,4 @@
+from django.forms.models import model_to_dict
 from rest_framework import serializers
 
 from store.models import Plant, Tool
@@ -11,6 +12,11 @@ class PlantAdminSerializer(serializers.ModelSerializer):
 
 
 class PlantSerializer(serializers.ModelSerializer):
+    tags = serializers.SerializerMethodField("get_tags")
+
+    def get_tags(self, obj):
+        return [model_to_dict(tag, fields=['id', 'name', 'description']) for tag in obj.tags.all()]
+
     class Meta:
         model = Plant
         exclude = ['is_active', 'created_at', 'updated_at', 'is_deleted', 'deleted_at']
@@ -25,6 +31,11 @@ class ToolAdminSerializer(serializers.ModelSerializer):
 
 
 class ToolSerializer(serializers.ModelSerializer):
+    tags = serializers.SerializerMethodField("get_tags")
+
+    def get_tags(self, obj):
+        return [model_to_dict(tag, fields=['id', 'name', 'description']) for tag in obj.tags.all()]
+
     class Meta:
         model = Tool
         exclude = ['is_active', 'created_at', 'updated_at', 'is_deleted', 'deleted_at']
