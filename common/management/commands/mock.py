@@ -34,6 +34,7 @@ def create_album(faker: Faker, count: int) -> dict:
 
 def create_tags(faker: Faker):
     tag_list = [
+        "Discount",
         "Apartment",
         "Home",
         "Drug",
