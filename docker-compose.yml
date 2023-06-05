@@ -10,8 +10,16 @@ services:
     env_file:
       - ".env"
 
+  redis:
+    image: redis:7.2-rc2-alpine
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+
   backend:
     depends_on:
+      - redis
       - db
     build: ./
     ports:
@@ -26,3 +34,4 @@ services:
 
 volumes:
   talebi-db-data:
+  redis-data:

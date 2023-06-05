@@ -65,11 +65,11 @@ class PlantComment(Comment):
     plant = models.ForeignKey("store.Plant", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class ToolComment(Comment):
     tool = models.ForeignKey("store.Tool", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.id
+        return str(self.id)

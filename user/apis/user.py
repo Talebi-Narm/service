@@ -19,7 +19,7 @@ class UserProfile(GenericAPIView):
         pk = request.user.id
         user = get_object_or_404(User, id=pk)
         addresses = UserAddress.objects.filter(owner=pk)
-        user_addresses = [address['address'] for address in addresses]
+        user_addresses = [(address.id, address.address) for address in addresses]
         result = dict()
         result['user'] = user
         result['addresses'] = user_addresses

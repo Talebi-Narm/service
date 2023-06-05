@@ -33,6 +33,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,7 +54,8 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'green_house.apps.GreenHouseConfig',
     'cart.apps.CartConfig',
-    'order.apps.OrderConfig'
+    'order.apps.OrderConfig',
+    'support.apps.SupportConfig'
 ]
 
 MIDDLEWARE = [
@@ -92,9 +94,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'talebi.wsgi.application'
+ASGI_APPLICATION = 'talebi.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(os.getenv('REDIS_HOST'), 6379)],
+        },
+    },
+}
 
 # Database
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -116,7 +127,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication'
     ),
     'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend'
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
     ],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
