@@ -17,7 +17,7 @@ RUN apt-get update --fix-missing
 RUN apt-get -y install libpq-dev gcc
 
 RUN pip install --upgrade pip
-RUN pip install poetry gunicorn[gthread]
+RUN pip install poetry gunicorn uvicorn
 
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-root --no-interaction --no-ansi
@@ -28,4 +28,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind=0.0.0.0:8000", "--worker-tmp-dir=/dev/shm", "--chdir=/usr/src/app", "--log-level='info'", "--log-file=-", "--workers=2", "--threads=4", "--worker-class=gthread", "talebi.wsgi:application"]
+CMD ["gunicorn", "talebi.wsgi:application", "--bind=0.0.0.0:8000", "--workers=2", "--worker-class=uvicorn.workers.UvicornWorker"]
