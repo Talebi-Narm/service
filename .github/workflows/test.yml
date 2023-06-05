@@ -14,9 +14,11 @@ jobs:
       postgres:
         image: postgres:15.2-alpine
         env:
+          POSTGRES_NAME: talebi
           POSTGRES_USER: talebi
           POSTGRES_PASSWORD: 123456
-          POSTGRES_DB: talebi
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
         ports:
           - 5432:5432
         options: >-
@@ -49,10 +51,11 @@ jobs:
 
       - name: run pytest
         env:
-          POSTGRES_HOST: postgres
+          POSTGRES_NAME: talebi
           POSTGRES_USER: talebi
           POSTGRES_PASSWORD: 123456
-          POSTGRES_DB: talebi
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
           REDIS_HOST: redis
         run: |
           pytest
