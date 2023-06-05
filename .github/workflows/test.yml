@@ -48,7 +48,7 @@ jobs:
           pip install poetry
           poetry install --no-root --no-interaction --no-ansi
 
-      - name: run pytest
+      - name: build coverage file
         env:
           POSTGRES_NAME: talebi
           POSTGRES_USER: talebi
@@ -57,4 +57,10 @@ jobs:
           POSTGRES_PORT: 5432
           REDIS_HOST: localhost
         run: |
-          pytest
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=app tests/ | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
