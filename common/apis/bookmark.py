@@ -14,11 +14,10 @@ class PlantBookmarkList(generics.ListCreateAPIView):
     pagination_class = ResponsePagination
     permission_classes = [IsAuthenticated]
 
-    def list(self, request):
-        user = request.user.id
+    def get_queryset(self):
+        user = self.request.user.id
         bookmarks = PlantBookmark.objects.filter(user=user, is_active=True, is_deleted=False)
-        serializer = self.get_serializer(bookmarks, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return bookmarks
 
 
 class PlantBookmarkDestroy(generics.DestroyAPIView):
@@ -34,11 +33,10 @@ class ToolBookmarkList(generics.ListCreateAPIView):
     pagination_class = ResponsePagination
     permission_classes = [IsAuthenticated]
 
-    def list(self, request):
-        user = request.user.id
-        bookmarks = ToolBookmark.objects.filter(user=user, is_active=True, is_deleted=False)
-        serializer = self.get_serializer(bookmarks, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        user = self.request.user.id
+        bookmarks = PlantBookmark.objects.filter(user=user, is_active=True, is_deleted=False)
+        return bookmarks
 
 
 class ToolBookmarkDestroy(generics.DestroyAPIView):
