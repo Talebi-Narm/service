@@ -28,7 +28,7 @@ services:
       - .:/usr/src/app
     command: sh -c "
       python manage.py collectstatic --noinput &&
-      gunicorn talebi.asgi:application -c ./talebi/gunicorn.conf.py" -k uvicorn.workers.UvicornWorker
+      gunicorn talebi.asgi:application -c ./talebi/gunicorn.conf.py -k uvicorn.workers.UvicornWorker"
     env_file:
       - ".env"
 
