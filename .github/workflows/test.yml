@@ -9,6 +9,7 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     name: pytest
+    permissions: write-all
 
     services:
       db:
