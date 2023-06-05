@@ -45,11 +45,13 @@ jobs:
           pip install poetry
           poetry install --no-root --no-interaction --no-ansi
 
-      - name: pytest tests
+      - name: run pytest
         env:
           POSTGRES_HOST: postgres
           POSTGRES_USER: talebi
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: talebi
           REDIS_HOST: redis
-        uses: cclauss/GitHub-Action-for-pytest@0.5.0
+        run: |
+          poetry shell
+          run pytest
