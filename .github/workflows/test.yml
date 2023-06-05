@@ -55,4 +55,4 @@ jobs:
           POSTGRES_DB: talebi
           REDIS_HOST: redis
         run: |
-          run pytest
+          pytest
