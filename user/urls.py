@@ -4,7 +4,7 @@ from rest_framework_simplejwt import views
 from user.apis.address import UserAddressList, UserAddressDetail
 from user.apis.google import GoogleLogin
 from user.apis.register import RegisterUserAPIView, ChangePassword
-from user.apis.user import UserProfile
+from user.apis.user import UserProfile, UserAvatar
 
 app_name = 'users'
 
@@ -17,5 +17,6 @@ urlpatterns = [
     path("addresses/<uuid:pk>", UserAddressDetail.as_view(), name="user-address-detail"),
     # path('updatecredit/<int:amount>/', UpdateCredit.as_view(), name='update_credit'),
     path("me/", UserProfile.as_view(), name="user-profile"),
+    path("me/avatar/", UserAvatar.as_view(), name="user-avatar"),
     path("password/", ChangePassword.as_view(), name="change-password")
 ]
