@@ -20,7 +20,7 @@ services:
   backend:
     depends_on:
       - db
-    image: hamedhf/talebi-service:lastest
+    build: ./
     ports:
       - "443:80"
       - "80:80"
@@ -28,7 +28,7 @@ services:
       - .:/usr/src/app
     command: sh -c "
       python manage.py collectstatic --noinput &&
-      gunicorn talebi.asgi:application -c ./talebi/gunicorn.conf.py -k uvicorn.workers.UvicornWorker"
+      python manage.py runserver 80"
     env_file:
       - ".env"
 
