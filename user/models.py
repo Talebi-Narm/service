@@ -12,6 +12,11 @@ class Gender(models.IntegerChoices):
     RATHERNOTTOSAY = 3, "Rather not to say!"
 
 
+def upload_to(instance, filename):
+    filename = str(instance.pk) + '.' + filename.split('.')[-1]
+    return 'images/{filename}'.format(filename=filename)
+
+
 class User(AbstractUser, BaseModel):
     email = EmailField(max_length=255, unique=True)
 
@@ -21,7 +26,7 @@ class User(AbstractUser, BaseModel):
     calendar_token = models.TextField(max_length=1000, blank=True, null=True)
 
     about = models.TextField(max_length=500, blank=True)
-
+    avatar_url = models.ImageField(upload_to=upload_to, blank=True, null=True)
     wallet_charge = models.IntegerField(default=0)
 
     # check this

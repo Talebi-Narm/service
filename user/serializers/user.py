@@ -32,3 +32,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     model = User
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+
+class AvatarSerializer(serializers.Serializer):
+    avatar_url = serializers.ImageField()
