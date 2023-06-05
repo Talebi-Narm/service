@@ -57,7 +57,7 @@ jobs:
           POSTGRES_PORT: 5432
           REDIS_HOST: localhost
         run: |
-          pytest --cache-clear --junit-xml=test-results.xml --cov=app test/ > pytest-coverage.txt
+          pytest --cache-clear --disable-warnings --junit-xml=test-results.xml --cov=. | tee pytest-coverage.txt
 
       - name: surface failing tests
         if: always()
