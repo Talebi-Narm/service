@@ -1,7 +1,5 @@
 from rest_framework import generics
-from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 from common.models import PlantBookmark, ToolBookmark
 from common.serializers.bookmark import PlantBookmarkSerializer, ToolBookmarkSerializer
