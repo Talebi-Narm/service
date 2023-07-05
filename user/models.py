@@ -30,7 +30,7 @@ class User(AbstractUser, BaseModel):
     wallet_charge = models.IntegerField(default=0)
 
     # check this
-    phone_regex = RegexValidator(regex=r'^(\+98?)?{?(0?9[0-9]{9,9}}?)$')
+    phone_regex = RegexValidator(regex=r'^(\+98|0)9\d{9}$')
     phone_number = models.CharField(validators=[phone_regex], max_length=13, blank=True)
 
     USERNAME_FIELD = 'email'

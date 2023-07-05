@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from user.models import User, Gender
+from user.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,13 +28,13 @@ class UserProfileSerializer(serializers.Serializer):
     )
 
 
-class UserProfileUpdateSerializer(serializers.Serializer):
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    phone_number = serializers.CharField()
-    email = serializers.EmailField()
-    gender = serializers.ChoiceField(choices=Gender.choices, help_text=Gender.choices)
-    about = serializers.CharField()
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'phone_number', 'email', 'gender', 'about')
+        extra_kwargs = {'email': {'required': False}, 'phone_number': {'required': True},
+                        'first_name': {'required': True}, 'last_name': {'required': True}, 'gender': {'required': True},
+                        'about': {'required': True}}
 
 
 class ChangePasswordSerializer(serializers.Serializer):

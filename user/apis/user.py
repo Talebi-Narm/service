@@ -32,7 +32,9 @@ class UserProfile(GenericAPIView):
         request=UserProfileUpdateSerializer,
     )
     def put(self, request):
-        user = User.objects.filter(id=request.user.id).update(**request.data)
+        serializer = UserProfileUpdateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        User.objects.filter(id=request.user.id).update(**serializer.validated_data)
         return Response(status=status.HTTP_200_OK)
 
 
