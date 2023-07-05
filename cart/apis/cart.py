@@ -32,7 +32,7 @@ class ToolCartList(generics.ListCreateAPIView):
 
     def list(self, request):
         queryset = ToolCart.objects.filter(user=request.user, is_active=True, is_deleted=False)
-        serializer = self.get_serializer(queryset)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 
