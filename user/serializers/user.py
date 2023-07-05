@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from user.models import User
+from user.models import User, Gender
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -26,6 +26,15 @@ class UserProfileSerializer(serializers.Serializer):
     addresses = serializers.ListField(
         child=serializers.CharField(max_length=250)
     )
+
+
+class UserProfileUpdateSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    phone_number = serializers.CharField()
+    email = serializers.EmailField()
+    gender = serializers.ChoiceField(choices=Gender.choices, help_text=Gender.choices)
+    about = serializers.CharField()
 
 
 class ChangePasswordSerializer(serializers.Serializer):

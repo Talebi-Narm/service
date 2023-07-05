@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from user.models import User, UserAddress
-from user.serializers.user import UserProfileSerializer, AvatarSerializer
+from user.serializers.user import UserProfileSerializer, AvatarSerializer, UserProfileUpdateSerializer
 
 
 class UserProfile(GenericAPIView):
@@ -27,6 +27,13 @@ class UserProfile(GenericAPIView):
         result['avatar_url'] = user.avatar_url
         serializer = UserProfileSerializer(result, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        request=UserProfileUpdateSerializer,
+    )
+    def put(self, request):
+        user = User.objects.filter(id=request.user.id).update(**request.data)
+        return Response(status=status.HTTP_200_OK)
 
 
 # API for updating user avatar
