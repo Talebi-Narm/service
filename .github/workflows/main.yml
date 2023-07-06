@@ -46,6 +46,7 @@ jobs:
           script: |
             cd ${{ secrets.WORK_DIR }}
             docker compose down
+            docker image prune -f
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
             cp .env.sample .env
