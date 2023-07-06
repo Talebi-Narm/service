@@ -17,6 +17,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://talebi-narm.ir',
+    'https://www.talebi-narm.ir',
     'https://service.talebi-narm.ir',
     'https://service-dev.talebi-narm.ir',
     'http://127.0.0.1:3000',
