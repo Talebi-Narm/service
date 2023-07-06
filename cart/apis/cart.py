@@ -7,15 +7,14 @@ from cart.serializers.cart import PlantCartSerializer, ToolCartSerializer
 from common.utils.paginator import ResponsePagination
 
 
-class PlantCartList(generics.CreateAPIView):
-    queryset = PlantCart.objects.all()
+class PlantCartList(generics.ListCreateAPIView):
     serializer_class = PlantCartSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = ResponsePagination
 
     def list(self, request):
         queryset = PlantCart.objects.filter(user=request.user, is_active=True, is_deleted=False)
-        serializer = PlantCartSerializer(queryset)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -26,15 +25,14 @@ class PlantCartDetail(generics.RetrieveUpdateDestroyAPIView):
     pagination_class = ResponsePagination
 
 
-class ToolCartList(generics.CreateAPIView):
-    queryset = ToolCart.objects.all()
+class ToolCartList(generics.ListCreateAPIView):
     serializer_class = ToolCartSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = ResponsePagination
 
     def list(self, request):
         queryset = ToolCart.objects.filter(user=request.user, is_active=True, is_deleted=False)
-        serializer = ToolCartSerializer(queryset)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 

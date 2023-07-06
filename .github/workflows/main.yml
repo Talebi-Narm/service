@@ -42,15 +42,15 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd ${{ secrets.WORK_DIR }}
             docker compose down
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
-            docker image rm hamedhf/talebi-service:lastest
+            cp .env.sample .env
             docker compose -f server-deploy.yml build
-            docker compose -f server-deploy.yml up db -d
+            docker compose -f server-deploy.yml up db redis -d
             ./wait-for-it.sh localhost:5432
             docker compose -f server-deploy.yml run --rm backend python3 manage.py migrate
             docker compose -f server-deploy.yml up backend -d

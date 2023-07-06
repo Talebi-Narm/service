@@ -26,3 +26,22 @@ class UserProfileSerializer(serializers.Serializer):
     addresses = serializers.ListField(
         child=serializers.CharField(max_length=250)
     )
+
+
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'phone_number', 'email', 'gender', 'about')
+        extra_kwargs = {'email': {'required': False}, 'phone_number': {'required': True},
+                        'first_name': {'required': True}, 'last_name': {'required': True}, 'gender': {'required': True},
+                        'about': {'required': True}}
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    model = User
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+
+class AvatarSerializer(serializers.Serializer):
+    avatar_url = serializers.ImageField()

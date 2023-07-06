@@ -1,8 +1,10 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 
 from common.utils.paginator import ResponsePagination
+from store.filters.product import PlantFilter, ToolFilter
 from store.models import Plant, Tool
 from store.serializers.product import PlantSerializer, ToolSerializer
 
@@ -13,8 +15,10 @@ class PlantList(generics.ListAPIView):
     serializer_class = PlantSerializer
     pagination_class = ResponsePagination
     permission_classes = [IsAuthenticated]
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('name', 'count', 'price', 'environment', 'water', 'light', 'growth_rate', 'tags')
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
+    filterset_class = PlantFilter
+    ordering_fields = ('name', 'price', 'created_at')
+    search_fields = ('name',)
 
 
 class PlantDetail(generics.RetrieveAPIView):
@@ -30,8 +34,10 @@ class ToolList(generics.ListAPIView):
     serializer_class = ToolSerializer
     pagination_class = ResponsePagination
     permission_classes = [IsAuthenticated]
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('name', 'count', 'price', 'tags')
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
+    filterset_class = ToolFilter
+    ordering_fields = ('name', 'price', 'created_at')
+    search_fields = ('name',)
 
 
 class ToolDetail(generics.RetrieveAPIView):

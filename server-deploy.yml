@@ -10,10 +10,17 @@ services:
     env_file:
       - ".env"
 
+  redis:
+    image: redis:7.2-rc2-alpine
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+
   backend:
     depends_on:
       - db
-    image: hamedhf/talebi-service:lastest
+    build: ./
     ports:
       - "443:80"
       - "80:80"
@@ -21,9 +28,10 @@ services:
       - .:/usr/src/app
     command: sh -c "
       python manage.py collectstatic --noinput &&
-      gunicorn talebi.wsgi:application -c ./talebi/gunicorn.conf.py"
+      python manage.py runserver 0.0.0.0:80"
     env_file:
       - ".env"
 
 volumes:
   talebi-db-data:
+  redis-data:
