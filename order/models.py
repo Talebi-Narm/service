@@ -4,8 +4,23 @@ from django.db import models
 from common.models import BaseModel
 
 
-# class Order(BaseModel):
-#     pass
+class Status(models.IntegerChoices):
+    PENDING = 0, "Pending"
+    DELIVERY = 1, "Delivery"
+    COMPLETED = 2, "Completed"
+
+
+class Order(BaseModel):
+    plants = models.ManyToManyField("cart.PlantCart", blank=True)
+    tools = models.ManyToManyField("cart.ToolCart", blank=True)
+    user = models.ForeignKey("user.User", on_delete=models.CASCADE)
+    status = models.IntegerField(choices=Status.choices, default=0)
+    coupon = models.ForeignKey("order.Coupon", null=True, blank=True, on_delete=models.SET_NULL)
+    price_before = models.FloatField(blank=True, null=True)
+    price_after = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username + " " + str(self.created_at)
 
 
 class Coupon(BaseModel):
