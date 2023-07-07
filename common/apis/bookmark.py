@@ -33,12 +33,12 @@ class ToolBookmarkList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user.id
-        bookmarks = PlantBookmark.objects.filter(user=user, is_active=True, is_deleted=False)
+        bookmarks = ToolBookmark.objects.filter(user=user, is_active=True, is_deleted=False)
         return bookmarks
 
 
 class ToolBookmarkDestroy(generics.DestroyAPIView):
     swagger_tags = ('bookmark',)
     queryset = ToolBookmark.objects.all()
-    serializer_class = PlantBookmarkSerializer
+    serializer_class = ToolBookmarkSerializer
     permission_classes = [IsAuthenticated]

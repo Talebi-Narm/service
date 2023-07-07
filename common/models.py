@@ -49,7 +49,13 @@ class PlantBookmark(BaseModel):
     user = models.ForeignKey("user.User", on_delete=models.CASCADE)
     Plant = models.ForeignKey("store.Plant", on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('user', 'Plant')
+
 
 class ToolBookmark(BaseModel):
     user = models.ForeignKey("user.User", on_delete=models.CASCADE)
     Tool = models.ForeignKey("store.Tool", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'Tool')
