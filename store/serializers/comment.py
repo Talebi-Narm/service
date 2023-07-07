@@ -1,4 +1,3 @@
-from django.forms.models import model_to_dict
 from rest_framework import serializers
 
 from store.models import PlantComment, ToolComment
@@ -9,12 +8,12 @@ class PlantCommentSerializer(serializers.ModelSerializer):
     reply_to_detail = serializers.SerializerMethodField("get_reply_to")
 
     def get_owner(self, obj):
-        return model_to_dict(obj.owner)
+        return obj.owner.id
 
     def get_reply_to(self, obj):
         if obj.reply_to is None:
             return None
-        return model_to_dict(obj.reply_to)
+        return obj.reply_to
 
     class Meta:
         model = PlantComment
@@ -27,12 +26,12 @@ class ToolCommentSerializer(serializers.ModelSerializer):
     reply_to_detail = serializers.SerializerMethodField("get_reply_to")
 
     def get_owner(self, obj):
-        return model_to_dict(obj.owner)
+        return obj.owner.id
 
     def get_reply_to(self, obj):
         if obj.reply_to is None:
             return None
-        return model_to_dict(obj.reply_to)
+        return obj.reply_to
 
     class Meta:
         model = ToolComment
