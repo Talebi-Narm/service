@@ -1,4 +1,5 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 
 from .models import UserPlant
@@ -9,6 +10,7 @@ class UserPlantListAPIView(ListCreateAPIView):
     swagger_tags = ('green house',)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserPlantSerializer
+    parser_classes = (MultiPartParser,)
 
     def get_queryset(self):
         return UserPlant.objects.filter(user=self.request.user, is_deleted=False)
@@ -18,6 +20,7 @@ class UserPlantDetailAPIView(RetrieveUpdateDestroyAPIView):
     swagger_tags = ('green house',)
     permission_classes = (IsAuthenticated,)
     serializer_class = UserPlantSerializer
+    parser_classes = (MultiPartParser,)
 
     def get_queryset(self):
         return UserPlant.objects.filter(user=self.request.user, is_deleted=False)
