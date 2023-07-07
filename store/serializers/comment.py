@@ -13,7 +13,7 @@ class PlantCommentSerializer(serializers.ModelSerializer):
     def get_reply_to(self, obj):
         if obj.reply_to is None:
             return None
-        return obj.reply_to
+        return obj.reply_to.id
 
     class Meta:
         model = PlantComment
@@ -31,7 +31,7 @@ class ToolCommentSerializer(serializers.ModelSerializer):
     def get_reply_to(self, obj):
         if obj.reply_to is None:
             return None
-        return obj.reply_to
+        return obj.reply_to.id
 
     class Meta:
         model = ToolComment
