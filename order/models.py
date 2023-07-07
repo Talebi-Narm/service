@@ -4,8 +4,18 @@ from django.db import models
 from common.models import BaseModel
 
 
-# class Order(BaseModel):
-#     pass
+class Status(models.IntegerChoices):
+    PENDING = 0, "Pending"
+    DELIVERY = 1, "Delivery"
+    COMPLETED = 2, "Completed"
+
+
+class Order(BaseModel):
+    plants = models.ManyToManyField("cart.PlantCart")
+    tools = models.ManyToManyField("cart.ToolCart")
+    user = models.ForeignKey("user.User", on_delete=models.CASCADE)
+    status = models.IntegerField(choices=Status.choices, default=0)
+    coupon = models.ForeignKey("order.Coupon", null=True, on_delete=models.SET_NULL)
 
 
 class Coupon(BaseModel):
