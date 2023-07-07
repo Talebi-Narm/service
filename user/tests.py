@@ -18,7 +18,7 @@ def api_client():
 @pytest.mark.django_db
 def test_avatar_upload(api_client):
     user = User.objects.create_user(username='test-user', password='test-password')
-    api_name = "user-avatar"
+    api_name = "user-avatar"  # noqa
     token = str(RefreshToken.for_user(user).access_token)
     api_client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
     url = '/api/v1/user/me/avatar/'
